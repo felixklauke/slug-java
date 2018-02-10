@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/JackWhite20/slug-java.svg?branch=master)](https://travis-ci.org/JackWhite20/slug-java)
+[![codecov](https://codecov.io/gh/JackWhite20/slug-java/branch/master/graph/badge.svg)](https://codecov.io/gh/JackWhite20/slug-java)
+
 # slug-java
 Java implementation of my interpreted programming language SLUG (Simple Language).
 
