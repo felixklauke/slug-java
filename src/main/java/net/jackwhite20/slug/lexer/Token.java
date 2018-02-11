@@ -25,7 +25,7 @@ public class Token {
 
     private String value;
 
-    public Token(TokenType tokenType, String value) {
+    Token(TokenType tokenType, String value) {
         this.tokenType = tokenType;
         this.value = value;
     }
