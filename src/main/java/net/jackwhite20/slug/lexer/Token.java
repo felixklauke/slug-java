@@ -18,6 +18,7 @@ package net.jackwhite20.slug.lexer;
 
 /**
  * @author Philip 'JackWhite20' <silencephil@gmail.com>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 public class Token {
 
@@ -25,7 +26,7 @@ public class Token {
 
     private String value;
 
-    public Token(TokenType tokenType, String value) {
+    Token(TokenType tokenType, String value) {
         this.tokenType = tokenType;
         this.value = value;
     }
