@@ -41,6 +41,11 @@
                         <format>xml</format>
                     </formats>
                     <check/>
+                    <instrumentation>
+                        <excludes>
+                            <exclude>net/jackwhite20/slug/SlugBootstrap.class</exclude>
+                        </excludes>
+                    </instrumentation>
                 </configuration>
             </plugin>
         </plugins>
