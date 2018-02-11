@@ -149,7 +149,7 @@ public class Lexer {
                     skipComments();
                     continue;
                 } else {
-                    throw new IllegalStateException("EOF reached while lexing comments/divide");
+                    throw new IllegalStateException("EOF reached while lexing comments");
                 }
             }
 
@@ -183,6 +183,7 @@ public class Lexer {
                 advance();
                 return new Token(TokenType.SEMICOLON, ";");
             }
+          
             if (currentChar == ',') {
                 advance();
                 return new Token(TokenType.COMMA, ",");
