@@ -16,9 +16,7 @@
 
 package net.jackwhite20.slug.parser;
 
-import net.jackwhite20.slug.ast.FunctionNode;
-import net.jackwhite20.slug.ast.MainNode;
-import net.jackwhite20.slug.ast.Node;
+import net.jackwhite20.slug.ast.*;
 import net.jackwhite20.slug.lexer.Lexer;
 import net.jackwhite20.slug.lexer.Token;
 import net.jackwhite20.slug.lexer.TokenType;
@@ -67,6 +65,89 @@ public class Parser {
         eat(TokenType.CURLY_RIGHT_PARAN);
 
         return new FunctionNode(functionName, functionStatements, parameters);
+    }
+
+    private Node factor() {
+        Token tmp = currentToken;
+        if (tmp.getTokenType() == TokenType.PLUS) {
+            eat(TokenType.PLUS);
+            return new UnaryNode(tmp, factor());
+        } else if (tmp.getTokenType() == TokenType.MINUS) {
+            eat(TokenType.MINUS);
+            return new UnaryNode(tmp, factor());
+        } else if (tmp.getTokenType() == TokenType.INTEGER) {
+            eat(TokenType.INTEGER);
+            return new NumberNode(tmp.getValue());
+        } else if (tmp.getTokenType() == TokenType.STRING) {
+            eat(TokenType.STRING);
+            return new StringNode(tmp.getValue());
+        } else if (tmp.getTokenType() == TokenType.BOOL) {
+            eat(TokenType.BOOL);
+            return new BoolNode(tmp.getValue());
+        } else if (tmp.getTokenType() == TokenType.LEFT_PARAN) {
+            eat(TokenType.LEFT_PARAN);
+            Node node = expression();
+            eat(TokenType.RIGHT_PARAN);
+            return node;
+        } else if (tmp.getTokenType() == TokenType.CALL) {
+            // TODO: 13.02.2018 Function call
+            return null;
+        } else {
+            // TODO: 13.02.2018 Variable usage
+            return null;
+        }
+    }
+
+    private Node term() {
+        Node res = factor();
+
+        while (currentToken.getTokenType() == TokenType.MULTIPLY ||
+                currentToken.getTokenType() == TokenType.DIVIDE ||
+                currentToken.getTokenType() == TokenType.GREATER ||
+                currentToken.getTokenType() == TokenType.LESS ||
+                currentToken.getTokenType() == TokenType.GREATER_EQUAL ||
+                currentToken.getTokenType() == TokenType.LESS_EQUAL ||
+                currentToken.getTokenType() == TokenType.NOT_EQUAL ||
+                currentToken.getTokenType() == TokenType.EQUAL) {
+            Token tmp = currentToken;
+            if (tmp.getTokenType() == TokenType.MULTIPLY) {
+                eat(TokenType.MULTIPLY);
+            } else if (tmp.getTokenType() == TokenType.DIVIDE) {
+                eat(TokenType.DIVIDE);
+            } else {
+                // Handle boolean operators (>=, >, <, etc.)
+                eat(tmp.getTokenType());
+
+                // We got a boolean operation here
+                res = new BooleanNode(res, tmp.getTokenType(), factor());
+                continue;
+            }
+
+            res = new BinaryNode(res, tmp, factor());
+        }
+
+        return res;
+    }
+
+    private Node expression() {
+        Node result = term();
+
+        while (currentToken.getTokenType() == TokenType.PLUS || currentToken.getTokenType() == TokenType.MINUS) {
+            Token tmp = currentToken;
+            if (tmp.getTokenType() == TokenType.PLUS) {
+                eat(TokenType.PLUS);
+            } else if (tmp.getTokenType() == TokenType.MINUS) {
+                eat(TokenType.MINUS);
+            } else if (tmp.getTokenType() == TokenType.MULTIPLY) {
+                eat(TokenType.MULTIPLY);
+            } else if (tmp.getTokenType() == TokenType.DIVIDE) {
+                eat(TokenType.DIVIDE);
+            }
+
+            result = new BinaryNode(result, tmp, term());
+        }
+
+        return result;
     }
 
     private Node parseSlugMainFile() {
