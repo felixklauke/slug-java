@@ -85,11 +85,36 @@ public class Parser {
         return results;
     }
 
+    private Node parseFunctionCall() {
+        // Get the function name from the CALL token (the name is there as the value)
+        String name = currentToken.getValue();
+
+        eat(TokenType.CALL);
+
+        eat(TokenType.LEFT_PARAN);
+
+        List<Node> parameter = new ArrayList<>();
+        while (currentToken.getTokenType() != TokenType.RIGHT_PARAN) {
+            parameter.add(factor());
+
+            // Parameters should be separated with a comma
+            if (currentToken.getTokenType() == TokenType.COMMA) {
+                eat(TokenType.COMMA);
+            }
+        }
+
+        eat(TokenType.RIGHT_PARAN);
+
+        return new FunctionCallNode(name, FunctionRegistry.lookup(name), parameter);
+    }
+
     private Node statement() {
         Node node;
 
         if (currentToken.getTokenType() == TokenType.FUNC) {
             node = parseFunction();
+        } else if (currentToken.getTokenType() == TokenType.CALL) {
+            node = parseFunctionCall();
         } else {
             node = new NoOpNode();
         }
@@ -120,8 +145,7 @@ public class Parser {
             eat(TokenType.RIGHT_PARAN);
             return node;
         } else if (tmp.getTokenType() == TokenType.CALL) {
-            // TODO: 13.02.2018 Function call
-            return null;
+            return parseFunctionCall();
         } else {
             // TODO: 13.02.2018 Variable usage
             return null;
