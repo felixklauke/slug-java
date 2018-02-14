@@ -17,6 +17,7 @@
 package net.jackwhite20.slug.parser;
 
 import net.jackwhite20.slug.ast.*;
+import net.jackwhite20.slug.interpreter.FunctionRegistry;
 import net.jackwhite20.slug.lexer.Lexer;
 import net.jackwhite20.slug.lexer.Token;
 import net.jackwhite20.slug.lexer.TokenType;
@@ -60,11 +61,40 @@ public class Parser {
         eat(TokenType.RIGHT_PARAN);
 
         eat(TokenType.CURLY_LEFT_PARAN);
-        // TODO: 12.02.2018 Function statements
-        List<Node> functionStatements = new ArrayList<>();
+        List<Node> functionStatements = parseFunctionStatements();
         eat(TokenType.CURLY_RIGHT_PARAN);
 
-        return new FunctionNode(functionName, functionStatements, parameters);
+        FunctionNode functionNode = new FunctionNode(functionName, functionStatements, parameters);
+
+        // Register the global function
+        FunctionRegistry.register(functionNode);
+
+        return functionNode;
+    }
+
+    private List<Node> parseFunctionStatements() {
+        List<Node> results = new ArrayList<>();
+
+        results.add(statement());
+
+        // Add statements until the closing curly bracket from the function end is found
+        while (currentToken.getTokenType() != TokenType.CURLY_RIGHT_PARAN) {
+            results.add(statement());
+        }
+
+        return results;
+    }
+
+    private Node statement() {
+        Node node;
+
+        if (currentToken.getTokenType() == TokenType.FUNC) {
+            node = parseFunction();
+        } else {
+            node = new NoOpNode();
+        }
+
+        return node;
     }
 
     private Node factor() {
