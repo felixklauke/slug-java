@@ -17,16 +17,22 @@
 package net.jackwhite20.slug.interpreter;
 
 import net.jackwhite20.slug.ast.FunctionNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class FunctionRegistry {
 
+    private static Logger logger = LoggerFactory.getLogger(FunctionRegistry.class);
+
     private static Map<String, FunctionNode> functions = new HashMap<>();
 
     public static void register(FunctionNode functionNode) {
         functions.put(functionNode.getName(), functionNode);
+
+        logger.debug("Registered function {}", functionNode.getName());
     }
 
     public static FunctionNode lookup(String functionName) {
