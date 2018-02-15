@@ -18,6 +18,7 @@ package net.jackwhite20.slug.parser;
 
 import net.jackwhite20.slug.ast.FunctionNode;
 import net.jackwhite20.slug.ast.MainNode;
+import net.jackwhite20.slug.ast.NoOpNode;
 import net.jackwhite20.slug.ast.Node;
 import net.jackwhite20.slug.lexer.Lexer;
 import org.junit.Before;
@@ -60,7 +61,8 @@ public class TestParser {
         FunctionNode functionNode = (FunctionNode) function;
 
         assertEquals("Main", functionNode.getName());
-        assertEquals(0, functionNode.getChildren().size());
+        assertEquals(1, functionNode.getChildren().size());
+        assertTrue(functionNode.getChildren().get(0) instanceof NoOpNode);
         assertEquals(0, functionNode.getParameter().size());
     }
 
