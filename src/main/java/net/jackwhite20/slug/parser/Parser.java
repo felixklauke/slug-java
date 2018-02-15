@@ -17,6 +17,7 @@
 package net.jackwhite20.slug.parser;
 
 import net.jackwhite20.slug.ast.*;
+import net.jackwhite20.slug.interpreter.FunctionRegistry;
 import net.jackwhite20.slug.lexer.Lexer;
 import net.jackwhite20.slug.lexer.Token;
 import net.jackwhite20.slug.lexer.TokenType;
@@ -60,11 +61,65 @@ public class Parser {
         eat(TokenType.RIGHT_PARAN);
 
         eat(TokenType.CURLY_LEFT_PARAN);
-        // TODO: 12.02.2018 Function statements
-        List<Node> functionStatements = new ArrayList<>();
+        List<Node> functionStatements = parseFunctionStatements();
         eat(TokenType.CURLY_RIGHT_PARAN);
 
-        return new FunctionNode(functionName, functionStatements, parameters);
+        FunctionNode functionNode = new FunctionNode(functionName, functionStatements, parameters);
+
+        // Register the global function
+        FunctionRegistry.register(functionNode);
+
+        return functionNode;
+    }
+
+    private List<Node> parseFunctionStatements() {
+        List<Node> results = new ArrayList<>();
+
+        results.add(statement());
+
+        // Add statements until the closing curly bracket from the function end is found
+        while (currentToken.getTokenType() != TokenType.CURLY_RIGHT_PARAN) {
+            results.add(statement());
+        }
+
+        return results;
+    }
+
+    private Node parseFunctionCall() {
+        // Get the function name from the CALL token (the name is there as the value)
+        String name = currentToken.getValue();
+
+        eat(TokenType.CALL);
+
+        eat(TokenType.LEFT_PARAN);
+
+        List<Node> parameter = new ArrayList<>();
+        while (currentToken.getTokenType() != TokenType.RIGHT_PARAN) {
+            parameter.add(factor());
+
+            // Parameters should be separated with a comma
+            if (currentToken.getTokenType() == TokenType.COMMA) {
+                eat(TokenType.COMMA);
+            }
+        }
+
+        eat(TokenType.RIGHT_PARAN);
+
+        return new FunctionCallNode(name, FunctionRegistry.lookup(name), parameter);
+    }
+
+    private Node statement() {
+        Node node;
+
+        if (currentToken.getTokenType() == TokenType.FUNC) {
+            node = parseFunction();
+        } else if (currentToken.getTokenType() == TokenType.CALL) {
+            node = parseFunctionCall();
+        } else {
+            node = new NoOpNode();
+        }
+
+        return node;
     }
 
     private Node factor() {
@@ -90,8 +145,7 @@ public class Parser {
             eat(TokenType.RIGHT_PARAN);
             return node;
         } else if (tmp.getTokenType() == TokenType.CALL) {
-            // TODO: 13.02.2018 Function call
-            return null;
+            return parseFunctionCall();
         } else {
             // TODO: 13.02.2018 Variable usage
             return null;
