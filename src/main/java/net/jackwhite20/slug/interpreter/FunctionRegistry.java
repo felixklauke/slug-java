@@ -23,11 +23,15 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FunctionRegistry {
+public final class FunctionRegistry {
 
     private static Logger logger = LoggerFactory.getLogger(FunctionRegistry.class);
 
     private static Map<String, FunctionNode> functions = new HashMap<>();
+
+    FunctionRegistry() {
+        throw new AssertionError("no instance allowed");
+    }
 
     public static void register(FunctionNode functionNode) {
         functions.put(functionNode.getName(), functionNode);

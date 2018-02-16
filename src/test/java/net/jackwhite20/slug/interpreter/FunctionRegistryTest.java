@@ -40,6 +40,11 @@ public class FunctionRegistryTest {
         FunctionRegistry.register(FUNCTION_NODE);
     }
 
+    @Test(expected = AssertionError.class)
+    public void testConstructor() {
+        new FunctionRegistry();
+    }
+
     @Test
     public void testLookup() throws Exception {
         FunctionNode functionNode = FunctionRegistry.lookup(FUNCTION_NODE.getName());
