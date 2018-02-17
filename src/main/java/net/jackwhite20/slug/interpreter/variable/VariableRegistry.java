@@ -28,15 +28,21 @@ public abstract class VariableRegistry {
 
     private static Logger logger = LoggerFactory.getLogger(FunctionRegistry.class);
 
+    private String name;
+
     private Map<String, Object> variables = new HashMap<>();
 
     private Map<String, TokenType> variableTypes = new HashMap<>();
 
-    public void register(String name, TokenType variableType, Object value) {
-        variables.put(name, value);
-        variableTypes.put(name, variableType);
+    public VariableRegistry(String name) {
+        this.name = name;
+    }
 
-        logger.debug("Registered variable {} ({})", name, variableType);
+    public void register(String variableName, TokenType variableType, Object value) {
+        variables.put(variableName, value);
+        variableTypes.put(variableName, variableType);
+
+        logger.debug("Registered variable {} ({})", variableName, variableType);
     }
 
     public <T> T lookup(String name) {
@@ -44,9 +50,13 @@ public abstract class VariableRegistry {
         return (T) variables.get(name);
     }
 
-    public boolean checkType(String name, TokenType expectedVarType) {
-        TokenType tokenType = variableTypes.get(name);
+    public boolean checkType(String variableName, TokenType expectedVarType) {
+        TokenType tokenType = variableTypes.get(variableName);
 
         return tokenType != null && tokenType == expectedVarType;
+    }
+
+    public String getName() {
+        return name;
     }
 }
