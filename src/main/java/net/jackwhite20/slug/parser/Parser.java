@@ -108,6 +108,12 @@ public class Parser {
         return new FunctionCallNode(name, FunctionRegistry.lookup(name), parameter);
     }
 
+    private Node parseVariableUsage() {
+        Token variableNameToken = currentToken;
+        eat(TokenType.NAME);
+        return new VariableUsageNode(variableNameToken);
+    }
+
     private Node statement() {
         Node node;
 
@@ -147,8 +153,7 @@ public class Parser {
         } else if (tmp.getTokenType() == TokenType.CALL) {
             return parseFunctionCall();
         } else {
-            // TODO: 13.02.2018 Variable usage
-            return null;
+            return parseVariableUsage();
         }
     }
 
