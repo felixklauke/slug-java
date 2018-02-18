@@ -16,18 +16,15 @@
 
 package net.jackwhite20.slug.parser;
 
-import net.jackwhite20.slug.ast.FunctionNode;
-import net.jackwhite20.slug.ast.MainNode;
-import net.jackwhite20.slug.ast.NoOpNode;
-import net.jackwhite20.slug.ast.Node;
+import net.jackwhite20.slug.ast.*;
 import net.jackwhite20.slug.lexer.Lexer;
+import net.jackwhite20.slug.lexer.TokenType;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author Philip 'JackWhite20' <silencephil@gmail.com>
@@ -38,7 +35,7 @@ public class TestParser {
 
     @Before
     public void setUp() {
-        Lexer lexer = new Lexer("func Main() { }");
+        Lexer lexer = new Lexer("func TestFunctionCall() { } func Main() { int a = 2 a = 10 + 10 * 5 / 10 + (-10 + 5) TestFunctionCall() }");
         parser = new Parser(lexer);
     }
 
@@ -52,18 +49,43 @@ public class TestParser {
 
         List<Node> functions = mainNode.getFunctions();
 
-        assertEquals(1, functions.size());
+        assertEquals(2, functions.size());
 
-        Node function = functions.get(0);
+        Node mainFunction = functions.get(1);
 
-        assertTrue(function instanceof FunctionNode);
+        assertTrue(mainFunction instanceof FunctionNode);
 
-        FunctionNode functionNode = (FunctionNode) function;
+        FunctionNode functionNode = (FunctionNode) mainFunction;
 
         assertEquals("Main", functionNode.getName());
-        assertEquals(1, functionNode.getChildren().size());
-        assertTrue(functionNode.getChildren().get(0) instanceof NoOpNode);
+        assertEquals(3, functionNode.getChildren().size());
         assertEquals(0, functionNode.getParameter().size());
+
+        assertTrue(functionNode.getChildren().get(0) instanceof VariableAssignNode);
+
+        VariableAssignNode variableAssignNode = (VariableAssignNode) functionNode.getChildren().get(0);
+        assertEquals("a", variableAssignNode.getVariableName());
+        assertTrue(variableAssignNode.getRight() instanceof NumberNode);
+        assertEquals(2, ((NumberNode) variableAssignNode.getRight()).getValue());
+
+
+        VariableAssignNode calculation = (VariableAssignNode) functionNode.getChildren().get(1);
+        assertEquals("a", calculation.getVariableName());
+        assertTrue(calculation.getRight() instanceof BinaryNode);
+        BinaryNode right = (BinaryNode) calculation.getRight();
+        assertTrue(right.getLeft() instanceof BinaryNode);
+        assertTrue(right.getOperator().getTokenType() == TokenType.PLUS);
+        assertTrue(right.getRight() instanceof BinaryNode);
+        // TODO: Test further?
+
+        FunctionCallNode functionCallNode = (FunctionCallNode) functionNode.getChildren().get(2);
+        assertEquals("TestFunctionCall", functionCallNode.getName());
+        assertEquals(0, functionCallNode.getParameter().size());
+        assertNotNull(functionCallNode.getFunctionNode());
+        assertEquals("TestFunctionCall", functionCallNode.getFunctionNode().getName());
+        assertEquals(0, functionCallNode.getFunctionNode().getParameter().size());
+        assertEquals(1, functionCallNode.getFunctionNode().getChildren().size());
+        assertTrue(functionCallNode.getFunctionNode().getChildren().get(0) instanceof NoOpNode);
     }
 
     @Test(expected = IllegalStateException.class)
