@@ -14,27 +14,20 @@
  * limitations under the License.
  */
 
-package net.jackwhite20.slug.lexer;
+package net.jackwhite20.slug.ast;
 
-/**
- * @author Philip 'JackWhite20' <silencephil@gmail.com>
- */
-public class Token {
+import org.junit.Test;
 
-    private TokenType tokenType;
+import static org.junit.Assert.assertEquals;
 
-    private String value;
+public class StringNodeTest {
 
-    public Token(TokenType tokenType, String value) {
-        this.tokenType = tokenType;
-        this.value = value;
-    }
+    private static final String VALUE = "My string";
 
-    public TokenType getTokenType() {
-        return tokenType;
-    }
+    @Test
+    public void testNumberNode() {
+        StringNode stringNode = new StringNode(VALUE);
 
-    public String getValue() {
-        return value;
+        assertEquals(VALUE, stringNode.getValue());
     }
 }

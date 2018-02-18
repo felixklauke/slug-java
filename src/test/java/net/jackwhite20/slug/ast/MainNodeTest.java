@@ -14,27 +14,26 @@
  * limitations under the License.
  */
 
-package net.jackwhite20.slug.lexer;
+package net.jackwhite20.slug.ast;
 
-/**
- * @author Philip 'JackWhite20' <silencephil@gmail.com>
- */
-public class Token {
+import org.junit.Test;
 
-    private TokenType tokenType;
+import java.util.Collections;
+import java.util.List;
 
-    private String value;
+import static org.junit.Assert.assertEquals;
 
-    public Token(TokenType tokenType, String value) {
-        this.tokenType = tokenType;
-        this.value = value;
-    }
+public class MainNodeTest {
 
-    public TokenType getTokenType() {
-        return tokenType;
-    }
+    private static final List<Node> FUNCTIONS = Collections.singletonList(
+            new FunctionNode("Add",
+                    Collections.singletonList(new NumberNode("45")),
+                    Collections.singletonList(new StringNode("hello"))));
 
-    public String getValue() {
-        return value;
+    @Test
+    public void testMainNode() {
+        MainNode mainNode = new MainNode(FUNCTIONS);
+
+        assertEquals(FUNCTIONS, mainNode.getFunctions());
     }
 }
