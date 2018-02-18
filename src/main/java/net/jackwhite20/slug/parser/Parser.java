@@ -108,6 +108,31 @@ public class Parser {
         return new FunctionCallNode(name, FunctionRegistry.lookup(name), parameter);
     }
 
+    private Node parseDeclareOrAndAssignStatement() {
+        TokenType varType = currentToken.getTokenType();
+        eat(varType);
+
+        String varName = currentToken.getValue();
+        eat(TokenType.NAME);
+
+        if (currentToken.getTokenType() != TokenType.ASSIGN) {
+            return new VariableDeclarationNode(varName, varType);
+        } else {
+            eat(TokenType.ASSIGN);
+            return new VariableAssignNode(varName, expression());
+        }
+    }
+
+    private Node parseVariableAssign() {
+        String varName = currentToken.getValue();
+        eat(TokenType.NAME);
+        eat(TokenType.ASSIGN);
+
+        Node right = expression();
+
+        return new VariableAssignNode(varName, right);
+    }
+
     private Node parseVariableUsage() {
         Token variableNameToken = currentToken;
         eat(TokenType.NAME);
@@ -119,6 +144,22 @@ public class Parser {
 
         if (currentToken.getTokenType() == TokenType.FUNC) {
             node = parseFunction();
+        } else if (currentToken.getTokenType() == TokenType.INTEGER ||
+                currentToken.getTokenType() == TokenType.STRING ||
+                currentToken.getTokenType() == TokenType.BOOL) {
+            // Here we need to difference between an assign and declare variable statement
+            // Example:
+            // int i
+            // or
+            // int i = 5
+            node = parseDeclareOrAndAssignStatement();
+        } else if (currentToken.getTokenType() == TokenType.NAME) {
+            // Here we have a variable assign on a previous declared variable
+            // Example:
+            // i = 150
+            node = parseVariableAssign();
+        } else if (currentToken.getTokenType() == TokenType.CALL) {
+            node = parseFunctionCall();
         } else if (currentToken.getTokenType() == TokenType.CALL) {
             node = parseFunctionCall();
         } else {
