@@ -61,13 +61,12 @@ public class TestParser {
         assertEquals(5, functionNode.getChildren().size());
         assertEquals(0, functionNode.getParameter().size());
 
-        assertTrue(functionNode.getChildren().get(0) instanceof VariableAssignNode);
+        assertTrue(functionNode.getChildren().get(0) instanceof VariableDeclarationAssignNode);
 
-        VariableAssignNode variableAssignNode = (VariableAssignNode) functionNode.getChildren().get(0);
-        assertEquals("a", variableAssignNode.getVariableName());
-        assertTrue(variableAssignNode.getRight() instanceof NumberNode);
-        assertEquals(2, ((NumberNode) variableAssignNode.getRight()).getValue());
-
+        VariableDeclarationAssignNode variableDeclarationAssignNode = (VariableDeclarationAssignNode) functionNode.getChildren().get(0);
+        assertEquals("a", variableDeclarationAssignNode.getVariableName());
+        assertTrue(variableDeclarationAssignNode.getRight() instanceof NumberNode);
+        assertEquals(2, ((NumberNode) variableDeclarationAssignNode.getRight()).getValue());
 
         VariableAssignNode calculation = (VariableAssignNode) functionNode.getChildren().get(1);
         assertEquals("a", calculation.getVariableName());
@@ -87,7 +86,7 @@ public class TestParser {
         assertEquals(1, functionCallNode.getFunctionNode().getChildren().size());
         assertTrue(functionCallNode.getFunctionNode().getChildren().get(0) instanceof NoOpNode);
 
-        VariableAssignNode bool = (VariableAssignNode) functionNode.getChildren().get(3);
+        VariableDeclarationAssignNode bool = (VariableDeclarationAssignNode) functionNode.getChildren().get(3);
         assertEquals("b", bool.getVariableName());
         assertTrue(bool.getRight() instanceof BoolNode);
         assertEquals(true, ((BoolNode) bool.getRight()).getValue());
