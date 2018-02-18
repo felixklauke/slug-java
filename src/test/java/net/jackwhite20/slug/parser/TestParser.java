@@ -35,7 +35,7 @@ public class TestParser {
 
     @Before
     public void setUp() {
-        Lexer lexer = new Lexer("func TestFunctionCall() { } func Main() { int a = 2 a = 10 + 10 * 5 / 10 + (-10 + 5) TestFunctionCall() }");
+        Lexer lexer = new Lexer("func TestFunctionCall() { } func Main() { int a = 2 a = 10 + 10 * 5 / 10 + (-10 + 5) TestFunctionCall() bool b = true b = false}");
         parser = new Parser(lexer);
     }
 
@@ -58,7 +58,7 @@ public class TestParser {
         FunctionNode functionNode = (FunctionNode) mainFunction;
 
         assertEquals("Main", functionNode.getName());
-        assertEquals(3, functionNode.getChildren().size());
+        assertEquals(5, functionNode.getChildren().size());
         assertEquals(0, functionNode.getParameter().size());
 
         assertTrue(functionNode.getChildren().get(0) instanceof VariableAssignNode);
@@ -86,6 +86,16 @@ public class TestParser {
         assertEquals(0, functionCallNode.getFunctionNode().getParameter().size());
         assertEquals(1, functionCallNode.getFunctionNode().getChildren().size());
         assertTrue(functionCallNode.getFunctionNode().getChildren().get(0) instanceof NoOpNode);
+
+        VariableAssignNode bool = (VariableAssignNode) functionNode.getChildren().get(3);
+        assertEquals("b", bool.getVariableName());
+        assertTrue(bool.getRight() instanceof BoolNode);
+        assertEquals(true, ((BoolNode) bool.getRight()).getValue());
+
+        VariableAssignNode boolSecond = (VariableAssignNode) functionNode.getChildren().get(4);
+        assertEquals("b", boolSecond.getVariableName());
+        assertTrue(boolSecond.getRight() instanceof BoolNode);
+        assertEquals(false, ((BoolNode) boolSecond.getRight()).getValue());
     }
 
     @Test(expected = IllegalStateException.class)
