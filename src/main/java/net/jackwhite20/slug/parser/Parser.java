@@ -119,7 +119,7 @@ public class Parser {
             return new VariableDeclarationNode(varName, varType);
         } else {
             eat(TokenType.ASSIGN);
-            return new VariableAssignNode(varName, expression());
+            return new VariableDeclarationAssignNode(varName, varType, expression());
         }
     }
 

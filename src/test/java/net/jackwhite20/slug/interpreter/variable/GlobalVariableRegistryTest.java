@@ -29,17 +29,19 @@ public class GlobalVariableRegistryTest {
 
     private static final Object VAR_VALUE = 246;
 
+    private static final Object VAR_VALUE_NEW = 128;
+
     private static final GlobalVariableRegistry globalVariableRegistry = new GlobalVariableRegistry();
 
     @Test
-    public void testRegister() throws Exception {
+    public void testRegister() {
         globalVariableRegistry.register(VAR_NAME, VAR_TYPE, VAR_VALUE);
 
         assertNotNull(globalVariableRegistry.lookup(VAR_NAME));
     }
 
     @Test
-    public void testLookup() throws Exception {
+    public void testLookup() {
         Object varValue = globalVariableRegistry.lookup(VAR_NAME);
 
         assertNotNull(varValue);
@@ -47,7 +49,17 @@ public class GlobalVariableRegistryTest {
     }
 
     @Test
-    public void testCheckType() throws Exception {
+    public void testUpdate() {
+        globalVariableRegistry.update(VAR_NAME, VAR_VALUE_NEW);
+
+        Object varValue = globalVariableRegistry.lookup(VAR_NAME);
+
+        assertNotNull(varValue);
+        assertEquals(VAR_VALUE_NEW, varValue);
+    }
+
+    @Test
+    public void testCheckType() {
         assertTrue(globalVariableRegistry.checkType(VAR_NAME, VAR_TYPE));
     }
 }
