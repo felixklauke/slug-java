@@ -16,7 +16,6 @@
 
 package net.jackwhite20.slug.interpreter.variable;
 
-import net.jackwhite20.slug.interpreter.FunctionRegistry;
 import net.jackwhite20.slug.lexer.TokenType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +25,7 @@ import java.util.Map;
 
 public abstract class VariableRegistry {
 
-    private static Logger logger = LoggerFactory.getLogger(FunctionRegistry.class);
+    private static Logger logger = LoggerFactory.getLogger(VariableRegistry.class);
 
     private String name;
 

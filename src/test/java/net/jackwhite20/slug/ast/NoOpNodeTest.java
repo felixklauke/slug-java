@@ -14,27 +14,14 @@
  * limitations under the License.
  */
 
-package net.jackwhite20.slug.lexer;
+package net.jackwhite20.slug.ast;
 
-/**
- * @author Philip 'JackWhite20' <silencephil@gmail.com>
- */
-public class Token {
+import org.junit.Test;
 
-    private TokenType tokenType;
+public class NoOpNodeTest {
 
-    private String value;
-
-    public Token(TokenType tokenType, String value) {
-        this.tokenType = tokenType;
-        this.value = value;
-    }
-
-    public TokenType getTokenType() {
-        return tokenType;
-    }
-
-    public String getValue() {
-        return value;
+    @Test
+    public void testNoOpNode() {
+        new NoOpNode();
     }
 }

@@ -14,27 +14,25 @@
  * limitations under the License.
  */
 
-package net.jackwhite20.slug.lexer;
+package net.jackwhite20.slug.ast;
 
-/**
- * @author Philip 'JackWhite20' <silencephil@gmail.com>
- */
-public class Token {
+import net.jackwhite20.slug.lexer.Token;
+import net.jackwhite20.slug.lexer.TokenType;
+import org.junit.Test;
 
-    private TokenType tokenType;
+import static org.junit.Assert.assertEquals;
 
-    private String value;
+public class UnaryNodeTest {
 
-    public Token(TokenType tokenType, String value) {
-        this.tokenType = tokenType;
-        this.value = value;
-    }
+    private static final Token OPERATOR = new Token(TokenType.PLUS, "+");
 
-    public TokenType getTokenType() {
-        return tokenType;
-    }
+    private static final Node EXPRESSION = new NumberNode("35");
 
-    public String getValue() {
-        return value;
+    @Test
+    public void testUnaryNode() {
+        UnaryNode unaryNode = new UnaryNode(OPERATOR, EXPRESSION);
+
+        assertEquals(OPERATOR, unaryNode.getOperator());
+        assertEquals(EXPRESSION, unaryNode.getExpression());
     }
 }
