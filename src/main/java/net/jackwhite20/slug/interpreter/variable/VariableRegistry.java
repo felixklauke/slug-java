@@ -37,23 +37,25 @@ public abstract class VariableRegistry {
         this.name = name;
     }
 
-    void register(String variableName, TokenType variableType, Object value) {
+    public void register(String variableName, TokenType variableType, Object value) {
         variables.put(variableName, value);
         variableTypes.put(variableName, variableType);
 
         logger.debug("Registered variable {} ({})", variableName, variableType);
     }
 
-    void update(String variableName, Object newValue) {
+    public void update(String variableName, Object newValue) {
         variables.put(variableName, newValue);
+
+        logger.debug("Updated variable {} with the new value {}", variableName, newValue);
     }
 
-    <T> T lookup(String name) {
+    public <T> T lookup(String name) {
         //noinspection unchecked
         return (T) variables.get(name);
     }
 
-    boolean checkType(String variableName, TokenType expectedVarType) {
+    public boolean checkType(String variableName, TokenType expectedVarType) {
         TokenType tokenType = variableTypes.get(variableName);
 
         return tokenType != null && tokenType == expectedVarType;
