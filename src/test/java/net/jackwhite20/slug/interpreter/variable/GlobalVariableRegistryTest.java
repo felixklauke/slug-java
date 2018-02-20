@@ -62,4 +62,9 @@ public class GlobalVariableRegistryTest {
     public void testCheckType() {
         assertTrue(globalVariableRegistry.checkType(VAR_NAME, VAR_TYPE));
     }
+
+    @Test
+    public void testCheckTypeNonExistingVariable() {
+        assertFalse(globalVariableRegistry.checkType("random", VAR_TYPE));
+    }
 }
