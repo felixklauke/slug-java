@@ -14,42 +14,24 @@
  * limitations under the License.
  */
 
-package net.jackwhite20.slug.lexer;
+package net.jackwhite20.slug.ast;
 
-/**
- * @author Philip 'JackWhite20' <silencephil@gmail.com>
- */
-public enum TokenType {
+public class VariableAssignNode extends Node {
 
-    CLASS,
-    FUNC,
-    CURLY_LEFT_PARAN,
-    CURLY_RIGHT_PARAN,
-    LEFT_PARAN,
-    RIGHT_PARAN,
-    SEMICOLON,
-    COMMA,
-    NAME,
-    CALL,
-    RETURN,
-    BOOL,
-    INTEGER,
-    STRING,
-    IF,
-    ELSE,
-    FOR,
-    WHILE,
-    PLUS,
-    MINUS,
-    MULTIPLY,
-    DIVIDE,
-    ASSIGN,
-    EQUAL,
-    NOT_EQUAL,
-    GREATER,
-    LESS,
-    GREATER_EQUAL,
-    LESS_EQUAL,
-    NEW,
-    NONE
+    private String variableName;
+
+    private Node right;
+
+    public VariableAssignNode(String variableName, Node right) {
+        this.variableName = variableName;
+        this.right = right;
+    }
+
+    public String getVariableName() {
+        return variableName;
+    }
+
+    public Node getRight() {
+        return right;
+    }
 }

@@ -14,42 +14,20 @@
  * limitations under the License.
  */
 
-package net.jackwhite20.slug.lexer;
+package net.jackwhite20.slug.ast;
 
-/**
- * @author Philip 'JackWhite20' <silencephil@gmail.com>
- */
-public enum TokenType {
+import org.junit.Test;
 
-    CLASS,
-    FUNC,
-    CURLY_LEFT_PARAN,
-    CURLY_RIGHT_PARAN,
-    LEFT_PARAN,
-    RIGHT_PARAN,
-    SEMICOLON,
-    COMMA,
-    NAME,
-    CALL,
-    RETURN,
-    BOOL,
-    INTEGER,
-    STRING,
-    IF,
-    ELSE,
-    FOR,
-    WHILE,
-    PLUS,
-    MINUS,
-    MULTIPLY,
-    DIVIDE,
-    ASSIGN,
-    EQUAL,
-    NOT_EQUAL,
-    GREATER,
-    LESS,
-    GREATER_EQUAL,
-    LESS_EQUAL,
-    NEW,
-    NONE
+import static org.junit.Assert.assertEquals;
+
+public class StringNodeTest {
+
+    private static final String VALUE = "My string";
+
+    @Test
+    public void testNumberNode() {
+        StringNode stringNode = new StringNode(VALUE);
+
+        assertEquals(VALUE, stringNode.getValue());
+    }
 }

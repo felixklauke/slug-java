@@ -13,11 +13,12 @@ Feature and bug-fix requests are welcome.
 - [ ] Basic structure
 - [ ] Functions
 - [ ] Variables (int, string, bool)
+- [ ] Scopes
 - [ ] Boolean expression (myInt == otherInt, "test" == "test", 4 > 3)
 - [ ] Conditionals (if, for, while)
 - [ ] Internal functions (WriteLine, ReadLine, Random, etc.)
 - [ ] Function calls
-- [ ] Classes (new instance creation, member variables, etc.)
+- [ ] Classes (new instance creation, member variables, auto member variable constructor)
 - [ ] Inline string variables (string s = "Hello $myOtherString")
 - [ ] Inline string expression evaluation (string s = "Number is ${2 + 9}")
 

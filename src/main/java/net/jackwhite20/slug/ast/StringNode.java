@@ -14,42 +14,20 @@
  * limitations under the License.
  */
 
-package net.jackwhite20.slug.lexer;
+package net.jackwhite20.slug.ast;
 
 /**
  * @author Philip 'JackWhite20' <silencephil@gmail.com>
  */
-public enum TokenType {
+public class StringNode extends Node {
 
-    CLASS,
-    FUNC,
-    CURLY_LEFT_PARAN,
-    CURLY_RIGHT_PARAN,
-    LEFT_PARAN,
-    RIGHT_PARAN,
-    SEMICOLON,
-    COMMA,
-    NAME,
-    CALL,
-    RETURN,
-    BOOL,
-    INTEGER,
-    STRING,
-    IF,
-    ELSE,
-    FOR,
-    WHILE,
-    PLUS,
-    MINUS,
-    MULTIPLY,
-    DIVIDE,
-    ASSIGN,
-    EQUAL,
-    NOT_EQUAL,
-    GREATER,
-    LESS,
-    GREATER_EQUAL,
-    LESS_EQUAL,
-    NEW,
-    NONE
+    private String value;
+
+    public StringNode(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
 }

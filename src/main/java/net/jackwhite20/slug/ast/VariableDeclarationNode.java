@@ -14,42 +14,26 @@
  * limitations under the License.
  */
 
-package net.jackwhite20.slug.lexer;
+package net.jackwhite20.slug.ast;
 
-/**
- * @author Philip 'JackWhite20' <silencephil@gmail.com>
- */
-public enum TokenType {
+import net.jackwhite20.slug.lexer.TokenType;
 
-    CLASS,
-    FUNC,
-    CURLY_LEFT_PARAN,
-    CURLY_RIGHT_PARAN,
-    LEFT_PARAN,
-    RIGHT_PARAN,
-    SEMICOLON,
-    COMMA,
-    NAME,
-    CALL,
-    RETURN,
-    BOOL,
-    INTEGER,
-    STRING,
-    IF,
-    ELSE,
-    FOR,
-    WHILE,
-    PLUS,
-    MINUS,
-    MULTIPLY,
-    DIVIDE,
-    ASSIGN,
-    EQUAL,
-    NOT_EQUAL,
-    GREATER,
-    LESS,
-    GREATER_EQUAL,
-    LESS_EQUAL,
-    NEW,
-    NONE
+public class VariableDeclarationNode extends Node {
+
+    private String variableName;
+
+    private TokenType variableType;
+
+    public VariableDeclarationNode(String variableName, TokenType variableType) {
+        this.variableName = variableName;
+        this.variableType = variableType;
+    }
+
+    public String getVariableName() {
+        return variableName;
+    }
+
+    public TokenType getVariableType() {
+        return variableType;
+    }
 }

@@ -14,42 +14,23 @@
  * limitations under the License.
  */
 
-package net.jackwhite20.slug.lexer;
+package net.jackwhite20.slug.ast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Philip 'JackWhite20' <silencephil@gmail.com>
  */
-public enum TokenType {
+public class MainNode extends Node {
 
-    CLASS,
-    FUNC,
-    CURLY_LEFT_PARAN,
-    CURLY_RIGHT_PARAN,
-    LEFT_PARAN,
-    RIGHT_PARAN,
-    SEMICOLON,
-    COMMA,
-    NAME,
-    CALL,
-    RETURN,
-    BOOL,
-    INTEGER,
-    STRING,
-    IF,
-    ELSE,
-    FOR,
-    WHILE,
-    PLUS,
-    MINUS,
-    MULTIPLY,
-    DIVIDE,
-    ASSIGN,
-    EQUAL,
-    NOT_EQUAL,
-    GREATER,
-    LESS,
-    GREATER_EQUAL,
-    LESS_EQUAL,
-    NEW,
-    NONE
+    private List<Node> functions = new ArrayList<>();
+
+    public MainNode(List<Node> functions) {
+        this.functions = functions;
+    }
+
+    public List<Node> getFunctions() {
+        return functions;
+    }
 }

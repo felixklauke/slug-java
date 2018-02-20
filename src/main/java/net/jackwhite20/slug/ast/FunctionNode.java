@@ -14,42 +14,36 @@
  * limitations under the License.
  */
 
-package net.jackwhite20.slug.lexer;
+package net.jackwhite20.slug.ast;
+
+import java.util.List;
 
 /**
  * @author Philip 'JackWhite20' <silencephil@gmail.com>
  */
-public enum TokenType {
+public class FunctionNode extends Node {
 
-    CLASS,
-    FUNC,
-    CURLY_LEFT_PARAN,
-    CURLY_RIGHT_PARAN,
-    LEFT_PARAN,
-    RIGHT_PARAN,
-    SEMICOLON,
-    COMMA,
-    NAME,
-    CALL,
-    RETURN,
-    BOOL,
-    INTEGER,
-    STRING,
-    IF,
-    ELSE,
-    FOR,
-    WHILE,
-    PLUS,
-    MINUS,
-    MULTIPLY,
-    DIVIDE,
-    ASSIGN,
-    EQUAL,
-    NOT_EQUAL,
-    GREATER,
-    LESS,
-    GREATER_EQUAL,
-    LESS_EQUAL,
-    NEW,
-    NONE
+    private String name;
+
+    private List<Node> children;
+
+    private List<Node> parameter;
+
+    public FunctionNode(String name, List<Node> children, List<Node> parameter) {
+        this.name = name;
+        this.children = children;
+        this.parameter = parameter;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<Node> getChildren() {
+        return children;
+    }
+
+    public List<Node> getParameter() {
+        return parameter;
+    }
 }

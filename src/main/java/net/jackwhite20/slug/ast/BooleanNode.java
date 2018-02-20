@@ -14,42 +14,36 @@
  * limitations under the License.
  */
 
-package net.jackwhite20.slug.lexer;
+package net.jackwhite20.slug.ast;
+
+import net.jackwhite20.slug.lexer.TokenType;
 
 /**
  * @author Philip 'JackWhite20' <silencephil@gmail.com>
  */
-public enum TokenType {
+public class BooleanNode extends Node {
 
-    CLASS,
-    FUNC,
-    CURLY_LEFT_PARAN,
-    CURLY_RIGHT_PARAN,
-    LEFT_PARAN,
-    RIGHT_PARAN,
-    SEMICOLON,
-    COMMA,
-    NAME,
-    CALL,
-    RETURN,
-    BOOL,
-    INTEGER,
-    STRING,
-    IF,
-    ELSE,
-    FOR,
-    WHILE,
-    PLUS,
-    MINUS,
-    MULTIPLY,
-    DIVIDE,
-    ASSIGN,
-    EQUAL,
-    NOT_EQUAL,
-    GREATER,
-    LESS,
-    GREATER_EQUAL,
-    LESS_EQUAL,
-    NEW,
-    NONE
+    private Node left;
+
+    private TokenType operator;
+
+    private Node right;
+
+    public BooleanNode(Node left, TokenType operator, Node right) {
+        this.left = left;
+        this.operator = operator;
+        this.right = right;
+    }
+
+    public Node getLeft() {
+        return left;
+    }
+
+    public TokenType getOperator() {
+        return operator;
+    }
+
+    public Node getRight() {
+        return right;
+    }
 }
