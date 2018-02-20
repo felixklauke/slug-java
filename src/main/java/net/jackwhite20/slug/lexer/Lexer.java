@@ -86,10 +86,10 @@ public class Lexer {
             if (currentChar == '#') {
                 advance();
             } else {
-                throw new IllegalStateException("missing / to close comment");
+                throw new IllegalStateException("missing # to close comment");
             }
         } else {
-            throw new IllegalStateException("comments should end with //");
+            throw new IllegalStateException("comments should end with ##");
         }
     }
 
