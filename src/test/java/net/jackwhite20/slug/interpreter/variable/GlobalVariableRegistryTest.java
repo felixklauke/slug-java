@@ -31,6 +31,8 @@ public class GlobalVariableRegistryTest {
 
     private static final Object VAR_VALUE_NEW = 128;
 
+    private static final String GLOBAL_VARIABLE_REGISTRY_NAME = "Global";
+
     private static final GlobalVariableRegistry globalVariableRegistry = new GlobalVariableRegistry();
 
     @Test
@@ -66,5 +68,11 @@ public class GlobalVariableRegistryTest {
     @Test
     public void testCheckTypeNonExistingVariable() {
         assertFalse(globalVariableRegistry.checkType("random", VAR_TYPE));
+    }
+
+    @Test
+    public void testGetName() {
+        assertNotNull(globalVariableRegistry.getName());
+        assertEquals(GLOBAL_VARIABLE_REGISTRY_NAME, globalVariableRegistry.getName());
     }
 }
