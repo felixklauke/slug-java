@@ -10,9 +10,9 @@ Feature and bug-fix requests are welcome.
 
 # Features
 
-- [ ] Basic structure
-- [ ] Functions
-- [ ] Variables (int, string, bool)
+- [X] Basic structure
+- [X] Functions
+- [X] Variables (int, string, bool)
 - [ ] Scopes
 - [ ] Boolean expression (myInt == otherInt, "test" == "test", 4 > 3)
 - [ ] Conditionals (if, for, while)
