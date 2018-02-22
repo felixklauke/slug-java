@@ -16,13 +16,17 @@
 
 package net.jackwhite20.slug.ast;
 
-public class VariableAssignNode extends Node {
+/**
+ * @author Felix Klauke <info@felix-klauke.de>
+ */
+public class VariableAssignNode extends ScopeAwareNode {
 
     private String variableName;
 
     private Node right;
 
-    public VariableAssignNode(String variableName, Node right) {
+    public VariableAssignNode(int currentScopeLevel, String variableName, Node right) {
+        super(currentScopeLevel);
         this.variableName = variableName;
         this.right = right;
     }

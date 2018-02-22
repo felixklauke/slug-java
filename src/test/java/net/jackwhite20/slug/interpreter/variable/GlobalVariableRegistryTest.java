@@ -37,14 +37,14 @@ public class GlobalVariableRegistryTest {
 
     @Test
     public void testRegister() {
-        globalVariableRegistry.register(VAR_NAME, VAR_TYPE, VAR_VALUE);
+        globalVariableRegistry.register(0, VAR_NAME, VAR_TYPE, VAR_VALUE);
 
-        assertNotNull(globalVariableRegistry.lookup(VAR_NAME));
+        assertNotNull(globalVariableRegistry.lookup(0, VAR_NAME));
     }
 
     @Test
     public void testLookup() {
-        Object varValue = globalVariableRegistry.lookup(VAR_NAME);
+        Object varValue = globalVariableRegistry.lookup(0, VAR_NAME);
 
         assertNotNull(varValue);
         assertEquals(VAR_VALUE, varValue);
@@ -52,9 +52,9 @@ public class GlobalVariableRegistryTest {
 
     @Test
     public void testUpdate() {
-        globalVariableRegistry.update(VAR_NAME, VAR_VALUE_NEW);
+        globalVariableRegistry.update(0, VAR_NAME, VAR_VALUE_NEW);
 
-        Object varValue = globalVariableRegistry.lookup(VAR_NAME);
+        Object varValue = globalVariableRegistry.lookup(0, VAR_NAME);
 
         assertNotNull(varValue);
         assertEquals(VAR_VALUE_NEW, varValue);

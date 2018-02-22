@@ -51,9 +51,9 @@ public class InterpreterTest {
         Interpreter interpreter = new Interpreter(parser);
         interpreter.interpret();
 
-        assertEquals(42, (int) interpreter.getGlobalVariableRegistry().lookup("a"));
-        assertEquals("hello", interpreter.getGlobalVariableRegistry().lookup("b"));
-        assertEquals(true, interpreter.getGlobalVariableRegistry().lookup("c"));
+        assertEquals(42, (int) interpreter.getGlobalVariableRegistry().lookup(1, "a"));
+        assertEquals("hello", interpreter.getGlobalVariableRegistry().lookup(1, "b"));
+        assertEquals(true, interpreter.getGlobalVariableRegistry().lookup(1, "c"));
     }
 
     @Test
@@ -64,8 +64,8 @@ public class InterpreterTest {
         Interpreter interpreter = new Interpreter(parser);
         interpreter.interpret();
 
-        assertEquals(35, (int) interpreter.getGlobalVariableRegistry().lookup("a"));
-        assertEquals("changed", interpreter.getGlobalVariableRegistry().lookup("b"));
-        assertEquals(false, interpreter.getGlobalVariableRegistry().lookup("c"));
+        assertEquals(35, (int) interpreter.getGlobalVariableRegistry().lookup(1, "a"));
+        assertEquals("changed", interpreter.getGlobalVariableRegistry().lookup(1, "b"));
+        assertEquals(false, interpreter.getGlobalVariableRegistry().lookup(1, "c"));
     }
 }

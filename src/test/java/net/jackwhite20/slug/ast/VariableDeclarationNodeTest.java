@@ -29,7 +29,7 @@ public class VariableDeclarationNodeTest {
 
     @Test
     public void testVariableDeclarationNode() {
-        VariableDeclarationNode variableDeclarationNode = new VariableDeclarationNode(VARIABLE_NAME, VARIABLE_TYPE);
+        VariableDeclarationNode variableDeclarationNode = new VariableDeclarationNode(0, VARIABLE_NAME, VARIABLE_TYPE);
 
         assertEquals(VARIABLE_NAME, variableDeclarationNode.getVariableName());
         assertEquals(VARIABLE_TYPE, variableDeclarationNode.getVariableType());

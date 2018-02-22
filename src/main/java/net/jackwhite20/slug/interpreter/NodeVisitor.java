@@ -28,6 +28,8 @@ class NodeVisitor {
 
     private GlobalVariableRegistry globalVariableRegistry = new GlobalVariableRegistry();
 
+    private int currentScopeLevel = 0;
+
     /**
      * Visits the NumberNode and returns it's value.
      *
@@ -62,26 +64,34 @@ class NodeVisitor {
     }
 
     private void visitFunction(FunctionNode functionNode) {
+        currentScopeLevel++;
+
         for (Node node : functionNode.getChildren()) {
             visit(node);
         }
+
+        currentScopeLevel--;
     }
 
     private void visitVariableDeclarationAssign(VariableDeclarationAssignNode node) {
         // Get the value from the right expression
         Object value = visit(node.getRight());
 
-        globalVariableRegistry.register(node.getVariableName(), node.getVariableType(), value);
+        globalVariableRegistry.register(currentScopeLevel, node.getVariableName(), node.getVariableType(), value);
     }
 
     private void visitVariableAssign(VariableAssignNode node) {
         // Get the value from the right expression
         Object value = visit(node.getRight());
 
-        globalVariableRegistry.update(node.getVariableName(), value);
+        globalVariableRegistry.update(currentScopeLevel, node.getVariableName(), value);
     }
 
     Object visit(Node node) {
+        if (node instanceof ScopeAwareNode && ((ScopeAwareNode) node).getCurrentScopeLevel() < currentScopeLevel) {
+            throw new IllegalStateException("Illegal scope access.");
+        }
+
         if (node instanceof MainNode) {
             visitMain(((MainNode) node));
             return null;

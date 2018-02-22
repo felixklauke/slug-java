@@ -18,13 +18,17 @@ package net.jackwhite20.slug.ast;
 
 import net.jackwhite20.slug.lexer.TokenType;
 
-public class VariableDeclarationNode extends Node {
+/**
+ * @author Felix Klauke <info@felix-klauke.de>
+ */
+public class VariableDeclarationNode extends ScopeAwareNode {
 
     private String variableName;
 
     private TokenType variableType;
 
-    public VariableDeclarationNode(String variableName, TokenType variableType) {
+    public VariableDeclarationNode(int currentScopeLevel, String variableName, TokenType variableType) {
+        super(currentScopeLevel);
         this.variableName = variableName;
         this.variableType = variableType;
     }

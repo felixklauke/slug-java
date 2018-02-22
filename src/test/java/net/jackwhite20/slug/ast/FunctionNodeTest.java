@@ -30,7 +30,7 @@ public class FunctionNodeTest {
 
     private static final String NAME = "MyOtherFunction";
 
-    private static final List<Node> CHILDREN = Collections.singletonList(new VariableUsageNode(new Token(TokenType.NAME, "a")));
+    private static final List<Node> CHILDREN = Collections.singletonList(new VariableUsageNode(0, new Token(TokenType.NAME, "a")));
 
     private static final List<Node> PARAMETERS = Arrays.asList(new NumberNode("65"), new BoolNode("true"));
 

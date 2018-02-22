@@ -23,6 +23,9 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Felix Klauke <info@felix-klauke.de>
+ */
 public abstract class VariableRegistry {
 
     private static Logger logger = LoggerFactory.getLogger(VariableRegistry.class);
@@ -33,26 +36,45 @@ public abstract class VariableRegistry {
 
     private Map<String, TokenType> variableTypes = new HashMap<>();
 
+    private Map<String, Integer> variableScopeLevels = new HashMap<>();
+
     public VariableRegistry(String name) {
         this.name = name;
     }
 
-    public void register(String variableName, TokenType variableType, Object value) {
+    public void register(int currentScopeLevel, String variableName, TokenType variableType, Object value) {
         variables.put(variableName, value);
         variableTypes.put(variableName, variableType);
+        variableScopeLevels.put(variableName, currentScopeLevel);
 
         logger.debug("Registered variable {} ({})", variableName, variableType);
     }
 
-    public void update(String variableName, Object newValue) {
+    public void update(int currentScopeLevel, String variableName, Object newValue) {
+        int scopeLevel = variableScopeLevels.get(variableName);
+
+        if (currentScopeLevel < scopeLevel) {
+            throw new IllegalStateException("Illegal variable access.");
+        }
+
         variables.put(variableName, newValue);
 
         logger.debug("Updated variable {} with the new value {}", variableName, newValue);
     }
 
-    public <T> T lookup(String name) {
+    public <T> T lookup(int currentScopeLevel, String name) {
         //noinspection unchecked
-        return (T) variables.get(name);
+        T instance = (T) variables.get(name);
+
+        if (instance != null) {
+            int scopeLevel = variableScopeLevels.get(name);
+
+            if (currentScopeLevel < scopeLevel) {
+                throw new IllegalStateException("Illegal variable access.");
+            }
+        }
+
+        return instance;
     }
 
     public boolean checkType(String variableName, TokenType expectedVarType) {

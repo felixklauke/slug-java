@@ -18,11 +18,15 @@ package net.jackwhite20.slug.ast;
 
 import net.jackwhite20.slug.lexer.Token;
 
-public class VariableUsageNode extends Node {
+/**
+ * @author Felix Klauke <info@felix-klauke.de>
+ */
+public class VariableUsageNode extends ScopeAwareNode {
 
     private String variableName;
 
-    public VariableUsageNode(Token token) {
+    public VariableUsageNode(int currentScopeLevel, Token token) {
+        super(currentScopeLevel);
         this.variableName = token.getValue();
     }
 

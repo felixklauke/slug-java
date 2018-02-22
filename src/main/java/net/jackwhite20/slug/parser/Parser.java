@@ -27,12 +27,15 @@ import java.util.List;
 
 /**
  * @author Philip 'JackWhite20' <silencephil@gmail.com>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
 public class Parser {
 
     private Lexer lexer;
 
     private Token currentToken;
+
+    private int currentScopeLevel = 0;
 
     public Parser(Lexer lexer) {
         this.lexer = lexer;
@@ -50,6 +53,8 @@ public class Parser {
     }
 
     private Node parseFunction() {
+        currentScopeLevel++;
+
         eat(TokenType.FUNC);
         String functionName = currentToken.getValue();
         // Call because CALL is used when the next char is "(", which is when calling a function (possible parameters etc.)
@@ -68,6 +73,8 @@ public class Parser {
 
         // Register the global function
         FunctionRegistry.register(functionNode);
+
+        currentScopeLevel--;
 
         return functionNode;
     }
@@ -116,10 +123,10 @@ public class Parser {
         eat(TokenType.NAME);
 
         if (currentToken.getTokenType() != TokenType.ASSIGN) {
-            return new VariableDeclarationNode(varName, varType);
+            return new VariableDeclarationNode(currentScopeLevel, varName, varType);
         } else {
             eat(TokenType.ASSIGN);
-            return new VariableDeclarationAssignNode(varName, varType, expression());
+            return new VariableDeclarationAssignNode(currentScopeLevel, varName, varType, expression());
         }
     }
 
@@ -130,13 +137,13 @@ public class Parser {
 
         Node right = expression();
 
-        return new VariableAssignNode(varName, right);
+        return new VariableAssignNode(currentScopeLevel, varName, right);
     }
 
     private Node parseVariableUsage() {
         Token variableNameToken = currentToken;
         eat(TokenType.NAME);
-        return new VariableUsageNode(variableNameToken);
+        return new VariableUsageNode(currentScopeLevel, variableNameToken);
     }
 
     private Node statement() {

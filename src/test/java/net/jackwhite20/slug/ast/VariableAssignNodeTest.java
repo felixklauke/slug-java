@@ -28,7 +28,7 @@ public class VariableAssignNodeTest {
 
     @Test
     public void testVariableAssignNode() {
-        VariableAssignNode variableAssignNode = new VariableAssignNode(VARIABLE_NAME, RIGHT);
+        VariableAssignNode variableAssignNode = new VariableAssignNode(0, VARIABLE_NAME, RIGHT);
 
         assertEquals(VARIABLE_NAME, variableAssignNode.getVariableName());
         assertEquals(RIGHT, variableAssignNode.getRight());

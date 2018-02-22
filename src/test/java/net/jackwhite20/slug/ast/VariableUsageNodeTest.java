@@ -30,12 +30,12 @@ public class VariableUsageNodeTest {
     private VariableUsageNode variableUsageNode;
 
     @Before
-    public void setUp() throws Exception {
-        variableUsageNode = new VariableUsageNode(new Token(TokenType.NAME, VARIABLE_NAME));
+    public void setUp() {
+        variableUsageNode = new VariableUsageNode(0, new Token(TokenType.NAME, VARIABLE_NAME));
     }
 
     @Test
-    public void getVariableName() throws Exception {
+    public void getVariableName() {
         assertEquals(VARIABLE_NAME, variableUsageNode.getVariableName());
     }
 }

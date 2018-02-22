@@ -33,8 +33,8 @@ public class VariableDeclarationAssignNodeTest {
     private VariableDeclarationAssignNode varDecAssign;
 
     @Before
-    public void setUp() throws Exception {
-        varDecAssign = new VariableDeclarationAssignNode(VARIABLE_NAME, VARIABLE_TYPE, RIGHT);
+    public void setUp() {
+        varDecAssign = new VariableDeclarationAssignNode(0, VARIABLE_NAME, VARIABLE_TYPE, RIGHT);
     }
 
     @Test
