@@ -18,6 +18,7 @@ package net.jackwhite20.slug.ast;
 
 import net.jackwhite20.slug.lexer.Token;
 import net.jackwhite20.slug.lexer.TokenType;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -30,12 +31,25 @@ public class BinaryNodeTest {
 
     private static final NumberNode RIGHT = new NumberNode("25");
 
-    @Test
-    public void testBinaryNode() {
-        BinaryNode binaryNode = new BinaryNode(LEFT, OPERATOR, RIGHT);
+    private BinaryNode binaryNode;
 
+    @Before
+    public void setUp() throws Exception {
+        binaryNode = new BinaryNode(LEFT, OPERATOR, RIGHT);
+    }
+
+    @Test
+    public void testGetLeft() {
         assertEquals(LEFT, binaryNode.getLeft());
+    }
+
+    @Test
+    public void testGetOperator() {
         assertEquals(OPERATOR, binaryNode.getOperator());
+    }
+
+    @Test
+    public void testGetRight() throws Exception {
         assertEquals(RIGHT, binaryNode.getRight());
     }
 }
