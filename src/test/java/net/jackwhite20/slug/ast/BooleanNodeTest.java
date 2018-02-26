@@ -17,6 +17,7 @@
 package net.jackwhite20.slug.ast;
 
 import net.jackwhite20.slug.lexer.TokenType;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -29,12 +30,25 @@ public class BooleanNodeTest {
 
     private static final NumberNode RIGHT = new NumberNode("25");
 
-    @Test
-    public void testBooleanNode() {
-        BooleanNode booleanNode = new BooleanNode(LEFT, OPERATOR, RIGHT);
+    private BooleanNode booleanNode;
 
+    @Before
+    public void setUp() throws Exception {
+        booleanNode = new BooleanNode(LEFT, OPERATOR, RIGHT);
+    }
+
+    @Test
+    public void testGetLeft() {
         assertEquals(LEFT, booleanNode.getLeft());
+    }
+
+    @Test
+    public void testGetOperator() {
         assertEquals(OPERATOR, booleanNode.getOperator());
+    }
+
+    @Test
+    public void testGetRight() throws Exception {
         assertEquals(RIGHT, booleanNode.getRight());
     }
 }

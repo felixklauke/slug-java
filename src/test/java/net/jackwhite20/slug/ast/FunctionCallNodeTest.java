@@ -16,6 +16,7 @@
 
 package net.jackwhite20.slug.ast;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -32,12 +33,25 @@ public class FunctionCallNodeTest {
 
     private static final FunctionNode FUNCTION_NODE = new FunctionNode("MyFunction", Collections.singletonList(new NumberNode("1")), PARAMETERS);
 
-    @Test
-    public void testFunctionCallNode() {
-        FunctionCallNode functionCallNode = new FunctionCallNode(NAME, FUNCTION_NODE, PARAMETERS);
+    private FunctionCallNode functionCallNode;
 
+    @Before
+    public void setUp() throws Exception {
+        functionCallNode = new FunctionCallNode(NAME, FUNCTION_NODE, PARAMETERS);
+    }
+
+    @Test
+    public void testGetName() {
         assertEquals(NAME, functionCallNode.getName());
+    }
+
+    @Test
+    public void testGetParameter() {
         assertEquals(PARAMETERS, functionCallNode.getParameter());
+    }
+
+    @Test
+    public void testGetFunctionNode() {
         assertEquals(FUNCTION_NODE, functionCallNode.getFunctionNode());
     }
 }

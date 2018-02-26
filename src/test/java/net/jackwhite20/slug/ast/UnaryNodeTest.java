@@ -18,6 +18,7 @@ package net.jackwhite20.slug.ast;
 
 import net.jackwhite20.slug.lexer.Token;
 import net.jackwhite20.slug.lexer.TokenType;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -28,11 +29,20 @@ public class UnaryNodeTest {
 
     private static final Node EXPRESSION = new NumberNode("35");
 
-    @Test
-    public void testUnaryNode() {
-        UnaryNode unaryNode = new UnaryNode(OPERATOR, EXPRESSION);
+    private UnaryNode unaryNode;
 
+    @Before
+    public void setUp() {
+        unaryNode = new UnaryNode(OPERATOR, EXPRESSION);
+    }
+
+    @Test
+    public void testGetOperation() {
         assertEquals(OPERATOR, unaryNode.getOperator());
+    }
+
+    @Test
+    public void testGetExpression() {
         assertEquals(EXPRESSION, unaryNode.getExpression());
     }
 }

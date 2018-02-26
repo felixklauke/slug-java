@@ -16,6 +16,7 @@
 
 package net.jackwhite20.slug.ast;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Collections;
@@ -30,10 +31,15 @@ public class MainNodeTest {
                     Collections.singletonList(new NumberNode("45")),
                     Collections.singletonList(new StringNode("hello"))));
 
-    @Test
-    public void testMainNode() {
-        MainNode mainNode = new MainNode(FUNCTIONS);
+    private MainNode mainNode;
 
+    @Before
+    public void setUp() throws Exception {
+        mainNode = new MainNode(FUNCTIONS);
+    }
+
+    @Test
+    public void testGetFunctions() {
         assertEquals(FUNCTIONS, mainNode.getFunctions());
     }
 }

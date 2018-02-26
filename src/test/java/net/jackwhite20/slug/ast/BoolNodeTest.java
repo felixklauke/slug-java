@@ -16,6 +16,7 @@
 
 package net.jackwhite20.slug.ast;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -24,10 +25,15 @@ public class BoolNodeTest {
 
     private static final boolean VALUE = true;
 
-    @Test
-    public void testBoolNode() {
-        BoolNode boolNode = new BoolNode(String.valueOf(VALUE));
+    private BoolNode boolNode;
 
+    @Before
+    public void setUp() throws Exception {
+        boolNode = new BoolNode(String.valueOf(VALUE));
+    }
+
+    @Test
+    public void testGetValue() {
         assertEquals(true, boolNode.getValue());
     }
 }
