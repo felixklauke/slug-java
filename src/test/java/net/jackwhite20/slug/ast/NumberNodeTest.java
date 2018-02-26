@@ -16,6 +16,7 @@
 
 package net.jackwhite20.slug.ast;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -24,10 +25,15 @@ public class NumberNodeTest {
 
     private static final int VALUE = 41;
 
-    @Test
-    public void testNumberNode() {
-        NumberNode numberNode = new NumberNode(String.valueOf(VALUE));
+    private NumberNode numberNode;
 
+    @Before
+    public void setUp() throws Exception {
+        numberNode = new NumberNode(String.valueOf(VALUE));
+    }
+
+    @Test
+    public void testGetValue() {
         assertEquals(VALUE, numberNode.getValue());
     }
 }

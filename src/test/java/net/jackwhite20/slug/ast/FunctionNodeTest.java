@@ -18,6 +18,7 @@ package net.jackwhite20.slug.ast;
 
 import net.jackwhite20.slug.lexer.Token;
 import net.jackwhite20.slug.lexer.TokenType;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -34,12 +35,25 @@ public class FunctionNodeTest {
 
     private static final List<Node> PARAMETERS = Arrays.asList(new NumberNode("65"), new BoolNode("true"));
 
-    @Test
-    public void testFunctionNode() {
-        FunctionNode functionNode = new FunctionNode(NAME, CHILDREN, PARAMETERS);
+    private FunctionNode functionNode;
 
+    @Before
+    public void setUp() throws Exception {
+        functionNode = new FunctionNode(NAME, CHILDREN, PARAMETERS);
+    }
+
+    @Test
+    public void testGetName() {
         assertEquals(NAME, functionNode.getName());
-        assertEquals(CHILDREN, CHILDREN);
-        assertEquals(PARAMETERS, PARAMETERS);
+    }
+
+    @Test
+    public void testGetChildren() {
+        assertEquals(CHILDREN, functionNode.getChildren());
+    }
+
+    @Test
+    public void testGetParameter() {
+        assertEquals(PARAMETERS, functionNode.getParameter());
     }
 }
