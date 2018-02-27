@@ -31,7 +31,7 @@ The GuessIt game is a simple CLI game where the user needs to guess a random gen
 
 # TDD (Test Driven Development)
 
-The goal is to get as near as possible to a 100% test coverage and to test every feature while it is beeing developed.
+The goal is to get as near as possible to a 100% test coverage and to test every feature while it is being developed.
 
 ### License
 
