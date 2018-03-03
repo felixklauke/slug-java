@@ -14,10 +14,10 @@ Feature and bug-fix requests are welcome.
 - [X] Functions
 - [X] Variables (int, string, bool)
 - [ ] Scopes
-- [ ] Boolean expression (myInt == otherInt, "test" == "test", 4 > 3)
+- [X] Boolean expression (myInt == otherInt, "test" == "test", 4 > 3)
 - [ ] Conditionals (if, for, while)
 - [ ] Internal functions (WriteLine, ReadLine, Random, etc.)
-- [ ] Function calls
+- [X] Function calls
 - [ ] Classes (new instance creation, member variables, auto member variable constructor)
 - [ ] Inline string variables (string s = "Hello $myOtherString")
 - [ ] Inline string expression evaluation (string s = "Number is ${2 + 9}")
@@ -31,7 +31,7 @@ The GuessIt game is a simple CLI game where the user needs to guess a random gen
 
 # TDD (Test Driven Development)
 
-The goal is to get as near as possible to a 100% test coverage and to test every feature while it is beeing developed.
+The goal is to get as near as possible to a 100% test coverage and to test every feature while it is being developed.
 
 ### License
 
