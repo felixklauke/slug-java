@@ -139,6 +139,27 @@ public class Parser {
         return new VariableUsageNode(variableNameToken);
     }
 
+    private Node parseIf() {
+        eat(TokenType.IF);
+
+        eat(TokenType.LEFT_PARAN);
+        Node expression = term();
+        eat(TokenType.RIGHT_PARAN);
+
+        eat(TokenType.CURLY_LEFT_PARAN);
+
+        List<Node> trueNodes = new ArrayList<>();
+
+        while (currentToken.getTokenType() != TokenType.CURLY_RIGHT_PARAN) {
+            // Add all true node statements
+            trueNodes.add(statement());
+        }
+
+        eat(TokenType.CURLY_RIGHT_PARAN);
+
+        return new IfNode(expression, trueNodes, null);
+    }
+
     private Node statement() {
         Node node;
 
@@ -160,8 +181,8 @@ public class Parser {
             node = parseVariableAssign();
         } else if (currentToken.getTokenType() == TokenType.CALL) {
             node = parseFunctionCall();
-        } else if (currentToken.getTokenType() == TokenType.CALL) {
-            node = parseFunctionCall();
+        } else if (currentToken.getTokenType() == TokenType.IF) {
+            node = parseIf();
         } else {
             node = new NoOpNode();
         }
