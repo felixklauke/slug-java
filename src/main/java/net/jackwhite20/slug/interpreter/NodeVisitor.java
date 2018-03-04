@@ -146,8 +146,7 @@ class NodeVisitor {
         } else if (node instanceof VariableUsageNode) {
             return visitVariableUsage(((VariableUsageNode) node));
         } else if (node instanceof BooleanNode) {
-            visitBoolean(((BooleanNode) node));
-            return null;
+            return visitBoolean(((BooleanNode) node));
         } else if (node instanceof IfNode) {
             visitIf(((IfNode) node));
             return null;
