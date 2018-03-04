@@ -22,6 +22,7 @@ import net.jackwhite20.slug.parser.Parser;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class InterpreterTest {
 
@@ -67,6 +68,17 @@ public class InterpreterTest {
         assertEquals(35, (int) interpreter.getGlobalVariableRegistry().lookup("a"));
         assertEquals("changed", interpreter.getGlobalVariableRegistry().lookup("b"));
         assertEquals(false, interpreter.getGlobalVariableRegistry().lookup("c"));
+    }
+
+    @Test
+    public void testBooleanNode() {
+        Lexer lexer = new Lexer("func Main() { bool b = 4 > 2 }");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+
+        assertTrue(interpreter.getGlobalVariableRegistry().lookup("b"));
     }
 
     @Test
@@ -133,5 +145,14 @@ public class InterpreterTest {
         interpreter.interpret();
 
         assertEquals(1, (int) interpreter.getGlobalVariableRegistry().lookup("success"));
+    }
+
+    @Test(expected = SlugRuntimeException.class)
+    public void testIfInvalidExpression() {
+        Lexer lexer = new Lexer("func Main() { if (5) { int success = 1 } }");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
     }
 }

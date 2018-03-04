@@ -143,7 +143,7 @@ public class Parser {
         eat(TokenType.IF);
 
         eat(TokenType.LEFT_PARAN);
-        Node expression = term();
+        Node expression = expression();
         eat(TokenType.RIGHT_PARAN);
 
         eat(TokenType.CURLY_LEFT_PARAN);
