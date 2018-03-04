@@ -19,6 +19,7 @@ package net.jackwhite20.slug.interpreter;
 import net.jackwhite20.slug.ast.*;
 import net.jackwhite20.slug.exception.SlugRuntimeException;
 import net.jackwhite20.slug.interpreter.variable.GlobalVariableRegistry;
+import net.jackwhite20.slug.lexer.TokenType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,6 +82,51 @@ class NodeVisitor {
         globalVariableRegistry.update(node.getVariableName(), value);
     }
 
+    private Object visitVariableUsage(VariableUsageNode node) {
+        String variableName = node.getVariableName();
+
+        return globalVariableRegistry.lookup(variableName);
+    }
+
+    private boolean visitBoolean(BooleanNode node) {
+        // TODO: Better handling and more supported types
+        int a = (int) visit(node.getLeft());
+        int b = (int) visit(node.getRight());
+
+        if (node.getOperator() == TokenType.EQUAL) {
+            return a == b;
+        } else if (node.getOperator() == TokenType.GREATER) {
+            return a > b;
+        } else if (node.getOperator() == TokenType.LESS) {
+            return a < b;
+        } else if (node.getOperator() == TokenType.GREATER_EQUAL) {
+            return a >= b;
+        } else if (node.getOperator() == TokenType.LESS_EQUAL) {
+            return a <= b;
+        } else if (node.getOperator() == TokenType.NOT_EQUAL) {
+            return a != b;
+        }
+
+        return false;
+    }
+
+    private void visitIf(IfNode node) {
+        Node expression = node.getExpression();
+
+        // The expression from the if node needs to be a boolean node
+        if (!(expression instanceof BooleanNode)) {
+            throw new SlugRuntimeException("the expression from an if node needs to be a boolean node");
+        }
+
+        boolean state = visitBoolean((BooleanNode) expression);
+
+        if (state) {
+            for (Node trueNode : node.getTrueNodes()) {
+                visit(trueNode);
+            }
+        }
+    }
+
     Object visit(Node node) {
         if (node instanceof MainNode) {
             visitMain(((MainNode) node));
@@ -96,6 +142,13 @@ class NodeVisitor {
             return null;
         } else if (node instanceof VariableAssignNode) {
             visitVariableAssign(((VariableAssignNode) node));
+            return null;
+        } else if (node instanceof VariableUsageNode) {
+            return visitVariableUsage(((VariableUsageNode) node));
+        } else if (node instanceof BooleanNode) {
+            return visitBoolean(((BooleanNode) node));
+        } else if (node instanceof IfNode) {
+            visitIf(((IfNode) node));
             return null;
         }
 
