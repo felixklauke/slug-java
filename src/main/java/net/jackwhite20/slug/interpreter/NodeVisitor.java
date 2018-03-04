@@ -81,6 +81,12 @@ class NodeVisitor {
         globalVariableRegistry.update(node.getVariableName(), value);
     }
 
+    private Object visitVariableUsage(VariableUsageNode node) {
+        String variableName = node.getVariableName();
+
+        return globalVariableRegistry.lookup(variableName);
+    }
+
     Object visit(Node node) {
         if (node instanceof MainNode) {
             visitMain(((MainNode) node));
@@ -97,6 +103,8 @@ class NodeVisitor {
         } else if (node instanceof VariableAssignNode) {
             visitVariableAssign(((VariableAssignNode) node));
             return null;
+        } else if (node instanceof VariableUsageNode) {
+            return visitVariableUsage(((VariableUsageNode) node));
         }
 
         logger.error("Error on visit, unhandled node {}", node.getClass().getName());
