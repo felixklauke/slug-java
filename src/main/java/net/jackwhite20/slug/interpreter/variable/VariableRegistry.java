@@ -41,7 +41,7 @@ public abstract class VariableRegistry {
         variables.put(variableName, value);
         variableTypes.put(variableName, variableType);
 
-        logger.debug("Registered variable {} ({})", variableName, variableType);
+        logger.debug("Registered variable {} ({}) with value {}", variableName, variableType, value);
     }
 
     public void update(String variableName, Object newValue) {
