@@ -160,6 +160,27 @@ public class Parser {
         return new IfNode(expression, trueNodes, null);
     }
 
+    private Node parseWhile() {
+        eat(TokenType.WHILE);
+
+        eat(TokenType.LEFT_PARAN);
+        Node expression = expression();
+        eat(TokenType.RIGHT_PARAN);
+
+        eat(TokenType.CURLY_LEFT_PARAN);
+
+        List<Node> children = new ArrayList<>();
+
+        while (currentToken.getTokenType() != TokenType.CURLY_RIGHT_PARAN) {
+            // Add all true node statements
+            children.add(statement());
+        }
+
+        eat(TokenType.CURLY_RIGHT_PARAN);
+
+        return new WhileNode(expression, children);
+    }
+
     private Node statement() {
         Node node;
 
@@ -183,6 +204,8 @@ public class Parser {
             node = parseFunctionCall();
         } else if (currentToken.getTokenType() == TokenType.IF) {
             node = parseIf();
+        } else if (currentToken.getTokenType() == TokenType.WHILE) {
+            node = parseWhile();
         } else {
             node = new NoOpNode();
         }
