@@ -138,6 +138,10 @@ class NodeVisitor {
             for (Node trueNode : node.getTrueNodes()) {
                 visit(trueNode);
             }
+        } else {
+            for (Node falseNode : node.getFalseNodes()) {
+                visit(falseNode);
+            }
         }
     }
 

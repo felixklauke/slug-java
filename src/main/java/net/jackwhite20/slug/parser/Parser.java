@@ -149,6 +149,7 @@ public class Parser {
         eat(TokenType.CURLY_LEFT_PARAN);
 
         List<Node> trueNodes = new ArrayList<>();
+        List<Node> falseNodes = new ArrayList<>();
 
         while (currentToken.getTokenType() != TokenType.CURLY_RIGHT_PARAN) {
             // Add all true node statements
@@ -157,7 +158,21 @@ public class Parser {
 
         eat(TokenType.CURLY_RIGHT_PARAN);
 
-        return new IfNode(expression, trueNodes, null);
+        // Handle else block
+        if (currentToken.getTokenType() == TokenType.ELSE) {
+            eat(TokenType.ELSE);
+
+            eat(TokenType.CURLY_LEFT_PARAN);
+
+            while (currentToken.getTokenType() != TokenType.CURLY_RIGHT_PARAN) {
+                // Add all false node statements
+                falseNodes.add(statement());
+            }
+
+            eat(TokenType.CURLY_RIGHT_PARAN);
+        }
+
+        return new IfNode(expression, trueNodes, falseNodes);
     }
 
     private Node parseWhile() {
