@@ -88,6 +88,20 @@ class NodeVisitor {
         return globalVariableRegistry.lookup(variableName);
     }
 
+    private Object visitBinary(BinaryNode node) {
+        if (node.getOperator().getTokenType() == TokenType.MINUS) {
+            return (int) visit(node.getLeft()) - (int) visit(node.getRight());
+        } else if (node.getOperator().getTokenType() == TokenType.PLUS) {
+            return (int) visit(node.getLeft()) + (int) visit(node.getRight());
+        } else if (node.getOperator().getTokenType() == TokenType.MULTIPLY) {
+            return (int) visit(node.getLeft()) * (int) visit(node.getRight());
+        } else if (node.getOperator().getTokenType() == TokenType.DIVIDE) {
+            return (int) visit(node.getLeft()) / (int) visit(node.getRight());
+        }
+
+        throw new SlugRuntimeException("unhandled binary operator " + node.getOperator().getTokenType());
+    }
+
     private boolean visitBoolean(BooleanNode node) {
         // TODO: Better handling and more supported types
         int a = (int) visit(node.getLeft());
@@ -149,6 +163,8 @@ class NodeVisitor {
             return visitString((StringNode) node);
         } else if (node instanceof BoolNode) {
             return visitBool((BoolNode) node);
+        } else if (node instanceof BinaryNode) {
+            return visitBinary((BinaryNode) node);
         } else if (node instanceof VariableDeclarationAssignNode) {
             visitVariableDeclarationAssign(((VariableDeclarationAssignNode) node));
             return null;
