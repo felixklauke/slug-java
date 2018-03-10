@@ -24,7 +24,7 @@ public class NumberNode extends Node {
     private int value;
 
     public NumberNode(String value) {
-        this.value = Integer.valueOf(value);
+        this.value = Integer.parseInt(value);
     }
 
     public int getValue() {
