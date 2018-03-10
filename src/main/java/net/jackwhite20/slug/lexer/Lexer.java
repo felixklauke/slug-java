@@ -30,7 +30,7 @@ public class Lexer {
 
     private String input;
 
-    private int pos;
+    private int pos = 0;
 
     private char currentChar;
 
@@ -127,7 +127,8 @@ public class Lexer {
             } else {
                 // TODO: 11.02.2018 Better way of checking this?
                 // Check if boolean false/true or normal name token
-                if (possibleKeywordString.equalsIgnoreCase("true") || possibleKeywordString.equalsIgnoreCase("false")) {
+                if (possibleKeywordString.equalsIgnoreCase("true") ||
+                        possibleKeywordString.equalsIgnoreCase("false")) {
                     return new Token(TokenType.BOOL, possibleKeywordString);
                 } else {
                     return new Token(TokenType.NAME, possibleKeywordString);
