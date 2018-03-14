@@ -282,7 +282,7 @@ public class Parser {
                 continue;
             }
 
-            res = new BinaryNode(res, tmp, factor());
+            res = new BinaryNode(res, tmp.getTokenType(), factor());
         }
 
         return res;
@@ -303,7 +303,7 @@ public class Parser {
                 eat(TokenType.DIVIDE);
             }
 
-            result = new BinaryNode(result, tmp, term());
+            result = new BinaryNode(result, tmp.getTokenType(), term());
         }
 
         return result;
