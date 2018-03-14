@@ -23,7 +23,7 @@ import net.jackwhite20.slug.lexer.TokenType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class NodeVisitor {
+public class NodeVisitor {
 
     private static Logger logger = LoggerFactory.getLogger(NodeVisitor.class);
 
@@ -89,17 +89,17 @@ class NodeVisitor {
     }
 
     private Object visitBinary(BinaryNode node) {
-        if (node.getOperator().getTokenType() == TokenType.MINUS) {
+        if (node.getOperator() == TokenType.MINUS) {
             return (int) visit(node.getLeft()) - (int) visit(node.getRight());
-        } else if (node.getOperator().getTokenType() == TokenType.PLUS) {
+        } else if (node.getOperator() == TokenType.PLUS) {
             return (int) visit(node.getLeft()) + (int) visit(node.getRight());
-        } else if (node.getOperator().getTokenType() == TokenType.MULTIPLY) {
+        } else if (node.getOperator() == TokenType.MULTIPLY) {
             return (int) visit(node.getLeft()) * (int) visit(node.getRight());
-        } else if (node.getOperator().getTokenType() == TokenType.DIVIDE) {
+        } else if (node.getOperator() == TokenType.DIVIDE) {
             return (int) visit(node.getLeft()) / (int) visit(node.getRight());
         }
 
-        throw new SlugRuntimeException("unhandled binary operator " + node.getOperator().getTokenType());
+        throw new SlugRuntimeException("unhandled binary operator " + node.getOperator());
     }
 
     private boolean visitBoolean(BooleanNode node) {
