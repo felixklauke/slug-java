@@ -167,6 +167,18 @@ public class NodeVisitor {
         }
     }
 
+    private void visitWhile(WhileNode node) {
+        if (!(node.getExpression() instanceof BooleanNode)) {
+            throw new SlugRuntimeException("the while expression need to be a boolean node");
+        }
+
+        while (visitBoolean((BooleanNode) node.getExpression())) {
+            for (Node children : node.getChildren()) {
+                visit(children);
+            }
+        }
+    }
+
     private void visitFor(ForNode node) {
         visit(node.getDeclaration());
 
