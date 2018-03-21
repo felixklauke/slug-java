@@ -156,14 +156,9 @@ class NodeVisitor {
         boolean state = visitBoolean((BooleanNode) expression);
 
         if (state) {
-            /*for (Node trueNode : node.getTrueBlock()) {
-                visit(trueNode);
-            }*/
             visitBlock(node.getTrueBlock());
         } else {
-            for (Node falseNode : node.getFalseNodes()) {
-                visit(falseNode);
-            }
+            visitBlock(node.getFalseBlock());
         }
     }
 
