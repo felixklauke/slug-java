@@ -17,6 +17,7 @@
 package net.jackwhite20.slug.parser;
 
 import net.jackwhite20.slug.ast.*;
+import net.jackwhite20.slug.exception.SlugRuntimeException;
 import net.jackwhite20.slug.lexer.Lexer;
 import net.jackwhite20.slug.lexer.TokenType;
 import org.junit.Before;
@@ -99,6 +100,14 @@ public class TestParser {
         VariableAssignNode variableAssignNode = (VariableAssignNode) functionNode.getBlock().getStatements().get(5);
         assertTrue(variableAssignNode.getRight() instanceof VariableUsageNode);
         assertEquals("a", ((VariableUsageNode) variableAssignNode.getRight()).getVariableName());
+    }
+
+    @Test(expected = SlugRuntimeException.class)
+    public void testFunctionCallNotExistingFunction() {
+        Lexer lexer = new Lexer("func Main() { NotExistingFunction() }");
+        Parser parser = new Parser(lexer);
+
+        parser.parse();
     }
 
     @Test(expected = IllegalStateException.class)

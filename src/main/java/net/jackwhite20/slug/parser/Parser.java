@@ -113,7 +113,14 @@ public class Parser {
 
         eat(TokenType.RIGHT_PARAN);
 
-        return new FunctionCallNode(name, FunctionRegistry.lookup(name), parameter);
+        FunctionNode functionNodeToCall = FunctionRegistry.lookup(name);
+
+        // Do not continue if the function to call does not exists
+        if (functionNodeToCall == null) {
+            throw new SlugRuntimeException("function " + name + " does not exists");
+        }
+
+        return new FunctionCallNode(name, functionNodeToCall, parameter);
     }
 
     private Node parseDeclareOrAndAssignStatement() {
