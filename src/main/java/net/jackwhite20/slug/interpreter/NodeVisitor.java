@@ -18,19 +18,15 @@ package net.jackwhite20.slug.interpreter;
 
 import net.jackwhite20.slug.ast.*;
 import net.jackwhite20.slug.exception.SlugRuntimeException;
-import net.jackwhite20.slug.interpreter.variable.GlobalVariableRegistry;
 import net.jackwhite20.slug.lexer.TokenType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class NodeVisitor {
+class NodeVisitor {
 
     private static Logger logger = LoggerFactory.getLogger(NodeVisitor.class);
 
-    private GlobalVariableRegistry globalVariableRegistry = new GlobalVariableRegistry();
-
-    // TODO: Why another instance? works because global registry is static but it's not perfectly solved
-    private BlockNode currentBlock = new MainBlockNode();
+    private BlockNode currentBlock = MainBlockNode.getInstance();
 
     /**
      * Visits the NumberNode and returns it's value.
@@ -56,18 +52,21 @@ public class NodeVisitor {
             visit(globalVar);
         }
 
-        if (node.getFunctions().size() == 0) {
-            throw new SlugRuntimeException("no functions specified");
+        if (node.getFunctions().size() == 0 && node.getGlobalVariables().size() == 0) {
+            throw new SlugRuntimeException("no functions and global variables");
         }
 
-        FunctionNode mainFunction = (FunctionNode) node.getFunctions().get(node.getFunctions().size() - 1);
+        // Only search main function and start interpreting if functions are available
+        if (node.getFunctions().size() > 0) {
+            FunctionNode mainFunction = (FunctionNode) node.getFunctions().get(node.getFunctions().size() - 1);
 
-        if (!mainFunction.getName().equals("Main")) {
-            throw new SlugRuntimeException("the 'Main' function needs to be the last function");
+            if (!mainFunction.getName().equals("Main")) {
+                throw new SlugRuntimeException("the 'Main' function needs to be the last function");
+            }
+
+            // Visit the main function
+            visitFunction(mainFunction);
         }
-
-        // Visit the main function
-        visitFunction(mainFunction);
     }
 
     private void visitFunction(FunctionNode functionNode) {
@@ -225,16 +224,12 @@ public class NodeVisitor {
             visitBlock((BlockNode) node);
             return null;
         } else if (node instanceof NoOpNode) {
-            // Nothing
+            // Do nothing (no op)
             return null;
         }
 
         logger.error("Error on visit, unhandled node {}", node.getClass().getName());
 
         return null;
-    }
-
-    public GlobalVariableRegistry getGlobalVariableRegistry() {
-        return globalVariableRegistry;
     }
 }

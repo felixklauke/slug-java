@@ -67,7 +67,10 @@ public class Parser {
         //eat(TokenType.CURLY_LEFT_PARAN);
         //List<Node> functionStatements = parseFunctionStatements();
         //eat(TokenType.CURLY_RIGHT_PARAN);
-        currentBlock = currentBlock.getParent();
+        // We need to check if the parent is null because the main block node parent is null
+        if (currentBlock.getParent() != null) {
+            currentBlock = currentBlock.getParent();
+        }
 
         FunctionNode functionNode = new FunctionNode(functionName, blockNode, parameters);
 

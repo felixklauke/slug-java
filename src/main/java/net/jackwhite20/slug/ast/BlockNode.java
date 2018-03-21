@@ -53,10 +53,11 @@ public class BlockNode extends Node {
         variableRegistry.register(variableName, variableType, value);
     }
 
-    public Object lookupVariable(String name) {
+    public <T> T lookupVariable(String name) {
         Object lookup = variableRegistry.lookup(name);
         if (lookup != null) {
-            return lookup;
+            //noinspection unchecked
+            return (T) lookup;
         }
 
         if (parent != null) {

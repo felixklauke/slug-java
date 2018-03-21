@@ -50,7 +50,7 @@ public class FunctionNodeTest {
     @Test
     public void testGetChildren() {
         assertEquals(1, functionNode.getBlock().getStatements().size());
-        assertEquals(CHILDREN, functionNode.getBlock().getStatements().get(0));
+        assertEquals(CHILDREN, functionNode.getBlock().getStatements());
     }
 
     @Test
