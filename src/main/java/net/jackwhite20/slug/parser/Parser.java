@@ -149,6 +149,7 @@ public class Parser {
         eat(TokenType.CURLY_LEFT_PARAN);
 
         List<Node> trueNodes = new ArrayList<>();
+        List<Node> falseNodes = new ArrayList<>();
 
         while (currentToken.getTokenType() != TokenType.CURLY_RIGHT_PARAN) {
             // Add all true node statements
@@ -157,7 +158,42 @@ public class Parser {
 
         eat(TokenType.CURLY_RIGHT_PARAN);
 
-        return new IfNode(expression, trueNodes, null);
+        // Handle else block
+        if (currentToken.getTokenType() == TokenType.ELSE) {
+            eat(TokenType.ELSE);
+
+            eat(TokenType.CURLY_LEFT_PARAN);
+
+            while (currentToken.getTokenType() != TokenType.CURLY_RIGHT_PARAN) {
+                // Add all false node statements
+                falseNodes.add(statement());
+            }
+
+            eat(TokenType.CURLY_RIGHT_PARAN);
+        }
+
+        return new IfNode(expression, trueNodes, falseNodes);
+    }
+
+    private Node parseWhile() {
+        eat(TokenType.WHILE);
+
+        eat(TokenType.LEFT_PARAN);
+        Node expression = expression();
+        eat(TokenType.RIGHT_PARAN);
+
+        eat(TokenType.CURLY_LEFT_PARAN);
+
+        List<Node> children = new ArrayList<>();
+
+        while (currentToken.getTokenType() != TokenType.CURLY_RIGHT_PARAN) {
+            // Add all true node statements
+            children.add(statement());
+        }
+
+        eat(TokenType.CURLY_RIGHT_PARAN);
+
+        return new WhileNode(expression, children);
     }
 
     private Node statement() {
@@ -183,6 +219,8 @@ public class Parser {
             node = parseFunctionCall();
         } else if (currentToken.getTokenType() == TokenType.IF) {
             node = parseIf();
+        } else if (currentToken.getTokenType() == TokenType.WHILE) {
+            node = parseWhile();
         } else {
             node = new NoOpNode();
         }
@@ -244,7 +282,7 @@ public class Parser {
                 continue;
             }
 
-            res = new BinaryNode(res, tmp, factor());
+            res = new BinaryNode(res, tmp.getTokenType(), factor());
         }
 
         return res;
@@ -265,7 +303,7 @@ public class Parser {
                 eat(TokenType.DIVIDE);
             }
 
-            result = new BinaryNode(result, tmp, term());
+            result = new BinaryNode(result, tmp.getTokenType(), term());
         }
 
         return result;

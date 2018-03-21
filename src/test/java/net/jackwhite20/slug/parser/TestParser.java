@@ -73,7 +73,7 @@ public class TestParser {
         assertTrue(calculation.getRight() instanceof BinaryNode);
         BinaryNode right = (BinaryNode) calculation.getRight();
         assertTrue(right.getLeft() instanceof BinaryNode);
-        assertTrue(right.getOperator().getTokenType() == TokenType.PLUS);
+        assertTrue(right.getOperator() == TokenType.PLUS);
         assertTrue(right.getRight() instanceof BinaryNode);
         // TODO: Test further?
 

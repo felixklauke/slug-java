@@ -16,7 +16,6 @@
 
 package net.jackwhite20.slug.ast;
 
-import net.jackwhite20.slug.lexer.Token;
 import net.jackwhite20.slug.lexer.TokenType;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,14 +26,14 @@ public class BinaryNodeTest {
 
     private static final NumberNode LEFT = new NumberNode("34");
 
-    private static final Token OPERATOR = new Token(TokenType.PLUS, "+");
+    private static final TokenType OPERATOR = TokenType.PLUS;
 
     private static final NumberNode RIGHT = new NumberNode("25");
 
     private BinaryNode binaryNode;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         binaryNode = new BinaryNode(LEFT, OPERATOR, RIGHT);
     }
 

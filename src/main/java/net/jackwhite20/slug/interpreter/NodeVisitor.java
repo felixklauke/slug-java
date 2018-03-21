@@ -23,7 +23,7 @@ import net.jackwhite20.slug.lexer.TokenType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class NodeVisitor {
+public class NodeVisitor {
 
     private static Logger logger = LoggerFactory.getLogger(NodeVisitor.class);
 
@@ -88,6 +88,20 @@ class NodeVisitor {
         return globalVariableRegistry.lookup(variableName);
     }
 
+    private Object visitBinary(BinaryNode node) {
+        if (node.getOperator() == TokenType.MINUS) {
+            return (int) visit(node.getLeft()) - (int) visit(node.getRight());
+        } else if (node.getOperator() == TokenType.PLUS) {
+            return (int) visit(node.getLeft()) + (int) visit(node.getRight());
+        } else if (node.getOperator() == TokenType.MULTIPLY) {
+            return (int) visit(node.getLeft()) * (int) visit(node.getRight());
+        } else if (node.getOperator() == TokenType.DIVIDE) {
+            return (int) visit(node.getLeft()) / (int) visit(node.getRight());
+        }
+
+        throw new SlugRuntimeException("unhandled binary operator " + node.getOperator());
+    }
+
     private boolean visitBoolean(BooleanNode node) {
         // TODO: Better handling and more supported types
         int a = (int) visit(node.getLeft());
@@ -124,6 +138,22 @@ class NodeVisitor {
             for (Node trueNode : node.getTrueNodes()) {
                 visit(trueNode);
             }
+        } else {
+            for (Node falseNode : node.getFalseNodes()) {
+                visit(falseNode);
+            }
+        }
+    }
+
+    private void visitWhile(WhileNode node) {
+        if (!(node.getExpression() instanceof BooleanNode)) {
+            throw new SlugRuntimeException("the while expression need to be a boolean node");
+        }
+
+        while (visitBoolean((BooleanNode) node.getExpression())) {
+            for (Node children : node.getChildren()) {
+                visit(children);
+            }
         }
     }
 
@@ -137,6 +167,8 @@ class NodeVisitor {
             return visitString((StringNode) node);
         } else if (node instanceof BoolNode) {
             return visitBool((BoolNode) node);
+        } else if (node instanceof BinaryNode) {
+            return visitBinary((BinaryNode) node);
         } else if (node instanceof VariableDeclarationAssignNode) {
             visitVariableDeclarationAssign(((VariableDeclarationAssignNode) node));
             return null;
@@ -149,6 +181,9 @@ class NodeVisitor {
             return visitBoolean(((BooleanNode) node));
         } else if (node instanceof IfNode) {
             visitIf(((IfNode) node));
+            return null;
+        } else if (node instanceof WhileNode) {
+            visitWhile(((WhileNode) node));
             return null;
         }
 

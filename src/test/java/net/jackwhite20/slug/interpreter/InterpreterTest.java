@@ -147,6 +147,26 @@ public class InterpreterTest {
         assertEquals(1, (int) interpreter.getGlobalVariableRegistry().lookup("success"));
     }
 
+    @Test
+    public void testWhile() {
+        Lexer lexer = new Lexer("func Main() { int i = 0 while (i < 6) { i = i + 1 } }");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+
+        assertEquals(6, (int) interpreter.getGlobalVariableRegistry().lookup("i"));
+    }
+
+    @Test(expected = SlugRuntimeException.class)
+    public void testWhileInvalidExpression() {
+        Lexer lexer = new Lexer("func Main() { while (5) { int success = 1 } }");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+    }
+
     @Test(expected = SlugRuntimeException.class)
     public void testIfInvalidExpression() {
         Lexer lexer = new Lexer("func Main() { if (5) { int success = 1 } }");
