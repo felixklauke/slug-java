@@ -117,4 +117,21 @@ public class TestParser {
 
         parser.parse();
     }
+
+    @Test
+    public void testOnlyDeclareVariable() {
+        Lexer lexer = new Lexer("int i");
+        Parser parser = new Parser(lexer);
+
+        Node root = parser.parse();
+
+        assertTrue(root instanceof MainNode);
+
+        MainNode mainNode = (MainNode) root;
+
+        Node node = mainNode.getGlobalVariables().get(0);
+
+        assertTrue(node instanceof VariableDeclarationNode);
+        assertEquals("i", ((VariableDeclarationNode) node).getVariableName());
+    }
 }

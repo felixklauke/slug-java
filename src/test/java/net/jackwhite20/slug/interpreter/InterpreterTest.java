@@ -72,6 +72,20 @@ public class InterpreterTest {
     }
 
     @Test
+    public void testVariableDeclarationOnly() {
+        // This also tests default values
+        Lexer lexer = new Lexer("int i string s bool b");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+
+        assertEquals(0, (int) MainBlockNode.getInstance().lookupVariable("i"));
+        assertEquals("", MainBlockNode.getInstance().lookupVariable("s"));
+        assertEquals(false, MainBlockNode.getInstance().lookupVariable("b"));
+    }
+
+    @Test
     public void testBooleanNode() {
         Lexer lexer = new Lexer("bool b = 4 > 2");
         Parser parser = new Parser(lexer);
@@ -159,6 +173,17 @@ public class InterpreterTest {
         assertEquals(6, (int) MainBlockNode.getInstance().lookupVariable("i"));
     }
 
+    @Test
+    public void testFor() {
+        Lexer lexer = new Lexer("int counter = 0 func Main() { for (int i = 0; i < 2; i = i + 1) { counter = i } }");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+
+        assertEquals(1, (int) MainBlockNode.getInstance().lookupVariable("counter"));
+    }
+
     @Test(expected = SlugRuntimeException.class)
     public void testWhileInvalidExpression() {
         Lexer lexer = new Lexer("int success = 0 func Main() { while (5) { success = 1 } }");
@@ -175,5 +200,16 @@ public class InterpreterTest {
 
         Interpreter interpreter = new Interpreter(parser);
         interpreter.interpret();
+    }
+
+    @Test
+    public void testFunctionCall() {
+        Lexer lexer = new Lexer("bool success = false func Test() { success = true } func Main() { Test() }");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+
+        assertTrue(MainBlockNode.getInstance().lookupVariable("success"));
     }
 }
