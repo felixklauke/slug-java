@@ -96,6 +96,14 @@ class NodeVisitor {
         return currentBlock.lookupVariable(variableName);
     }
 
+    private Object visitFunctionCall(FunctionCallNode node) {
+        // Visit the the function we want to call
+        visitFunction(node.getFunctionNode());
+
+        // TODO: Function return types and logic
+        return null;
+    }
+
     private Object visitBinary(BinaryNode node) {
         if (node.getOperator() == TokenType.MINUS) {
             return (int) visit(node.getLeft()) - (int) visit(node.getRight());
@@ -209,6 +217,8 @@ class NodeVisitor {
             return null;
         } else if (node instanceof VariableUsageNode) {
             return visitVariableUsage(((VariableUsageNode) node));
+        } else if (node instanceof FunctionCallNode) {
+            return visitFunctionCall(((FunctionCallNode) node));
         } else if (node instanceof BooleanNode) {
             return visitBoolean(((BooleanNode) node));
         } else if (node instanceof IfNode) {
