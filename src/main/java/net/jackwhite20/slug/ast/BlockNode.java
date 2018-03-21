@@ -19,7 +19,6 @@ package net.jackwhite20.slug.ast;
 import net.jackwhite20.slug.exception.SlugRuntimeException;
 import net.jackwhite20.slug.interpreter.variable.BlockVariableRegistry;
 import net.jackwhite20.slug.lexer.TokenType;
-import sun.plugin.dom.exception.InvalidStateException;
 
 import java.util.List;
 
@@ -64,7 +63,7 @@ public class BlockNode extends Node {
             return parent.lookupVariable(name);
         }
 
-        throw new InvalidStateException("no main block node");
+        throw new IllegalStateException("no main block node");
     }
 
 
@@ -79,7 +78,7 @@ public class BlockNode extends Node {
             return;
         }
 
-        throw new InvalidStateException("no main block node");
+        throw new IllegalStateException("no main block node");
     }
 
     public BlockNode getParent() {
