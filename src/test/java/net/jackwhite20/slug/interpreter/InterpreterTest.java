@@ -163,6 +163,17 @@ public class InterpreterTest {
     }
 
     @Test
+    public void testIfElse() {
+        Lexer lexer = new Lexer("int success = 0 func Main() { int a = 42 if (a == 40) { success = 0 } else { success = 1 } }");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+
+        assertEquals(1, (int) MainBlockNode.getInstance().lookupVariable("success"));
+    }
+
+    @Test
     public void testWhile() {
         Lexer lexer = new Lexer("int i = 0 func Main() { while (i < 6) { i = i + 1 } }");
         Parser parser = new Parser(lexer);
@@ -211,5 +222,41 @@ public class InterpreterTest {
         interpreter.interpret();
 
         assertTrue(MainBlockNode.getInstance().lookupVariable("success"));
+    }
+
+    @Test(expected = SlugRuntimeException.class)
+    public void testVariableAlreadyExistsMainBlockNode() {
+        Lexer lexer = new Lexer("int i int i");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+    }
+
+    @Test(expected = SlugRuntimeException.class)
+    public void testVariableAlreadyExistsFunctionBlock() {
+        Lexer lexer = new Lexer("func Main() { int i int i }");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+    }
+
+    @Test(expected = SlugRuntimeException.class)
+    public void testVariableUpdateNotFoundMainBlockNode() {
+        Lexer lexer = new Lexer("i = 5");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+    }
+
+    @Test(expected = SlugRuntimeException.class)
+    public void testVariableUpdateNotFoundFunctionBlock() {
+        Lexer lexer = new Lexer("func Main() { i = 42}");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
     }
 }
