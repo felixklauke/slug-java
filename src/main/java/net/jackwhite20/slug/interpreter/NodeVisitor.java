@@ -76,6 +76,11 @@ class NodeVisitor {
         }*/
     }
 
+    private void visitVariableDeclaration(VariableDeclarationNode node) {
+        // Pass null as value to use the default value for it
+        currentBlock.registerVariable(node.getVariableName(), node.getVariableType(), null);
+    }
+
     private void visitVariableDeclarationAssign(VariableDeclarationAssignNode node) {
         // Get the value from the right expression
         Object value = visit(node.getRight());
@@ -209,6 +214,9 @@ class NodeVisitor {
             return visitBool((BoolNode) node);
         } else if (node instanceof BinaryNode) {
             return visitBinary((BinaryNode) node);
+        } else if (node instanceof VariableDeclarationNode) {
+            visitVariableDeclaration((VariableDeclarationNode) node);
+            return null;
         } else if (node instanceof VariableDeclarationAssignNode) {
             visitVariableDeclarationAssign(((VariableDeclarationAssignNode) node));
             return null;
