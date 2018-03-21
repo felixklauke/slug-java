@@ -31,7 +31,7 @@ public class FunctionCallNodeTest {
 
     private static final List<Node> PARAMETERS = Arrays.asList(new NumberNode("43"), new BoolNode("false"));
 
-    private static final FunctionNode FUNCTION_NODE = new FunctionNode("MyFunction", Collections.singletonList(new NumberNode("1")), PARAMETERS);
+    private static final FunctionNode FUNCTION_NODE = new FunctionNode("MyFunction", new BlockNode(null, Collections.singletonList(new NumberNode("1"))), PARAMETERS);
 
     private FunctionCallNode functionCallNode;
 

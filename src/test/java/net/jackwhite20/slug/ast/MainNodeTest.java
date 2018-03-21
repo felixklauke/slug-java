@@ -26,16 +26,23 @@ import static org.junit.Assert.assertEquals;
 
 public class MainNodeTest {
 
+    private static final List<Node> GLOBAL_VARIABLES = Collections.singletonList(new NoOpNode());
+
     private static final List<Node> FUNCTIONS = Collections.singletonList(
             new FunctionNode("Add",
-                    Collections.singletonList(new NumberNode("45")),
+                    new BlockNode(null, Collections.singletonList(new NumberNode("45"))),
                     Collections.singletonList(new StringNode("hello"))));
 
     private MainNode mainNode;
 
     @Before
-    public void setUp() throws Exception {
-        mainNode = new MainNode(FUNCTIONS);
+    public void setUp() {
+        mainNode = new MainNode(GLOBAL_VARIABLES, FUNCTIONS);
+    }
+
+    @Test
+    public void testGetGlobalVariables() {
+        assertEquals(GLOBAL_VARIABLES, mainNode.getGlobalVariables());
     }
 
     @Test
