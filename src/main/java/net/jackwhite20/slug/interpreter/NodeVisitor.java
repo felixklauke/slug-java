@@ -29,6 +29,9 @@ public class NodeVisitor {
 
     private GlobalVariableRegistry globalVariableRegistry = new GlobalVariableRegistry();
 
+    // TODO: Why another instance? works because global registry is static but it's not perfectly solved
+    private BlockNode currentBlock = new MainBlockNode();
+
     /**
      * Visits the NumberNode and returns it's value.
      *
@@ -48,6 +51,11 @@ public class NodeVisitor {
     }
 
     private void visitMain(MainNode node) {
+        // Register possible global variables
+        for (Node globalVar : node.getGlobalVariables()) {
+            visit(globalVar);
+        }
+
         if (node.getFunctions().size() == 0) {
             throw new SlugRuntimeException("no functions specified");
         }
@@ -63,29 +71,58 @@ public class NodeVisitor {
     }
 
     private void visitFunction(FunctionNode functionNode) {
-        for (Node node : functionNode.getChildren()) {
+        visit(functionNode.getBlock());
+        /*for (Node node : functionNode.getBlock()) {
             visit(node);
-        }
+        }*/
     }
 
     private void visitVariableDeclarationAssign(VariableDeclarationAssignNode node) {
         // Get the value from the right expression
         Object value = visit(node.getRight());
 
-        globalVariableRegistry.register(node.getVariableName(), node.getVariableType(), value);
+        currentBlock.registerVariable(node.getVariableName(), node.getVariableType(), value);
     }
 
     private void visitVariableAssign(VariableAssignNode node) {
         // Get the value from the right expression
         Object value = visit(node.getRight());
 
-        globalVariableRegistry.update(node.getVariableName(), value);
+        currentBlock.updateVariable(node.getVariableName(), value);
     }
 
     private Object visitVariableUsage(VariableUsageNode node) {
         String variableName = node.getVariableName();
 
-        return globalVariableRegistry.lookup(variableName);
+        return currentBlock.lookupVariable(variableName);
+    }
+
+    private Object visitBinary(BinaryNode node) {
+        if (node.getOperator() == TokenType.MINUS) {
+            return (int) visit(node.getLeft()) - (int) visit(node.getRight());
+        } else if (node.getOperator() == TokenType.PLUS) {
+            return (int) visit(node.getLeft()) + (int) visit(node.getRight());
+        } else if (node.getOperator() == TokenType.MULTIPLY) {
+            return (int) visit(node.getLeft()) * (int) visit(node.getRight());
+        } else if (node.getOperator() == TokenType.DIVIDE) {
+            return (int) visit(node.getLeft()) / (int) visit(node.getRight());
+        }
+
+        throw new SlugRuntimeException("unhandled binary operator " + node.getOperator());
+    }
+
+    private Object visitBinary(BinaryNode node) {
+        if (node.getOperator() == TokenType.MINUS) {
+            return (int) visit(node.getLeft()) - (int) visit(node.getRight());
+        } else if (node.getOperator() == TokenType.PLUS) {
+            return (int) visit(node.getLeft()) + (int) visit(node.getRight());
+        } else if (node.getOperator() == TokenType.MULTIPLY) {
+            return (int) visit(node.getLeft()) * (int) visit(node.getRight());
+        } else if (node.getOperator() == TokenType.DIVIDE) {
+            return (int) visit(node.getLeft()) / (int) visit(node.getRight());
+        }
+
+        throw new SlugRuntimeException("unhandled binary operator " + node.getOperator());
     }
 
     private Object visitBinary(BinaryNode node) {
@@ -135,8 +172,29 @@ public class NodeVisitor {
         boolean state = visitBoolean((BooleanNode) expression);
 
         if (state) {
-            for (Node trueNode : node.getTrueNodes()) {
+            /*for (Node trueNode : node.getTrueBlock()) {
                 visit(trueNode);
+            }*/
+            visitBlock(node.getTrueBlock());
+        } else {
+            for (Node falseNode : node.getFalseNodes()) {
+                visit(falseNode);
+            }
+        }
+    }
+
+    private void visitWhile(WhileNode node) {
+        if (!(node.getExpression() instanceof BooleanNode)) {
+            throw new SlugRuntimeException("the while expression need to be a boolean node");
+        }
+
+        while (visitBoolean((BooleanNode) node.getExpression())) {
+            for (Node children : node.getChildren()) {
+                visit(children);
+            }
+        } else {
+            for (Node falseNode : node.getFalseNodes()) {
+                visit(falseNode);
             }
         } else {
             for (Node falseNode : node.getFalseNodes()) {
@@ -155,6 +213,41 @@ public class NodeVisitor {
                 visit(children);
             }
         }
+    }
+
+    private void visitWhile(WhileNode node) {
+        if (!(node.getExpression() instanceof BooleanNode)) {
+            throw new SlugRuntimeException("the while expression need to be a boolean node");
+        }
+
+        while (visitBoolean((BooleanNode) node.getExpression())) {
+            for (Node children : node.getChildren()) {
+                visit(children);
+            }
+        }
+    }
+
+    private void visitFor(ForNode node) {
+        visit(node.getDeclaration());
+
+        while (visitBoolean((BooleanNode) node.getCondition())) {
+            visitBlock(node.getBlock());
+
+            // At the end visit the expression to eg. increase the variable used in the declaration
+            visit(node.getExpression());
+        }
+    }
+
+    private void visitBlock(BlockNode node) {
+        // Update the current block to the new one
+        currentBlock = node;
+
+        for (Node statement : node.getStatements()) {
+            visit(statement);
+        }
+
+        // We left the block, so set the current block to the parent of this block
+        currentBlock = currentBlock.getParent();
     }
 
     Object visit(Node node) {
@@ -184,6 +277,15 @@ public class NodeVisitor {
             return null;
         } else if (node instanceof WhileNode) {
             visitWhile(((WhileNode) node));
+            return null;
+        } else if (node instanceof ForNode) {
+            visitFor(((ForNode) node));
+            return null;
+        } else if (node instanceof BlockNode) {
+            visitBlock((BlockNode) node);
+            return null;
+        } else if (node instanceof NoOpNode) {
+            // Nothing
             return null;
         }
 

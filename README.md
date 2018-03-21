@@ -13,9 +13,9 @@ Feature and bug-fix requests are welcome.
 - [X] Basic structure
 - [X] Functions
 - [X] Variables (int, string, bool)
-- [ ] Scopes
+- [X] Scopes
 - [X] Boolean expression (myInt == otherInt, "test" == "test", 4 > 3)
-- [ ] Conditionals (if, for, while)
+- [X] Conditionals (if, for, while)
 - [ ] Internal functions (WriteLine, ReadLine, Random, etc.)
 - [X] Function calls
 - [ ] Classes (new instance creation, member variables, auto member variable constructor)

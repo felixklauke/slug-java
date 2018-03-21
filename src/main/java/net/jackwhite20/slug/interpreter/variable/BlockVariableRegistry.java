@@ -14,29 +14,14 @@
  * limitations under the License.
  */
 
-package net.jackwhite20.slug.ast;
-
-import java.util.List;
+package net.jackwhite20.slug.interpreter.variable;
 
 /**
  * @author Philip 'JackWhite20' <silencephil@gmail.com>
  */
-public class MainNode extends Node {
+public class BlockVariableRegistry extends VariableRegistry {
 
-    private List<Node> globalVariables;
-
-    private List<Node> functions;
-
-    public MainNode(List<Node> globalVariables, List<Node> functions) {
-        this.globalVariables = globalVariables;
-        this.functions = functions;
-    }
-
-    public List<Node> getGlobalVariables() {
-        return globalVariables;
-    }
-
-    public List<Node> getFunctions() {
-        return functions;
+    public BlockVariableRegistry(String name) {
+        super(name);
     }
 }

@@ -18,6 +18,16 @@ package net.jackwhite20.slug.interpreter.variable;
 
 public final class GlobalVariableRegistry extends VariableRegistry {
 
+    private static GlobalVariableRegistry instance;
+
+    public static GlobalVariableRegistry getInstance() {
+        if (instance == null) {
+            instance = new GlobalVariableRegistry();
+        }
+
+        return instance;
+    }
+
     public GlobalVariableRegistry() {
         super("Global");
     }

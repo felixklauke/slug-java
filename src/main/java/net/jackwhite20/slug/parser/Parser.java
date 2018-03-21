@@ -17,6 +17,7 @@
 package net.jackwhite20.slug.parser;
 
 import net.jackwhite20.slug.ast.*;
+import net.jackwhite20.slug.exception.SlugRuntimeException;
 import net.jackwhite20.slug.interpreter.FunctionRegistry;
 import net.jackwhite20.slug.lexer.Lexer;
 import net.jackwhite20.slug.lexer.Token;
@@ -33,6 +34,8 @@ public class Parser {
     private Lexer lexer;
 
     private Token currentToken;
+
+    private BlockNode currentBlock = new MainBlockNode();
 
     public Parser(Lexer lexer) {
         this.lexer = lexer;
@@ -60,11 +63,13 @@ public class Parser {
         List<Node> parameters = new ArrayList<>();
         eat(TokenType.RIGHT_PARAN);
 
-        eat(TokenType.CURLY_LEFT_PARAN);
-        List<Node> functionStatements = parseFunctionStatements();
-        eat(TokenType.CURLY_RIGHT_PARAN);
+        BlockNode blockNode = parseBlock();
+        //eat(TokenType.CURLY_LEFT_PARAN);
+        //List<Node> functionStatements = parseFunctionStatements();
+        //eat(TokenType.CURLY_RIGHT_PARAN);
+        currentBlock = currentBlock.getParent();
 
-        FunctionNode functionNode = new FunctionNode(functionName, functionStatements, parameters);
+        FunctionNode functionNode = new FunctionNode(functionName, blockNode, parameters);
 
         // Register the global function
         FunctionRegistry.register(functionNode);
@@ -146,17 +151,11 @@ public class Parser {
         Node expression = expression();
         eat(TokenType.RIGHT_PARAN);
 
-        eat(TokenType.CURLY_LEFT_PARAN);
-
-        List<Node> trueNodes = new ArrayList<>();
+        //List<Node> trueNodes = new ArrayList<>();
+        BlockNode trueBlock;
         List<Node> falseNodes = new ArrayList<>();
 
-        while (currentToken.getTokenType() != TokenType.CURLY_RIGHT_PARAN) {
-            // Add all true node statements
-            trueNodes.add(statement());
-        }
-
-        eat(TokenType.CURLY_RIGHT_PARAN);
+        trueBlock = parseBlock();
 
         // Handle else block
         if (currentToken.getTokenType() == TokenType.ELSE) {
@@ -172,7 +171,7 @@ public class Parser {
             eat(TokenType.CURLY_RIGHT_PARAN);
         }
 
-        return new IfNode(expression, trueNodes, falseNodes);
+        return new IfNode(expression, trueBlock, falseNodes);
     }
 
     private Node parseWhile() {
@@ -194,6 +193,41 @@ public class Parser {
         eat(TokenType.CURLY_RIGHT_PARAN);
 
         return new WhileNode(expression, children);
+    }
+
+    private Node parseFor() {
+        eat(TokenType.FOR);
+        eat(TokenType.LEFT_PARAN);
+
+        Node declaration = parseDeclareOrAndAssignStatement();
+        eat(TokenType.SEMICOLON);
+        Node condition = term();
+        if (!(condition instanceof BooleanNode)) {
+            throw new SlugRuntimeException("for condition needs to be a boolean node");
+        }
+        eat(TokenType.SEMICOLON);
+        Node expression = parseVariableAssign();
+
+        eat(TokenType.RIGHT_PARAN);
+
+        BlockNode blockNode = parseBlock();
+
+        return new ForNode(declaration, condition, expression, blockNode);
+    }
+
+    private BlockNode parseBlock() {
+        currentBlock = new BlockNode(currentBlock);
+
+        eat(TokenType.CURLY_LEFT_PARAN);
+        List<Node> functionStatements = parseFunctionStatements();
+        eat(TokenType.CURLY_RIGHT_PARAN);
+
+        currentBlock.setStatements(functionStatements);
+
+        BlockNode localBlockNode = currentBlock;
+        currentBlock = currentBlock.getParent();
+
+        return localBlockNode;
     }
 
     private Node statement() {
@@ -221,6 +255,8 @@ public class Parser {
             node = parseIf();
         } else if (currentToken.getTokenType() == TokenType.WHILE) {
             node = parseWhile();
+        } else if (currentToken.getTokenType() == TokenType.FOR) {
+            node = parseFor();
         } else {
             node = new NoOpNode();
         }
@@ -310,6 +346,12 @@ public class Parser {
     }
 
     private Node parseSlugMainFile() {
+        // A SLUG file can start with possible global variables
+        List<Node> globalVariables = new ArrayList<>();
+        while (Token.isVariable(currentToken.getTokenType())) {
+            globalVariables.add(parseDeclareOrAndAssignStatement());
+        }
+
         List<Node> functions = new ArrayList<>();
 
         // Parse function until we have all parsed
@@ -317,7 +359,7 @@ public class Parser {
             functions.add(parseFunction());
         }
 
-        return new MainNode(functions);
+        return new MainNode(globalVariables, functions);
     }
 
     /**
