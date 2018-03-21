@@ -27,6 +27,14 @@ public abstract class VariableRegistry {
 
     private static Logger logger = LoggerFactory.getLogger(VariableRegistry.class);
 
+    private static Map<TokenType, Object> DEFAULT_VALUES = new HashMap<>();
+
+    static {
+        DEFAULT_VALUES.put(TokenType.INTEGER, 0);
+        DEFAULT_VALUES.put(TokenType.STRING, "");
+        DEFAULT_VALUES.put(TokenType.BOOL, false);
+    }
+
     private String name;
 
     private Map<String, Object> variables = new HashMap<>();
@@ -38,6 +46,11 @@ public abstract class VariableRegistry {
     }
 
     public void register(String variableName, TokenType variableType, Object value) {
+        // Use default value if the value is null
+        if (value == null) {
+            value = DEFAULT_VALUES.get(variableType);
+        }
+
         variables.put(variableName, value);
         variableTypes.put(variableName, variableType);
 

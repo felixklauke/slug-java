@@ -6,29 +6,41 @@ import net.jackwhite20.slug.lexer.TokenType;
 
 public class MainBlockNode extends BlockNode {
 
+    private static MainBlockNode instance;
+
+    private GlobalVariableRegistry globalVariableRegistry;
+
     public MainBlockNode() {
         super(null);
+
+        instance = this;
+
+        this.globalVariableRegistry = new GlobalVariableRegistry();
+    }
+
+    public static MainBlockNode getInstance() {
+        return instance;
     }
 
     @Override
     public void registerVariable(String variableName, TokenType variableType, Object value) {
         // Only register if the variable isn't registered as a global register
-        if (GlobalVariableRegistry.getInstance().lookup(variableName) != null) {
+        if (globalVariableRegistry.lookup(variableName) != null) {
             throw new SlugRuntimeException("variable " + variableName + " already exists");
         }
 
-        GlobalVariableRegistry.getInstance().register(variableName, variableType, value);
+        globalVariableRegistry.register(variableName, variableType, value);
     }
 
     @Override
-    public Object lookupVariable(String name) {
-        return GlobalVariableRegistry.getInstance().lookup(name);
+    public <T> T lookupVariable(String name) {
+        return globalVariableRegistry.lookup(name);
     }
 
     @Override
     public void updateVariable(String variableName, Object value) {
-        if (GlobalVariableRegistry.getInstance().lookup(variableName) != null) {
-            GlobalVariableRegistry.getInstance().update(variableName, value);
+        if (globalVariableRegistry.lookup(variableName) != null) {
+            globalVariableRegistry.update(variableName, value);
             return;
         }
 

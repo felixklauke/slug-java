@@ -67,7 +67,10 @@ public class Parser {
         //eat(TokenType.CURLY_LEFT_PARAN);
         //List<Node> functionStatements = parseFunctionStatements();
         //eat(TokenType.CURLY_RIGHT_PARAN);
-        currentBlock = currentBlock.getParent();
+        // We need to check if the parent is null because the main block node parent is null
+        if (currentBlock.getParent() != null) {
+            currentBlock = currentBlock.getParent();
+        }
 
         FunctionNode functionNode = new FunctionNode(functionName, blockNode, parameters);
 
@@ -110,7 +113,14 @@ public class Parser {
 
         eat(TokenType.RIGHT_PARAN);
 
-        return new FunctionCallNode(name, FunctionRegistry.lookup(name), parameter);
+        FunctionNode functionNodeToCall = FunctionRegistry.lookup(name);
+
+        // Do not continue if the function to call does not exists
+        if (functionNodeToCall == null) {
+            throw new SlugRuntimeException("function " + name + " does not exists");
+        }
+
+        return new FunctionCallNode(name, functionNodeToCall, parameter);
     }
 
     private Node parseDeclareOrAndAssignStatement() {
