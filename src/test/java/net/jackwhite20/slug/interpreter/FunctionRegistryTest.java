@@ -16,6 +16,7 @@
 
 package net.jackwhite20.slug.interpreter;
 
+import net.jackwhite20.slug.ast.BlockNode;
 import net.jackwhite20.slug.ast.FunctionNode;
 import net.jackwhite20.slug.ast.NumberNode;
 import org.junit.Before;
@@ -30,8 +31,10 @@ public class FunctionRegistryTest {
     private static final FunctionNode FUNCTION_NODE;
 
     static {
+        BlockNode blockNode = new BlockNode(null);
+        blockNode.setStatements(Collections.singletonList(new NumberNode("5")));
         FUNCTION_NODE = new FunctionNode("Test",
-                Collections.singletonList(new NumberNode("5")),
+                blockNode,
                 Collections.singletonList(new NumberNode("6")));
     }
 
@@ -51,9 +54,9 @@ public class FunctionRegistryTest {
 
         assertNotNull(functionNode);
 
-        assertNotNull(functionNode.getChildren());
-        assertEquals(1, functionNode.getChildren().size());
-        assertTrue(functionNode.getChildren().get(0) instanceof NumberNode);
+        assertNotNull(functionNode.getBlock());
+        assertEquals(1, functionNode.getBlock().getStatements().size());
+        assertTrue(functionNode.getBlock().getStatements().get(0) instanceof NumberNode);
 
         assertNotNull(functionNode.getParameter());
         assertEquals(1, functionNode.getParameter().size());

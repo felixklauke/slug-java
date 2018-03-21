@@ -25,13 +25,13 @@ public class FunctionNode extends Node {
 
     private String name;
 
-    private List<Node> children;
+    private BlockNode children;
 
     private List<Node> parameter;
 
-    public FunctionNode(String name, List<Node> children, List<Node> parameter) {
+    public FunctionNode(String name, BlockNode block, List<Node> parameter) {
         this.name = name;
-        this.children = children;
+        this.children = block;
         this.parameter = parameter;
     }
 
@@ -39,7 +39,7 @@ public class FunctionNode extends Node {
         return name;
     }
 
-    public List<Node> getChildren() {
+    public BlockNode getBlock() {
         return children;
     }
 

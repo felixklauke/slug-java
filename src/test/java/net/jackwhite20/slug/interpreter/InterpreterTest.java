@@ -122,6 +122,7 @@ public class InterpreterTest {
         Interpreter interpreter = new Interpreter(parser);
         interpreter.interpret();
 
+
         assertEquals(1, (int) interpreter.getGlobalVariableRegistry().lookup("success"));
     }
 

@@ -39,7 +39,7 @@ public class FunctionNodeTest {
 
     @Before
     public void setUp() throws Exception {
-        functionNode = new FunctionNode(NAME, CHILDREN, PARAMETERS);
+        functionNode = new FunctionNode(NAME, new BlockNode(null, CHILDREN), PARAMETERS);
     }
 
     @Test
@@ -49,7 +49,8 @@ public class FunctionNodeTest {
 
     @Test
     public void testGetChildren() {
-        assertEquals(CHILDREN, functionNode.getChildren());
+        assertEquals(1, functionNode.getBlock().getStatements().size());
+        assertEquals(CHILDREN, functionNode.getBlock().getStatements().get(0));
     }
 
     @Test

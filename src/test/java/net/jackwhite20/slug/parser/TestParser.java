@@ -58,17 +58,17 @@ public class TestParser {
         FunctionNode functionNode = (FunctionNode) mainFunction;
 
         assertEquals("Main", functionNode.getName());
-        assertEquals(6, functionNode.getChildren().size());
+        assertEquals(6, functionNode.getBlock().getStatements().size());
         assertEquals(0, functionNode.getParameter().size());
 
-        assertTrue(functionNode.getChildren().get(0) instanceof VariableDeclarationAssignNode);
+        assertTrue(functionNode.getBlock().getStatements().get(0) instanceof VariableDeclarationAssignNode);
 
-        VariableDeclarationAssignNode variableDeclarationAssignNode = (VariableDeclarationAssignNode) functionNode.getChildren().get(0);
+        VariableDeclarationAssignNode variableDeclarationAssignNode = (VariableDeclarationAssignNode) functionNode.getBlock().getStatements().get(0);
         assertEquals("a", variableDeclarationAssignNode.getVariableName());
         assertTrue(variableDeclarationAssignNode.getRight() instanceof NumberNode);
         assertEquals(2, ((NumberNode) variableDeclarationAssignNode.getRight()).getValue());
 
-        VariableAssignNode calculation = (VariableAssignNode) functionNode.getChildren().get(1);
+        VariableAssignNode calculation = (VariableAssignNode) functionNode.getBlock().getStatements().get(1);
         assertEquals("a", calculation.getVariableName());
         assertTrue(calculation.getRight() instanceof BinaryNode);
         BinaryNode right = (BinaryNode) calculation.getRight();
@@ -77,26 +77,26 @@ public class TestParser {
         assertTrue(right.getRight() instanceof BinaryNode);
         // TODO: Test further?
 
-        FunctionCallNode functionCallNode = (FunctionCallNode) functionNode.getChildren().get(2);
+        FunctionCallNode functionCallNode = (FunctionCallNode) functionNode.getBlock().getStatements().get(2);
         assertEquals("TestFunctionCall", functionCallNode.getName());
         assertEquals(0, functionCallNode.getParameter().size());
         assertNotNull(functionCallNode.getFunctionNode());
         assertEquals("TestFunctionCall", functionCallNode.getFunctionNode().getName());
         assertEquals(0, functionCallNode.getFunctionNode().getParameter().size());
-        assertEquals(1, functionCallNode.getFunctionNode().getChildren().size());
-        assertTrue(functionCallNode.getFunctionNode().getChildren().get(0) instanceof NoOpNode);
+        assertEquals(1, functionCallNode.getFunctionNode().getBlock().getStatements().size());
+        assertTrue(functionCallNode.getFunctionNode().getBlock().getStatements().get(0) instanceof NoOpNode);
 
-        VariableDeclarationAssignNode bool = (VariableDeclarationAssignNode) functionNode.getChildren().get(3);
+        VariableDeclarationAssignNode bool = (VariableDeclarationAssignNode) functionNode.getBlock().getStatements().get(3);
         assertEquals("b", bool.getVariableName());
         assertTrue(bool.getRight() instanceof BoolNode);
         assertEquals(true, ((BoolNode) bool.getRight()).getValue());
 
-        VariableAssignNode boolSecond = (VariableAssignNode) functionNode.getChildren().get(4);
+        VariableAssignNode boolSecond = (VariableAssignNode) functionNode.getBlock().getStatements().get(4);
         assertEquals("b", boolSecond.getVariableName());
         assertTrue(boolSecond.getRight() instanceof BoolNode);
         assertEquals(false, ((BoolNode) boolSecond.getRight()).getValue());
 
-        VariableAssignNode variableAssignNode = (VariableAssignNode) functionNode.getChildren().get(5);
+        VariableAssignNode variableAssignNode = (VariableAssignNode) functionNode.getBlock().getStatements().get(5);
         assertTrue(variableAssignNode.getRight() instanceof VariableUsageNode);
         assertEquals("a", ((VariableUsageNode) variableAssignNode.getRight()).getVariableName());
     }

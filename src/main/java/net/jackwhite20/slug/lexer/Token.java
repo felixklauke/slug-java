@@ -37,4 +37,8 @@ public class Token {
     public String getValue() {
         return value;
     }
+
+    public static boolean isVariable(TokenType tokenType) {
+        return tokenType == TokenType.INTEGER || tokenType == TokenType.BOOL || tokenType == TokenType.STRING;
+    }
 }
