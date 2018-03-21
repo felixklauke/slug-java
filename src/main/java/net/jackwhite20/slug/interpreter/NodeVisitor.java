@@ -125,6 +125,20 @@ public class NodeVisitor {
         throw new SlugRuntimeException("unhandled binary operator " + node.getOperator());
     }
 
+    private Object visitBinary(BinaryNode node) {
+        if (node.getOperator() == TokenType.MINUS) {
+            return (int) visit(node.getLeft()) - (int) visit(node.getRight());
+        } else if (node.getOperator() == TokenType.PLUS) {
+            return (int) visit(node.getLeft()) + (int) visit(node.getRight());
+        } else if (node.getOperator() == TokenType.MULTIPLY) {
+            return (int) visit(node.getLeft()) * (int) visit(node.getRight());
+        } else if (node.getOperator() == TokenType.DIVIDE) {
+            return (int) visit(node.getLeft()) / (int) visit(node.getRight());
+        }
+
+        throw new SlugRuntimeException("unhandled binary operator " + node.getOperator());
+    }
+
     private boolean visitBoolean(BooleanNode node) {
         // TODO: Better handling and more supported types
         int a = (int) visit(node.getLeft());
@@ -181,6 +195,22 @@ public class NodeVisitor {
         } else {
             for (Node falseNode : node.getFalseNodes()) {
                 visit(falseNode);
+            }
+        } else {
+            for (Node falseNode : node.getFalseNodes()) {
+                visit(falseNode);
+            }
+        }
+    }
+
+    private void visitWhile(WhileNode node) {
+        if (!(node.getExpression() instanceof BooleanNode)) {
+            throw new SlugRuntimeException("the while expression need to be a boolean node");
+        }
+
+        while (visitBoolean((BooleanNode) node.getExpression())) {
+            for (Node children : node.getChildren()) {
+                visit(children);
             }
         }
     }
