@@ -19,6 +19,7 @@ package net.jackwhite20.slug.parser;
 import net.jackwhite20.slug.ast.*;
 import net.jackwhite20.slug.exception.SlugRuntimeException;
 import net.jackwhite20.slug.interpreter.FunctionRegistry;
+import net.jackwhite20.slug.interpreter.InternalFunctionRegistry;
 import net.jackwhite20.slug.lexer.Lexer;
 import net.jackwhite20.slug.lexer.Token;
 import net.jackwhite20.slug.lexer.TokenType;
@@ -128,8 +129,8 @@ public class Parser {
 
         FunctionNode functionNodeToCall = FunctionRegistry.lookup(name);
 
-        // Do not continue if the function to call does not exists
-        if (functionNodeToCall == null) {
+        // Do not continue if the function to call does not exists and if it is not an internal function
+        if (functionNodeToCall == null && !InternalFunctionRegistry.isInternal(name)) {
             throw new SlugRuntimeException("function " + name + " does not exists");
         }
 

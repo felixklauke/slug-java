@@ -104,6 +104,13 @@ class NodeVisitor {
     private Object visitFunctionCall(FunctionCallNode node) {
         FunctionNode functionNode = node.getFunctionNode();
 
+        if (functionNode == null) {
+            // Get the parameter value
+            Object value = visit(node.getParameter().get(0));
+
+            return InternalFunctionRegistry.execute(node.getName(), value);
+        }
+
         // Don't allow a function call with the wrong amount of parameters passed to it
         if (node.getParameter().size() != functionNode.getParameter().size()) {
             throw new SlugRuntimeException("parameter amount passed does not match function signature");
