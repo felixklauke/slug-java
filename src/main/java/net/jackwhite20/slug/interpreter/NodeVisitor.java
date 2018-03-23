@@ -123,6 +123,20 @@ class NodeVisitor {
         throw new SlugRuntimeException("unhandled binary operator " + node.getOperator());
     }
 
+    private Object visitUnary(UnaryNode node) {
+        if (!(node.getExpression() instanceof NumberNode)) {
+            throw new SlugRuntimeException("unary node expression needs to be a number node");
+        }
+
+        if (node.getOperator().getTokenType() == TokenType.PLUS) {
+            return +visitNumber((NumberNode) node.getExpression());
+        } else if (node.getOperator().getTokenType() == TokenType.MINUS) {
+            return -visitNumber((NumberNode) node.getExpression());
+        }
+
+        return null;
+    }
+
     private boolean visitBoolean(BooleanNode node) {
         // TODO: Better handling and more supported types
         int a = (int) visit(node.getLeft());
@@ -209,6 +223,8 @@ class NodeVisitor {
             return visitBool((BoolNode) node);
         } else if (node instanceof BinaryNode) {
             return visitBinary((BinaryNode) node);
+        } else if (node instanceof UnaryNode) {
+            return visitUnary((UnaryNode) node);
         } else if (node instanceof VariableDeclarationNode) {
             visitVariableDeclaration((VariableDeclarationNode) node);
             return null;

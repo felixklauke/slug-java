@@ -259,4 +259,35 @@ public class InterpreterTest {
         Interpreter interpreter = new Interpreter(parser);
         interpreter.interpret();
     }
+
+    @Test
+    public void testUnaryMinus() {
+        Lexer lexer = new Lexer("int i = -512");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+
+        assertEquals(-512, (int) MainBlockNode.getInstance().lookupVariable("i"));
+    }
+
+    @Test
+    public void testUnaryPlus() {
+        Lexer lexer = new Lexer("int i = +512");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+
+        assertEquals(512, (int) MainBlockNode.getInstance().lookupVariable("i"));
+    }
+
+    @Test(expected = SlugRuntimeException.class)
+    public void testUnaryInvalid() {
+        Lexer lexer = new Lexer("int i = -false");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+    }
 }
