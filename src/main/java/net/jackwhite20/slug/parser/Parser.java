@@ -67,7 +67,10 @@ public class Parser {
         //eat(TokenType.CURLY_LEFT_PARAN);
         //List<Node> functionStatements = parseFunctionStatements();
         //eat(TokenType.CURLY_RIGHT_PARAN);
-        currentBlock = currentBlock.getParent();
+        // We need to check if the parent is null because the main block node parent is null
+        if (currentBlock.getParent() != null) {
+            currentBlock = currentBlock.getParent();
+        }
 
         FunctionNode functionNode = new FunctionNode(functionName, blockNode, parameters);
 
@@ -110,7 +113,14 @@ public class Parser {
 
         eat(TokenType.RIGHT_PARAN);
 
-        return new FunctionCallNode(name, FunctionRegistry.lookup(name), parameter);
+        FunctionNode functionNodeToCall = FunctionRegistry.lookup(name);
+
+        // Do not continue if the function to call does not exists
+        if (functionNodeToCall == null) {
+            throw new SlugRuntimeException("function " + name + " does not exists");
+        }
+
+        return new FunctionCallNode(name, functionNodeToCall, parameter);
     }
 
     private Node parseDeclareOrAndAssignStatement() {
@@ -151,9 +161,8 @@ public class Parser {
         Node expression = expression();
         eat(TokenType.RIGHT_PARAN);
 
-        //List<Node> trueNodes = new ArrayList<>();
         BlockNode trueBlock;
-        List<Node> falseNodes = new ArrayList<>();
+        BlockNode falseBlock = null;
 
         trueBlock = parseBlock();
 
@@ -161,17 +170,10 @@ public class Parser {
         if (currentToken.getTokenType() == TokenType.ELSE) {
             eat(TokenType.ELSE);
 
-            eat(TokenType.CURLY_LEFT_PARAN);
-
-            while (currentToken.getTokenType() != TokenType.CURLY_RIGHT_PARAN) {
-                // Add all false node statements
-                falseNodes.add(statement());
-            }
-
-            eat(TokenType.CURLY_RIGHT_PARAN);
+            falseBlock = parseBlock();
         }
 
-        return new IfNode(expression, trueBlock, falseNodes);
+        return new IfNode(expression, trueBlock, falseBlock);
     }
 
     private Node parseWhile() {

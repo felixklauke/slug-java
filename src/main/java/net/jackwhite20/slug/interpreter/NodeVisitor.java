@@ -18,19 +18,15 @@ package net.jackwhite20.slug.interpreter;
 
 import net.jackwhite20.slug.ast.*;
 import net.jackwhite20.slug.exception.SlugRuntimeException;
-import net.jackwhite20.slug.interpreter.variable.GlobalVariableRegistry;
 import net.jackwhite20.slug.lexer.TokenType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class NodeVisitor {
+class NodeVisitor {
 
     private static Logger logger = LoggerFactory.getLogger(NodeVisitor.class);
 
-    private GlobalVariableRegistry globalVariableRegistry = new GlobalVariableRegistry();
-
-    // TODO: Why another instance? works because global registry is static but it's not perfectly solved
-    private BlockNode currentBlock = new MainBlockNode();
+    private BlockNode currentBlock = MainBlockNode.getInstance();
 
     /**
      * Visits the NumberNode and returns it's value.
@@ -56,18 +52,21 @@ public class NodeVisitor {
             visit(globalVar);
         }
 
-        if (node.getFunctions().size() == 0) {
-            throw new SlugRuntimeException("no functions specified");
+        if (node.getFunctions().size() == 0 && node.getGlobalVariables().size() == 0) {
+            throw new SlugRuntimeException("no functions and global variables");
         }
 
-        FunctionNode mainFunction = (FunctionNode) node.getFunctions().get(node.getFunctions().size() - 1);
+        // Only search main function and start interpreting if functions are available
+        if (node.getFunctions().size() > 0) {
+            FunctionNode mainFunction = (FunctionNode) node.getFunctions().get(node.getFunctions().size() - 1);
 
-        if (!mainFunction.getName().equals("Main")) {
-            throw new SlugRuntimeException("the 'Main' function needs to be the last function");
+            if (!mainFunction.getName().equals("Main")) {
+                throw new SlugRuntimeException("the 'Main' function needs to be the last function");
+            }
+
+            // Visit the main function
+            visitFunction(mainFunction);
         }
-
-        // Visit the main function
-        visitFunction(mainFunction);
     }
 
     private void visitFunction(FunctionNode functionNode) {
@@ -75,6 +74,11 @@ public class NodeVisitor {
         /*for (Node node : functionNode.getBlock()) {
             visit(node);
         }*/
+    }
+
+    private void visitVariableDeclaration(VariableDeclarationNode node) {
+        // Pass null as value to use the default value for it
+        currentBlock.registerVariable(node.getVariableName(), node.getVariableType(), null);
     }
 
     private void visitVariableDeclarationAssign(VariableDeclarationAssignNode node) {
@@ -95,6 +99,14 @@ public class NodeVisitor {
         String variableName = node.getVariableName();
 
         return currentBlock.lookupVariable(variableName);
+    }
+
+    private Object visitFunctionCall(FunctionCallNode node) {
+        // Visit the the function we want to call
+        visitFunction(node.getFunctionNode());
+
+        // TODO: Function return types and logic
+        return null;
     }
 
     private Object visitBinary(BinaryNode node) {
@@ -144,14 +156,9 @@ public class NodeVisitor {
         boolean state = visitBoolean((BooleanNode) expression);
 
         if (state) {
-            /*for (Node trueNode : node.getTrueBlock()) {
-                visit(trueNode);
-            }*/
             visitBlock(node.getTrueBlock());
         } else {
-            for (Node falseNode : node.getFalseNodes()) {
-                visit(falseNode);
-            }
+            visitBlock(node.getFalseBlock());
         }
     }
 
@@ -202,6 +209,9 @@ public class NodeVisitor {
             return visitBool((BoolNode) node);
         } else if (node instanceof BinaryNode) {
             return visitBinary((BinaryNode) node);
+        } else if (node instanceof VariableDeclarationNode) {
+            visitVariableDeclaration((VariableDeclarationNode) node);
+            return null;
         } else if (node instanceof VariableDeclarationAssignNode) {
             visitVariableDeclarationAssign(((VariableDeclarationAssignNode) node));
             return null;
@@ -210,6 +220,8 @@ public class NodeVisitor {
             return null;
         } else if (node instanceof VariableUsageNode) {
             return visitVariableUsage(((VariableUsageNode) node));
+        } else if (node instanceof FunctionCallNode) {
+            return visitFunctionCall(((FunctionCallNode) node));
         } else if (node instanceof BooleanNode) {
             return visitBoolean(((BooleanNode) node));
         } else if (node instanceof IfNode) {
@@ -225,16 +237,12 @@ public class NodeVisitor {
             visitBlock((BlockNode) node);
             return null;
         } else if (node instanceof NoOpNode) {
-            // Nothing
+            // Do nothing (no op)
             return null;
         }
 
         logger.error("Error on visit, unhandled node {}", node.getClass().getName());
 
         return null;
-    }
-
-    public GlobalVariableRegistry getGlobalVariableRegistry() {
-        return globalVariableRegistry;
     }
 }

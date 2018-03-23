@@ -14,11 +14,27 @@
  * limitations under the License.
  */
 
-package net.jackwhite20.slug.interpreter.variable;
+package net.jackwhite20.slug.ast;
 
-public final class GlobalVariableRegistry extends VariableRegistry {
+import org.junit.Before;
+import org.junit.Test;
 
-    public GlobalVariableRegistry() {
-        super("Global");
+public class BlockNodeTest {
+
+    private BlockNode blockNode;
+
+    @Before
+    public void setUp() throws Exception {
+        blockNode = new BlockNode(null);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testMainBlockInvalidLookup() {
+        blockNode.lookupVariable("a");
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testMainBlockInvalidUpdate() {
+        blockNode.updateVariable("a", 0);
     }
 }

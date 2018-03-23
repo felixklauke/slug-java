@@ -16,6 +16,7 @@
 
 package net.jackwhite20.slug.interpreter;
 
+import net.jackwhite20.slug.ast.MainBlockNode;
 import net.jackwhite20.slug.exception.SlugRuntimeException;
 import net.jackwhite20.slug.lexer.Lexer;
 import net.jackwhite20.slug.parser.Parser;
@@ -46,122 +47,157 @@ public class InterpreterTest {
 
     @Test
     public void testVariableDeclarationAndAssign() {
-        Lexer lexer = new Lexer("func Main() { int a = 42 string b = \"hello\" bool c = true }");
+        Lexer lexer = new Lexer("int a = 42 string b = \"hello\" bool c = true");
         Parser parser = new Parser(lexer);
 
         Interpreter interpreter = new Interpreter(parser);
         interpreter.interpret();
 
-        assertEquals(42, (int) interpreter.getGlobalVariableRegistry().lookup("a"));
-        assertEquals("hello", interpreter.getGlobalVariableRegistry().lookup("b"));
-        assertEquals(true, interpreter.getGlobalVariableRegistry().lookup("c"));
+        assertEquals(42, (int) MainBlockNode.getInstance().lookupVariable("a"));
+        assertEquals("hello", MainBlockNode.getInstance().lookupVariable("b"));
+        assertEquals(true, MainBlockNode.getInstance().lookupVariable("c"));
     }
 
     @Test
     public void testVariableDeclarationAndAssignAndOnlyAssign() {
-        Lexer lexer = new Lexer("func Main() { int a = 42 string b = \"hello\" bool c = true a = 35 b = \"changed\" c = false}");
+        Lexer lexer = new Lexer("int a = 42 string b = \"hello\" bool c = true func Main() { a = 35 b = \"changed\" c = false }");
         Parser parser = new Parser(lexer);
 
         Interpreter interpreter = new Interpreter(parser);
         interpreter.interpret();
 
-        assertEquals(35, (int) interpreter.getGlobalVariableRegistry().lookup("a"));
-        assertEquals("changed", interpreter.getGlobalVariableRegistry().lookup("b"));
-        assertEquals(false, interpreter.getGlobalVariableRegistry().lookup("c"));
+        assertEquals(35, (int) MainBlockNode.getInstance().lookupVariable("a"));
+        assertEquals("changed", MainBlockNode.getInstance().lookupVariable("b"));
+        assertEquals(false, MainBlockNode.getInstance().lookupVariable("c"));
+    }
+
+    @Test
+    public void testVariableDeclarationOnly() {
+        // This also tests default values
+        Lexer lexer = new Lexer("int i string s bool b");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+
+        assertEquals(0, (int) MainBlockNode.getInstance().lookupVariable("i"));
+        assertEquals("", MainBlockNode.getInstance().lookupVariable("s"));
+        assertEquals(false, MainBlockNode.getInstance().lookupVariable("b"));
     }
 
     @Test
     public void testBooleanNode() {
-        Lexer lexer = new Lexer("func Main() { bool b = 4 > 2 }");
+        Lexer lexer = new Lexer("bool b = 4 > 2");
         Parser parser = new Parser(lexer);
 
         Interpreter interpreter = new Interpreter(parser);
         interpreter.interpret();
 
-        assertTrue(interpreter.getGlobalVariableRegistry().lookup("b"));
+        assertTrue(MainBlockNode.getInstance().lookupVariable("b"));
     }
 
     @Test
     public void testIfNumberEqual() {
-        Lexer lexer = new Lexer("func Main() { int a = 42 if (a == 42) { int success = 1 } }");
+        Lexer lexer = new Lexer("int success = 0 func Main() { int a = 42 if (a == 42) { success = 1 } }");
         Parser parser = new Parser(lexer);
 
         Interpreter interpreter = new Interpreter(parser);
         interpreter.interpret();
 
-        assertEquals(1, (int) interpreter.getGlobalVariableRegistry().lookup("success"));
+        assertEquals(1, (int) MainBlockNode.getInstance().lookupVariable("success"));
     }
 
     @Test
     public void testIfNumberNotEqual() {
-        Lexer lexer = new Lexer("func Main() { int a = 42 if (a != 40) { int success = 1 } }");
+        Lexer lexer = new Lexer("int success = 0 func Main() { int a = 42 if (a != 40) { success = 1 } }");
         Parser parser = new Parser(lexer);
 
         Interpreter interpreter = new Interpreter(parser);
         interpreter.interpret();
 
-        assertEquals(1, (int) interpreter.getGlobalVariableRegistry().lookup("success"));
+        assertEquals(1, (int) MainBlockNode.getInstance().lookupVariable("success"));
     }
 
     @Test
     public void testIfNumberGreaterEqual() {
-        Lexer lexer = new Lexer("func Main() { int a = 42 if (a >= 40) { int success = 1 } }");
+        Lexer lexer = new Lexer("int success = 0 func Main() { int a = 42 if (a >= 40) { success = 1 } }");
         Parser parser = new Parser(lexer);
 
         Interpreter interpreter = new Interpreter(parser);
         interpreter.interpret();
 
-        assertEquals(1, (int) interpreter.getGlobalVariableRegistry().lookup("success"));
+        assertEquals(1, (int) MainBlockNode.getInstance().lookupVariable("success"));
     }
 
     @Test
     public void testIfNumberLessEqual() {
-        Lexer lexer = new Lexer("func Main() { int a = 42 if (a <= 42) { int success = 1 } }");
+        Lexer lexer = new Lexer("int success = 0 func Main() { int a = 42 if (a <= 42) { success = 1 } }");
         Parser parser = new Parser(lexer);
 
         Interpreter interpreter = new Interpreter(parser);
         interpreter.interpret();
 
-
-        assertEquals(1, (int) interpreter.getGlobalVariableRegistry().lookup("success"));
+        assertEquals(1, (int) MainBlockNode.getInstance().lookupVariable("success"));
     }
 
     @Test
     public void testIfNumberGreater() {
-        Lexer lexer = new Lexer("func Main() { int a = 42 if (a > 40) { int success = 1 } }");
+        Lexer lexer = new Lexer("int success = 0 func Main() { int a = 42 if (a > 40) { success = 1 } }");
         Parser parser = new Parser(lexer);
 
         Interpreter interpreter = new Interpreter(parser);
         interpreter.interpret();
 
-        assertEquals(1, (int) interpreter.getGlobalVariableRegistry().lookup("success"));
+        assertEquals(1, (int) MainBlockNode.getInstance().lookupVariable("success"));
     }
 
     @Test
     public void testIfNumberLess() {
-        Lexer lexer = new Lexer("func Main() { int a = 42 if (a < 45) { int success = 1 } }");
+        Lexer lexer = new Lexer("int success = 0 func Main() { int a = 42 if (a < 45) { success = 1 } }");
         Parser parser = new Parser(lexer);
 
         Interpreter interpreter = new Interpreter(parser);
         interpreter.interpret();
 
-        assertEquals(1, (int) interpreter.getGlobalVariableRegistry().lookup("success"));
+        assertEquals(1, (int) MainBlockNode.getInstance().lookupVariable("success"));
+    }
+
+    @Test
+    public void testIfElse() {
+        Lexer lexer = new Lexer("int success = 0 func Main() { int a = 42 if (a == 40) { success = 0 } else { success = 1 } }");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+
+        assertEquals(1, (int) MainBlockNode.getInstance().lookupVariable("success"));
     }
 
     @Test
     public void testWhile() {
-        Lexer lexer = new Lexer("func Main() { int i = 0 while (i < 6) { i = i + 1 } }");
+        Lexer lexer = new Lexer("int i = 0 func Main() { while (i < 6) { i = i + 1 } }");
         Parser parser = new Parser(lexer);
 
         Interpreter interpreter = new Interpreter(parser);
         interpreter.interpret();
 
-        assertEquals(6, (int) interpreter.getGlobalVariableRegistry().lookup("i"));
+        assertEquals(6, (int) MainBlockNode.getInstance().lookupVariable("i"));
+    }
+
+    @Test
+    public void testFor() {
+        Lexer lexer = new Lexer("int counter = 0 func Main() { for (int i = 0; i < 2; i = i + 1) { counter = i } }");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+
+        assertEquals(1, (int) MainBlockNode.getInstance().lookupVariable("counter"));
     }
 
     @Test(expected = SlugRuntimeException.class)
     public void testWhileInvalidExpression() {
-        Lexer lexer = new Lexer("func Main() { while (5) { int success = 1 } }");
+        Lexer lexer = new Lexer("int success = 0 func Main() { while (5) { success = 1 } }");
         Parser parser = new Parser(lexer);
 
         Interpreter interpreter = new Interpreter(parser);
@@ -170,7 +206,54 @@ public class InterpreterTest {
 
     @Test(expected = SlugRuntimeException.class)
     public void testIfInvalidExpression() {
-        Lexer lexer = new Lexer("func Main() { if (5) { int success = 1 } }");
+        Lexer lexer = new Lexer("int success = 0 func Main() { if (5) { success = 1 } }");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+    }
+
+    @Test
+    public void testFunctionCall() {
+        Lexer lexer = new Lexer("bool success = false func Test() { success = true } func Main() { Test() }");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+
+        assertTrue(MainBlockNode.getInstance().lookupVariable("success"));
+    }
+
+    @Test(expected = SlugRuntimeException.class)
+    public void testVariableAlreadyExistsMainBlockNode() {
+        Lexer lexer = new Lexer("int i int i");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+    }
+
+    @Test(expected = SlugRuntimeException.class)
+    public void testVariableAlreadyExistsFunctionBlock() {
+        Lexer lexer = new Lexer("func Main() { int i int i }");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+    }
+
+    @Test(expected = SlugRuntimeException.class)
+    public void testVariableUpdateNotFoundMainBlockNode() {
+        Lexer lexer = new Lexer("i = 5");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+    }
+
+    @Test(expected = SlugRuntimeException.class)
+    public void testVariableUpdateNotFoundFunctionBlock() {
+        Lexer lexer = new Lexer("func Main() { i = 42}");
         Parser parser = new Parser(lexer);
 
         Interpreter interpreter = new Interpreter(parser);
