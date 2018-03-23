@@ -68,6 +68,10 @@ public class Parser {
             }
 
             parameters.add(node);
+
+            if (currentToken.getTokenType() == TokenType.COMMA) {
+                eat(TokenType.COMMA);
+            }
         }
         eat(TokenType.RIGHT_PARAN);
 
