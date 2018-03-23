@@ -134,4 +134,12 @@ public class TestParser {
         assertTrue(node instanceof VariableDeclarationNode);
         assertEquals("i", ((VariableDeclarationNode) node).getVariableName());
     }
+
+    @Test(expected = SlugRuntimeException.class)
+    public void testParameterInvalid() {
+        Lexer lexer = new Lexer("func Test(int i = 0)");
+        Parser parser = new Parser(lexer);
+
+        parser.parse();
+    }
 }

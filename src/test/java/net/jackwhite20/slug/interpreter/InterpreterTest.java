@@ -290,4 +290,26 @@ public class InterpreterTest {
         Interpreter interpreter = new Interpreter(parser);
         interpreter.interpret();
     }
+
+    @Test
+    public void testOneParameter() {
+        Lexer lexer = new Lexer("bool success = false func Test(bool param) { success = param } func Main() { Test(true) }");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+
+        assertEquals(true, MainBlockNode.getInstance().lookupVariable("success"));
+    }
+
+    @Test
+    public void testMultipleParameter() {
+        Lexer lexer = new Lexer("int success = 0 func Test(int one, int two) { success = one + two } func Main() { Test(2, 2) }");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+
+        assertEquals(4, (int) MainBlockNode.getInstance().lookupVariable("success"));
+    }
 }
