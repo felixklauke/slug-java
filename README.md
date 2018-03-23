@@ -18,6 +18,7 @@ Feature and bug-fix requests are welcome.
 - [X] Conditionals (if, for, while)
 - [ ] Internal functions (WriteLine, ReadLine, Random, etc.)
 - [X] Function calls
+- [X] Function parameters
 - [ ] Classes (new instance creation, member variables, auto member variable constructor)
 - [ ] Inline string variables (string s = "Hello $myOtherString")
 - [ ] Inline string expression evaluation (string s = "Number is ${2 + 9}")

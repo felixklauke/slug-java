@@ -72,14 +72,6 @@ class NodeVisitor {
     private void visitFunction(FunctionNode functionNode) {
         BlockNode block = functionNode.getBlock();
 
-        for (Node node : functionNode.getParameter()) {
-            // We can safely cast because this is checked in the parser
-            VariableDeclarationNode variableDeclaration = (VariableDeclarationNode) node;
-
-            // Register the variable explicitly in the block of the function and pass null to init with the default value
-            block.registerVariable(variableDeclaration.getVariableName(), variableDeclaration.getVariableType(), null);
-        }
-
         // Visit the actual function block
         visit(block);
     }
@@ -110,6 +102,24 @@ class NodeVisitor {
     }
 
     private Object visitFunctionCall(FunctionCallNode node) {
+        FunctionNode functionNode = node.getFunctionNode();
+
+        // Don't allow a function call with the wrong amount of parameters passed to it
+        if (node.getParameter().size() != functionNode.getParameter().size()) {
+            throw new SlugRuntimeException("parameter amount passed does not match function signature");
+        }
+
+        for (int i = 0; i < functionNode.getParameter().size(); i++) {
+            // We can safely cast because this is checked in the parser
+            VariableDeclarationNode variableDeclaration = (VariableDeclarationNode) functionNode.getParameter().get(i);
+
+            // Get the parameter value
+            Object value = visit(node.getParameter().get(i));
+
+            // Register the variable explicitly in the block of the function and pass null to init with the default value
+            functionNode.getBlock().registerVariable(variableDeclaration.getVariableName(), variableDeclaration.getVariableType(), value);
+        }
+
         // Visit the the function we want to call
         visitFunction(node.getFunctionNode());
 
