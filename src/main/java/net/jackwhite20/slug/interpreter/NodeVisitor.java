@@ -70,10 +70,18 @@ class NodeVisitor {
     }
 
     private void visitFunction(FunctionNode functionNode) {
-        visit(functionNode.getBlock());
-        /*for (Node node : functionNode.getBlock()) {
-            visit(node);
-        }*/
+        BlockNode block = functionNode.getBlock();
+
+        for (Node node : functionNode.getParameter()) {
+            // We can safely cast because this is checked in the parser
+            VariableDeclarationNode variableDeclaration = (VariableDeclarationNode) node;
+
+            // Register the variable explicitly in the block of the function and pass null to init with the default value
+            block.registerVariable(variableDeclaration.getVariableName(), variableDeclaration.getVariableType(), null);
+        }
+
+        // Visit the actual function block
+        visit(block);
     }
 
     private void visitVariableDeclaration(VariableDeclarationNode node) {

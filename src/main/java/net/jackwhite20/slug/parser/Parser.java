@@ -61,6 +61,14 @@ public class Parser {
         eat(TokenType.LEFT_PARAN);
         // TODO: 12.02.2018 Parameters
         List<Node> parameters = new ArrayList<>();
+        while (currentToken.getTokenType() != TokenType.RIGHT_PARAN) {
+            Node node = parseDeclareOrAndAssignStatement();
+            if (!(node instanceof VariableDeclarationNode)) {
+                throw new SlugRuntimeException("parameters needs to be a variable declaration");
+            }
+
+            parameters.add(node);
+        }
         eat(TokenType.RIGHT_PARAN);
 
         BlockNode blockNode = parseBlock();
