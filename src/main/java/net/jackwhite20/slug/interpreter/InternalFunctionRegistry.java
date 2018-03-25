@@ -19,7 +19,7 @@ public class InternalFunctionRegistry {
                 System.out.println(args.get(0));
             }
 
-            return null;
+            throw new SlugRuntimeException("internal function WriteLine needs exactly one argument");
         });
         functions.put("Random", args -> {
             int value = -1;

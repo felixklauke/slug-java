@@ -23,8 +23,12 @@ import net.jackwhite20.slug.lexer.Lexer;
 import net.jackwhite20.slug.parser.Parser;
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static org.junit.Assert.*;
 
@@ -378,5 +382,110 @@ public class InterpreterTest {
         } finally {
             System.setOut(savedOut);
         }
+    }
+
+    @Test
+    public void testInternalFunctionWriteLine() {
+        PrintStream savedOut = System.out;
+
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream(); PrintStream ps = new PrintStream(out)) {
+            System.setOut(ps);
+
+            Lexer lexer = new Lexer("func Main() { WriteLine(\"Hello, World!\") }");
+            Parser parser = new Parser(lexer);
+
+            Interpreter interpreter = new Interpreter(parser);
+            interpreter.interpret();
+
+            System.setOut(savedOut);
+
+            String output = out.toString("UTF-8");
+            String[] lines = output.split("\n");
+
+            assertEquals("Hello, World!", lines[lines.length - 2]);
+        } catch (Exception e) {
+            fail();
+        } finally {
+            System.setOut(savedOut);
+        }
+    }
+
+    @Test(expected = SlugRuntimeException.class)
+    public void testInternalFunctionWriteLineInvalidArgs() {
+        Lexer lexer = new Lexer("func Main() { WriteLine() }");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+    }
+
+    @Test
+    public void testInternalFunctionRandomOneArg() {
+        Lexer lexer = new Lexer("int random func Main() { random = Random(6) }");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+
+        int random = MainBlockNode.getInstance().lookupVariable("random");
+
+        assertTrue(random != -1);
+        assertTrue(random >= 0);
+        assertTrue(random < 6);
+    }
+
+    @Test
+    public void testInternalFunctionRandomTwoArgs() {
+        Lexer lexer = new Lexer("int random func Main() { random = Random(4, 8) }");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+
+        int random = MainBlockNode.getInstance().lookupVariable("random");
+
+        assertTrue(random != -1);
+        assertTrue(random >= 4);
+        assertTrue(random < 8);
+    }
+
+    @Test
+    public void testInternalFunctionReadLineString() throws Exception {
+        String testValue = UUID.randomUUID().toString();
+
+        Lexer lexer = new Lexer("string read func Main() { read = ReadLine() }");
+        Parser parser = new Parser(lexer);
+
+        InputStream savedIn = System.in;
+
+        InputStream testInput = new ByteArrayInputStream(testValue.getBytes("UTF-8"));
+        System.setIn(testInput);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+
+        System.setIn(savedIn);
+
+        assertEquals(testValue, MainBlockNode.getInstance().lookupVariable("read"));
+    }
+
+    @Test
+    public void testInternalFunctionReadLineInt() throws Exception {
+        int testValue = ThreadLocalRandom.current().nextInt(0, 101);
+
+        Lexer lexer = new Lexer("int read func Main() { read = ReadLine() }");
+        Parser parser = new Parser(lexer);
+
+        InputStream savedIn = System.in;
+
+        InputStream testInput = new ByteArrayInputStream(String.valueOf(testValue).getBytes("UTF-8"));
+        System.setIn(testInput);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+
+        System.setIn(savedIn);
+
+        assertEquals(testValue, (int) MainBlockNode.getInstance().lookupVariable("read"));
     }
 }
