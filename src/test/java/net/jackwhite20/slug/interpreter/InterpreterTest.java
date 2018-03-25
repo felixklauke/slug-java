@@ -187,6 +187,15 @@ public class InterpreterTest {
         assertEquals(6, (int) MainBlockNode.getInstance().lookupVariable("i"));
     }
 
+    @Test(expected = SlugRuntimeException.class)
+    public void testWhileInvalidExpression() {
+        Lexer lexer = new Lexer("int success = 0 func Main() { while (5) { success = 1 } }");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+    }
+
     @Test
     public void testFor() {
         Lexer lexer = new Lexer("int counter = 0 func Main() { for (int i = 0; i < 2; i = i + 1) { counter = i } }");
@@ -199,8 +208,8 @@ public class InterpreterTest {
     }
 
     @Test(expected = SlugRuntimeException.class)
-    public void testWhileInvalidExpression() {
-        Lexer lexer = new Lexer("int success = 0 func Main() { while (5) { success = 1 } }");
+    public void testForInvalidCondition() {
+        Lexer lexer = new Lexer("func Main() { for (int i = 0; 5; i = i + 1) { } }");
         Parser parser = new Parser(lexer);
 
         Interpreter interpreter = new Interpreter(parser);
