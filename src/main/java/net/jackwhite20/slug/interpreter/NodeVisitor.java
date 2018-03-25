@@ -127,6 +127,10 @@ class NodeVisitor {
             functionNode.getBlock().registerVariable(variableDeclaration.getVariableName(), variableDeclaration.getVariableType(), value);
         }
 
+        // We need to set the parent from the function to call to the current block
+        // to be able to jump back after the block has been visited
+        node.getFunctionNode().getBlock().setParent(currentBlock);
+
         // Visit the the function we want to call
         visitFunction(node.getFunctionNode());
 
@@ -194,11 +198,7 @@ class NodeVisitor {
 
         boolean state = visitBoolean((BooleanNode) expression);
 
-        if (state) {
-            visitBlock(node.getTrueBlock());
-        } else {
-            visitBlock(node.getFalseBlock());
-        }
+        visitBlock(state ? node.getTrueBlock() : node.getFalseBlock());
     }
 
     private void visitWhile(WhileNode node) {
