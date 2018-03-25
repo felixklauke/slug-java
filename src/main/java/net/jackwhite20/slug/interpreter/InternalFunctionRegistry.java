@@ -14,9 +14,10 @@ public class InternalFunctionRegistry {
     private static Map<String, Function<List<Object>, Object>> functions = new HashMap<>();
 
     static {
-        functions.put("WriteLine", args -> {
-            if (args.size() == 1) {
-                System.out.println(args.get(0));
+        functions.put("WriteLine", params -> {
+            if (params.size() == 1) {
+                System.out.println(params.get(0));
+                return null;
             }
 
             throw new SlugRuntimeException("internal function WriteLine needs exactly one argument");
