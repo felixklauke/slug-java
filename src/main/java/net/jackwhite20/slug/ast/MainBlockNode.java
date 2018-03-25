@@ -1,6 +1,7 @@
 package net.jackwhite20.slug.ast;
 
 import net.jackwhite20.slug.exception.SlugRuntimeException;
+import net.jackwhite20.slug.exception.VariableNotFoundException;
 import net.jackwhite20.slug.interpreter.variable.GlobalVariableRegistry;
 import net.jackwhite20.slug.lexer.TokenType;
 
@@ -44,6 +45,6 @@ public class MainBlockNode extends BlockNode {
             return;
         }
 
-        throw new SlugRuntimeException("variable " + variableName + " not found");
+        throw new VariableNotFoundException(variableName);
     }
 }

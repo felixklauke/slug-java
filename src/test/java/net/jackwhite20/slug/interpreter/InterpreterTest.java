@@ -18,6 +18,7 @@ package net.jackwhite20.slug.interpreter;
 
 import net.jackwhite20.slug.ast.MainBlockNode;
 import net.jackwhite20.slug.exception.SlugRuntimeException;
+import net.jackwhite20.slug.exception.VariableNotFoundException;
 import net.jackwhite20.slug.lexer.Lexer;
 import net.jackwhite20.slug.parser.Parser;
 import org.junit.Test;
@@ -253,7 +254,7 @@ public class InterpreterTest {
 
     @Test(expected = SlugRuntimeException.class)
     public void testVariableUpdateNotFoundFunctionBlock() {
-        Lexer lexer = new Lexer("func Main() { i = 42}");
+        Lexer lexer = new Lexer("func Main() { i = 42 }");
         Parser parser = new Parser(lexer);
 
         Interpreter interpreter = new Interpreter(parser);
@@ -311,5 +312,26 @@ public class InterpreterTest {
         interpreter.interpret();
 
         assertEquals(4, (int) MainBlockNode.getInstance().lookupVariable("success"));
+    }
+
+    @Test
+    public void testCodeBlockScopes() {
+        Lexer lexer = new Lexer("bool success = false func Main() { int i = 0 if (1 == 1) { i = 5 } if (i == 5) { success = true } }");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+
+
+        assertEquals(true, MainBlockNode.getInstance().lookupVariable("success"));
+    }
+
+    @Test(expected = VariableNotFoundException.class)
+    public void testCodeBlockScopesInvalidLowerBlockAccess() {
+        Lexer lexer = new Lexer("func Main() { if (1 == 1) { int i = 5 } i = 6  }");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
     }
 }
