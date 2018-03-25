@@ -23,8 +23,10 @@ import net.jackwhite20.slug.lexer.Lexer;
 import net.jackwhite20.slug.parser.Parser;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
+import static org.junit.Assert.*;
 
 public class InterpreterTest {
 
@@ -314,6 +316,15 @@ public class InterpreterTest {
         assertEquals(4, (int) MainBlockNode.getInstance().lookupVariable("success"));
     }
 
+    @Test(expected = SlugRuntimeException.class)
+    public void testParameterInvalidAmount() {
+        Lexer lexer = new Lexer("func Test(int one, int two) { } func Main() { Test(2) }");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+    }
+
     @Test
     public void testCodeBlockScopes() {
         Lexer lexer = new Lexer("bool success = false func Main() { int i = 0 if (1 == 1) { i = 5 } if (i == 5) { success = true } }");
@@ -321,7 +332,6 @@ public class InterpreterTest {
 
         Interpreter interpreter = new Interpreter(parser);
         interpreter.interpret();
-
 
         assertEquals(true, MainBlockNode.getInstance().lookupVariable("success"));
     }
@@ -333,5 +343,31 @@ public class InterpreterTest {
 
         Interpreter interpreter = new Interpreter(parser);
         interpreter.interpret();
+    }
+
+    @Test
+    public void testCodeBlockScopesWithFunctionCall() {
+        PrintStream savedOut = System.out;
+
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream(); PrintStream ps = new PrintStream(out)) {
+            System.setOut(ps);
+
+            Lexer lexer = new Lexer("func Test() { } func Main() { int i = 3 Test() WriteLine(i) }");
+            Parser parser = new Parser(lexer);
+
+            Interpreter interpreter = new Interpreter(parser);
+            interpreter.interpret();
+
+            System.setOut(savedOut);
+
+            String output = out.toString("UTF-8");
+            String[] lines = output.split("\n");
+
+            assertEquals("3", lines[lines.length - 2]);
+        } catch (Exception e) {
+            fail();
+        } finally {
+            System.setOut(savedOut);
+        }
     }
 }
