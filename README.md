@@ -16,7 +16,7 @@ Feature and bug-fix requests are welcome.
 - [X] Scopes
 - [X] Boolean expression (myInt == otherInt, "test" == "test", 4 > 3)
 - [X] Conditionals (if, for, while)
-- [ ] Internal functions (WriteLine, ReadLine, Random, etc.)
+- [X] Internal functions (WriteLine, ReadLine, Random, etc.)
 - [X] Function calls
 - [X] Function parameters
 - [ ] Classes (new instance creation, member variables, auto member variable constructor)

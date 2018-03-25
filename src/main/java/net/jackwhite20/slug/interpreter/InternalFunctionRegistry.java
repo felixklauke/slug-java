@@ -3,29 +3,52 @@ package net.jackwhite20.slug.interpreter;
 import net.jackwhite20.slug.exception.SlugRuntimeException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
 
 public class InternalFunctionRegistry {
 
-    private static Map<String, Function<Object, Object>> functions = new HashMap<>();
+    private static Map<String, Function<List<Object>, Object>> functions = new HashMap<>();
 
     static {
-        functions.put("WriteLine", new Function<Object, Object>() {
+        functions.put("WriteLine", args -> {
+            if (args.size() == 1) {
+                System.out.println(args.get(0));
+            }
 
-            @Override
-            public Object apply(Object o) {
-                System.out.println(o);
+            return null;
+        });
+        functions.put("Random", args -> {
+            int value = -1;
 
-                return null;
+            if (args.size() == 1) {
+                value = ThreadLocalRandom.current().nextInt((int) args.get(0));
+            } else if (args.size() == 2) {
+                value = ThreadLocalRandom.current().nextInt((int) args.get(0), (int) args.get(1));
+            }
+
+            return value;
+        });
+        functions.put("ReadLine", arg -> {
+            Scanner scanner = new Scanner(System.in);
+
+            String line = scanner.nextLine();
+
+            try {
+                return Integer.parseInt(line);
+            } catch (NumberFormatException e) {
+                return line;
             }
         });
     }
 
-    public static Object execute(String functionName, Object object) {
-        Function<Object, Object> function = functions.get(functionName);
+    static Object execute(String functionName, List<Object> params) {
+        Function<List<Object>, Object> function = functions.get(functionName);
         if (function != null) {
-            return function.apply(object);
+            return function.apply(params);
         }
 
         throw new SlugRuntimeException("function " + functionName + " not found");

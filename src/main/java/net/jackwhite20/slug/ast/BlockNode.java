@@ -86,6 +86,10 @@ public class BlockNode extends Node {
         return parent;
     }
 
+    public void setParent(BlockNode parent) {
+        this.parent = parent;
+    }
+
     public List<Node> getStatements() {
         return statements;
     }

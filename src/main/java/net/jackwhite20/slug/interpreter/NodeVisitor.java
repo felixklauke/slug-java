@@ -22,6 +22,9 @@ import net.jackwhite20.slug.lexer.TokenType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 class NodeVisitor {
 
     private static Logger logger = LoggerFactory.getLogger(NodeVisitor.class);
@@ -105,10 +108,16 @@ class NodeVisitor {
         FunctionNode functionNode = node.getFunctionNode();
 
         if (functionNode == null) {
-            // Get the parameter value
-            Object value = visit(node.getParameter().get(0));
+            List<Object> paramValues = new ArrayList<>();
 
-            return InternalFunctionRegistry.execute(node.getName(), value);
+            // Get the parameter values from all parameters
+            for (Node param : node.getParameter()) {
+                paramValues.add(visit(param));
+            }
+
+            // Execute the internal function which returns the direct object type (for example int or string)
+            // No need to visit eg. a NumberNode -> It would be a waste of performance
+            return InternalFunctionRegistry.execute(node.getName(), paramValues);
         }
 
         // Don't allow a function call with the wrong amount of parameters passed to it
