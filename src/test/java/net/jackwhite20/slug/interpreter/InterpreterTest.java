@@ -170,6 +170,21 @@ public class InterpreterTest {
     }
 
     @Test
+    public void testBinaryOperations() {
+        Lexer lexer = new Lexer("int plus int minus int mul int div  " +
+                "func Main() { plus = 5 + 6 minus = 6 - 2 mul = 6 * 6 div = 36 / 6 }");
+        Parser parser = new Parser(lexer);
+
+        Interpreter interpreter = new Interpreter(parser);
+        interpreter.interpret();
+
+        assertEquals(11, (int) MainBlockNode.getInstance().lookupVariable("plus"));
+        assertEquals(4, (int) MainBlockNode.getInstance().lookupVariable("minus"));
+        assertEquals(36, (int) MainBlockNode.getInstance().lookupVariable("mul"));
+        assertEquals(6, (int) MainBlockNode.getInstance().lookupVariable("div"));
+    }
+
+    @Test
     public void testIfElse() {
         Lexer lexer = new Lexer("int success = 0 func Main() { int a = 42 if (a == 40) { success = 0 } else { success = 1 } }");
         Parser parser = new Parser(lexer);
