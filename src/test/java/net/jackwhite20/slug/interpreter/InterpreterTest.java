@@ -380,7 +380,7 @@ public class InterpreterTest {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream(); PrintStream ps = new PrintStream(out)) {
             System.setOut(ps);
 
-            Lexer lexer = new Lexer("func Test() { } func Main() { int i = 3 Test() WriteLine(i) }");
+            Lexer lexer = new Lexer("func Test() { } func Main() { int i = 321654 Test() WriteLine(i) }");
             Parser parser = new Parser(lexer);
 
             Interpreter interpreter = new Interpreter(parser);
@@ -389,10 +389,8 @@ public class InterpreterTest {
             System.setOut(savedOut);
 
             String output = out.toString("UTF-8");
-            String[] lines = output.split("\n");
-            String line = lines[lines.length - 2];
 
-            assertEquals("3", line.substring(0, line.length() - 1));
+            assertTrue(output.contains("321654"));
         } catch (Exception e) {
             fail();
         } finally {
@@ -416,10 +414,8 @@ public class InterpreterTest {
             System.setOut(savedOut);
 
             String output = out.toString("UTF-8");
-            String[] lines = output.split("\n");
-            String line = lines[lines.length - 2];
 
-            assertEquals("Hello, World!", line.substring(0, line.length() - 1));
+            assertTrue(output.contains("Hello, World!"));
         } catch (Exception e) {
             fail();
         } finally {
@@ -522,11 +518,8 @@ public class InterpreterTest {
             System.setOut(savedOut);
 
             String output = out.toString("UTF-8");
-            System.out.println(output);
-            String[] lines = output.split("\n");
-            String line = lines[lines.length - 2];
 
-            assertEquals("i = 50 other text", line.substring(0, line.length() - 1));
+            assertTrue(output.contains("i = 50 other text"));
         } catch (Exception e) {
             fail();
         } finally {
@@ -550,13 +543,9 @@ public class InterpreterTest {
             System.setOut(savedOut);
 
             String output = out.toString("UTF-8");
-            System.out.println(output);
-            String[] lines = output.split("\n");
-            String firstActual = lines[lines.length - 4];
-            String secondActual = lines[lines.length - 2];
 
-            assertEquals("i = 50", firstActual.substring(0, firstActual.length() - 1));
-            assertEquals("i = 100", secondActual.substring(0, secondActual.length() - 1));
+            assertTrue(output.contains("i = 50"));
+            assertTrue(output.contains("i = 100"));
         } catch (Exception e) {
             fail();
         } finally {
