@@ -401,8 +401,9 @@ public class InterpreterTest {
 
             String output = out.toString("UTF-8");
             String[] lines = output.split("\n");
+            String line = lines[lines.length - 2];
 
-            assertEquals("Hello, World!", lines[lines.length - 2]);
+            assertEquals("Hello, World!", line.substring(0, line.length() - 1));
         } catch (Exception e) {
             fail();
         } finally {
