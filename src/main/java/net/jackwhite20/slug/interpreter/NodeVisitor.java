@@ -19,15 +19,11 @@ package net.jackwhite20.slug.interpreter;
 import net.jackwhite20.slug.ast.*;
 import net.jackwhite20.slug.exception.SlugRuntimeException;
 import net.jackwhite20.slug.lexer.TokenType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 class NodeVisitor {
-
-    private static Logger logger = LoggerFactory.getLogger(NodeVisitor.class);
 
     private BlockNode currentBlock = MainBlockNode.getInstance();
 
@@ -198,7 +194,7 @@ class NodeVisitor {
             return -visitNumber((NumberNode) node.getExpression());
         }
 
-        return null;
+        throw new SlugRuntimeException("invalid unary operator " + node.getOperator().getTokenType());
     }
 
     private boolean visitBoolean(BooleanNode node) {
@@ -220,7 +216,7 @@ class NodeVisitor {
             return a != b;
         }
 
-        return false;
+        throw new SlugRuntimeException("invalid boolean operator " + node.getOperator());
     }
 
     private void visitIf(IfNode node) {
@@ -317,8 +313,6 @@ class NodeVisitor {
             return null;
         }
 
-        logger.error("Error on visit, unhandled node {}", node.getClass().getName());
-
-        return null;
+        throw new SlugRuntimeException("unhandled node " + node.getClass().getName());
     }
 }
