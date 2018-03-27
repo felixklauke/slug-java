@@ -49,8 +49,8 @@ class NodeVisitor {
         while (inlineVar != -1) {
             StringBuilder sb = new StringBuilder();
             for (int i = inlineVar + 1; i < stringValue.length(); i++) {
-                // Break if whitespace or if the end of the string
-                if (Character.isWhitespace(stringValue.charAt(i)) || stringValue.charAt(i) == '"') {
+                // Break if whitespace
+                if (Character.isWhitespace(stringValue.charAt(i))) {
                     break;
                 }
 

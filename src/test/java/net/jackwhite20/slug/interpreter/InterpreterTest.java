@@ -490,4 +490,62 @@ public class InterpreterTest {
 
         assertEquals(testValue, (int) MainBlockNode.getInstance().lookupVariable("read"));
     }
+
+    @Test
+    public void testInlineVariablesSingle() {
+        PrintStream savedOut = System.out;
+
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream(); PrintStream ps = new PrintStream(out)) {
+            System.setOut(ps);
+
+            Lexer lexer = new Lexer("func Main() { int i = 50 WriteLine(\"i = $i other text\") }");
+            Parser parser = new Parser(lexer);
+
+            Interpreter interpreter = new Interpreter(parser);
+            interpreter.interpret();
+
+            System.setOut(savedOut);
+
+            String output = out.toString("UTF-8");
+            System.out.println(output);
+            String[] lines = output.split("\n");
+            String line = lines[lines.length - 2];
+
+            assertEquals("i = 50 other text", line.substring(0, line.length() - 1));
+        } catch (Exception e) {
+            fail();
+        } finally {
+            System.setOut(savedOut);
+        }
+    }
+
+    @Test
+    public void testInlineVariablesMultiple() {
+        PrintStream savedOut = System.out;
+
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream(); PrintStream ps = new PrintStream(out)) {
+            System.setOut(ps);
+
+            Lexer lexer = new Lexer("func Main() { int i = 50 WriteLine(\"i = $i\") i = 100 WriteLine(\"i = $i\") }");
+            Parser parser = new Parser(lexer);
+
+            Interpreter interpreter = new Interpreter(parser);
+            interpreter.interpret();
+
+            System.setOut(savedOut);
+
+            String output = out.toString("UTF-8");
+            System.out.println(output);
+            String[] lines = output.split("\n");
+            String firstActual = lines[lines.length - 4];
+            String secondActual = lines[lines.length - 2];
+
+            assertEquals("i = 50", firstActual.substring(0, firstActual.length() - 1));
+            assertEquals("i = 100", secondActual.substring(0, secondActual.length() - 1));
+        } catch (Exception e) {
+            fail();
+        } finally {
+            System.setOut(savedOut);
+        }
+    }
 }
