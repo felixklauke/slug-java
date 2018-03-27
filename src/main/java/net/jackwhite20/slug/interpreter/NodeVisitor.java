@@ -42,7 +42,33 @@ class NodeVisitor {
     }
 
     private String visitString(StringNode stringNode) {
-        return stringNode.getValue();
+        String stringValue = stringNode.getValue();
+
+        // Try to find inline variables and process them
+        int inlineVar = stringValue.indexOf('$');
+        while (inlineVar != -1) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = inlineVar + 1; i < stringValue.length(); i++) {
+                // Break if whitespace or if the end of the string
+                if (Character.isWhitespace(stringValue.charAt(i)) || stringValue.charAt(i) == '"') {
+                    break;
+                }
+
+                sb.append(stringValue.charAt(i));
+            }
+
+            String varName = sb.toString();
+
+            Object variable = currentBlock.lookupVariable(varName);
+            String value = String.valueOf(variable);
+
+            stringValue = stringValue.replace("$" + varName, value);
+
+            // Index of possible next inline var
+            inlineVar = stringValue.indexOf('$');
+        }
+
+        return stringValue;
     }
 
     private boolean visitBool(BoolNode node) {

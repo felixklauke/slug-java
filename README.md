@@ -20,7 +20,7 @@ Feature and bug-fix requests are welcome.
 - [X] Function calls
 - [X] Function parameters
 - [ ] Classes (new instance creation, member variables, auto member variable constructor)
-- [ ] Inline string variables (string s = "Hello $myOtherString", WriteLine("Your rank is $rank with a score of $score"))
+- [X] Inline string variables (string s = "Hello $myOtherString", WriteLine("Your rank is $rank with a score of $score"))
 - [ ] Inline string expression evaluation (string s = "Number is ${2 + 9}")
 
 # Example GuessIt game
