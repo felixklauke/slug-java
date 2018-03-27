@@ -375,8 +375,9 @@ public class InterpreterTest {
 
             String output = out.toString("UTF-8");
             String[] lines = output.split("\n");
+            String line = lines[lines.length - 2];
 
-            assertEquals("3", lines[lines.length - 2]);
+            assertEquals("3", line.substring(0, line.length() - 1));
         } catch (Exception e) {
             fail();
         } finally {
