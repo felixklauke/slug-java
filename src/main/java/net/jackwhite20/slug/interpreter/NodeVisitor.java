@@ -72,13 +72,13 @@ class NodeVisitor {
     }
 
     private void visitMain(MainNode node) {
+        if (node.getFunctions().size() == 0 && node.getGlobalVariables().size() == 0) {
+            throw new SlugRuntimeException("no functions and global variables");
+        }
+
         // Register possible global variables
         for (Node globalVar : node.getGlobalVariables()) {
             visit(globalVar);
-        }
-
-        if (node.getFunctions().size() == 0 && node.getGlobalVariables().size() == 0) {
-            throw new SlugRuntimeException("no functions and global variables");
         }
 
         // Only search main function and start interpreting if functions are available
