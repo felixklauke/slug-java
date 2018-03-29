@@ -19,7 +19,10 @@ Feature and bug-fix requests are welcome.
 - [X] Internal functions (WriteLine, ReadLine, Random, etc.)
 - [X] Function calls
 - [X] Function parameters
-- [ ] Classes (new instance creation, member variables, auto member variable constructor)
+- [ ] Classes
+    - [ ] New instance creation
+    - [ ] Member variables
+    - [ ] Auto member variable constructor
 - [X] Inline string variables (string s = "Hello $myOtherString", WriteLine("Your rank is $rank with a score of $score"))
 - [ ] Inline string expression evaluation (string s = "Number is ${2 + 9}")
 
