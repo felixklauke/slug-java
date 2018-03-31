@@ -19,6 +19,7 @@ Feature and bug-fix requests are welcome.
 - [X] Internal functions (WriteLine, ReadLine, Random, etc.)
 - [X] Function calls
 - [X] Function parameters
+    - [ ] Default values for parameters
 - [ ] Classes
     - [ ] New instance creation
     - [ ] Member variables
