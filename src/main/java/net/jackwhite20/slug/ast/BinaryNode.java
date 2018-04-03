@@ -16,34 +16,14 @@
 
 package net.jackwhite20.slug.ast;
 
-import net.jackwhite20.slug.lexer.Token;
+import net.jackwhite20.slug.lexer.TokenType;
 
 /**
  * @author Philip 'JackWhite20' <silencephil@gmail.com>
  */
-public class BinaryNode extends Node {
+public class BinaryNode extends ExpressionNode {
 
-    private Node left;
-
-    private Token operator;
-
-    private Node right;
-
-    public BinaryNode(Node left, Token operator, Node right) {
-        this.left = left;
-        this.operator = operator;
-        this.right = right;
-    }
-
-    public Node getLeft() {
-        return left;
-    }
-
-    public Token getOperator() {
-        return operator;
-    }
-
-    public Node getRight() {
-        return right;
+    public BinaryNode(Node left, TokenType operator, Node right) {
+        super(left, operator, right);
     }
 }

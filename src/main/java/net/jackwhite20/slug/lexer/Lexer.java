@@ -28,7 +28,7 @@ public class Lexer {
 
     private static Map<String, Token> reservedKeywords = new HashMap<>();
 
-    private String input;
+    public String input;
 
     private int pos = 0;
 

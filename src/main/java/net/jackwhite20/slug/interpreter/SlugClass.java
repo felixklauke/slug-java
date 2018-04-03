@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-package net.jackwhite20.slug.ast;
+package net.jackwhite20.slug.interpreter;
+
+import net.jackwhite20.slug.ast.FunctionNode;
+import net.jackwhite20.slug.ast.Node;
 
 import java.util.List;
 
-/**
- * @author Philip 'JackWhite20' <silencephil@gmail.com>
- */
-public class MainNode extends Node {
+public class SlugClass {
 
-    private List<Node> globalVariables;
+    private String name;
 
-    private List<Node> functions;
+    private List<FunctionNode> functions;
 
-    public MainNode(List<Node> globalVariables, List<Node> functions) {
-        this.globalVariables = globalVariables;
+    public SlugClass(String name, List<FunctionNode> functions) {
+        this.name = name;
         this.functions = functions;
     }
 
-    public List<Node> getGlobalVariables() {
-        return globalVariables;
-    }
-
-    public List<Node> getFunctions() {
-        return functions;
+    public void call(NodeVisitor nodeVisitor, String functionName, Node... parameters) {
+        for (FunctionNode function : functions) {
+            if (function.getName().equals(functionName)) {
+                System.out.println("Calling " + functionName + " from class " + name);
+            }
+        }
     }
 }

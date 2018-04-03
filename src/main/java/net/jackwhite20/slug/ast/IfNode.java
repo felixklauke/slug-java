@@ -1,16 +1,14 @@
 package net.jackwhite20.slug.ast;
 
-import java.util.List;
-
 public class IfNode extends Node {
 
     private Node expression;
 
-    private List<Node> trueNodes;
+    private BlockNode trueNodes;
 
-    private List<Node> falseNodes;
+    private BlockNode falseNodes;
 
-    public IfNode(Node expression, List<Node> trueNodes, List<Node> falseNodes) {
+    public IfNode(Node expression, BlockNode trueNodes, BlockNode falseNodes) {
         this.expression = expression;
         this.trueNodes = trueNodes;
         this.falseNodes = falseNodes;
@@ -20,11 +18,11 @@ public class IfNode extends Node {
         return expression;
     }
 
-    public List<Node> getTrueNodes() {
+    public BlockNode getTrueBlock() {
         return trueNodes;
     }
 
-    public List<Node> getFalseNodes() {
+    public BlockNode getFalseBlock() {
         return falseNodes;
     }
 }

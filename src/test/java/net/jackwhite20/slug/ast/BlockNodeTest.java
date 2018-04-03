@@ -16,27 +16,25 @@
 
 package net.jackwhite20.slug.ast;
 
-import java.util.List;
+import org.junit.Before;
+import org.junit.Test;
 
-/**
- * @author Philip 'JackWhite20' <silencephil@gmail.com>
- */
-public class MainNode extends Node {
+public class BlockNodeTest {
 
-    private List<Node> globalVariables;
+    private BlockNode blockNode;
 
-    private List<Node> functions;
-
-    public MainNode(List<Node> globalVariables, List<Node> functions) {
-        this.globalVariables = globalVariables;
-        this.functions = functions;
+    @Before
+    public void setUp() throws Exception {
+        blockNode = new BlockNode(null);
     }
 
-    public List<Node> getGlobalVariables() {
-        return globalVariables;
+    @Test(expected = IllegalStateException.class)
+    public void testMainBlockInvalidLookup() {
+        blockNode.lookupVariable("a");
     }
 
-    public List<Node> getFunctions() {
-        return functions;
+    @Test(expected = IllegalStateException.class)
+    public void testMainBlockInvalidUpdate() {
+        blockNode.updateVariable("a", 0);
     }
 }

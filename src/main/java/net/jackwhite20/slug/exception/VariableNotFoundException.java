@@ -14,32 +14,14 @@
  * limitations under the License.
  */
 
-package net.jackwhite20.slug.lexer;
+package net.jackwhite20.slug.exception;
 
 /**
  * @author Philip 'JackWhite20' <silencephil@gmail.com>
- * @author Felix Klauke <info@felix-klauke.de>
  */
-public class Token {
+public class VariableNotFoundException extends SlugRuntimeException {
 
-    private TokenType tokenType;
-
-    private String value;
-
-    Token(TokenType tokenType, String value) {
-        this.tokenType = tokenType;
-        this.value = value;
-    }
-
-    public TokenType getTokenType() {
-        return tokenType;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public static boolean isVariable(TokenType tokenType) {
-        return tokenType == TokenType.INTEGER || tokenType == TokenType.BOOL || tokenType == TokenType.STRING;
+    public VariableNotFoundException(String message) {
+        super(message);
     }
 }

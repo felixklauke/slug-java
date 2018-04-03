@@ -13,18 +13,23 @@ Feature and bug-fix requests are welcome.
 - [X] Basic structure
 - [X] Functions
 - [X] Variables (int, string, bool)
-- [ ] Scopes
+- [X] Scopes
 - [X] Boolean expression (myInt == otherInt, "test" == "test", 4 > 3)
-- [ ] Conditionals (if, for, while)
-- [ ] Internal functions (WriteLine, ReadLine, Random, etc.)
+- [X] Conditionals (if, for, while)
+- [X] Internal functions (WriteLine, ReadLine, Random, etc.)
 - [X] Function calls
-- [ ] Classes (new instance creation, member variables, auto member variable constructor)
-- [ ] Inline string variables (string s = "Hello $myOtherString")
+- [X] Function parameters
+    - [ ] Default values for parameters
+- [ ] Classes
+    - [ ] New instance creation
+    - [ ] Member variables
+    - [ ] Auto member variable constructor
+- [X] Inline string variables (string s = "Hello $myOtherString", WriteLine("Your rank is $rank with a score of $score"))
 - [ ] Inline string expression evaluation (string s = "Number is ${2 + 9}")
 
 # Example GuessIt game
 
-The GuessIt game is a simple CLI game where the user needs to guess a random generated number from 1-100. If the guessed number is too small, the game prints that and the other way around until correct number has been found.
+The GuessIt game is a simple CLI game where the user needs to guess a random generated number from 1-100. If the guessed number is too small, the game prints that and the other way around until the correct number has been found.
 
 ![slug-guess-it](https://github.com/JackWhite20/slug-java/blob/master/slug-guess-it.png)
 
