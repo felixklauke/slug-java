@@ -34,7 +34,7 @@ Feature and bug-fix requests are welcome.
 
 The GuessIt game is a simple CLI game where the user needs to guess a random generated number from 1-100. If the guessed number is too small, the game prints that and the other way around until the correct number has been found.
 
-![slug-guess-it](https://github.com/JackWhite20/slug-java/blob/master/slug-guess-it.png)
+![slug-guess-it](slug-guess-it.png)
 
 
 # TDD (Test Driven Development)
