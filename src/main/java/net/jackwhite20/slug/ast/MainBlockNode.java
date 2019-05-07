@@ -8,7 +8,6 @@ import net.jackwhite20.slug.lexer.TokenType;
 public class MainBlockNode extends BlockNode {
 
     private static MainBlockNode instance;
-
     private GlobalVariableRegistry globalVariableRegistry;
 
     public MainBlockNode() {

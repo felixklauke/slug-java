@@ -24,7 +24,6 @@ import java.util.List;
 public class MainNode extends Node {
 
     private List<Node> globalVariables;
-
     private List<Node> functions;
 
     public MainNode(List<Node> globalVariables, List<Node> functions) {

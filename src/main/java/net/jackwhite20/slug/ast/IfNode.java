@@ -6,9 +6,7 @@ package net.jackwhite20.slug.ast;
 public class IfNode extends Node {
 
     private Node expression;
-
     private BlockNode trueNodes;
-
     private BlockNode falseNodes;
 
     public IfNode(Node expression, BlockNode trueNodes, BlockNode falseNodes) {

@@ -27,7 +27,6 @@ import java.util.List;
 public class SlugClass {
 
     private String name;
-
     private List<FunctionNode> functions;
 
     public SlugClass(String name, List<FunctionNode> functions) {

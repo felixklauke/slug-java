@@ -29,7 +29,6 @@ import java.util.Map;
 public final class FunctionRegistry {
 
     private static Logger logger = LoggerFactory.getLogger(FunctionRegistry.class);
-
     private static Map<String, FunctionNode> functions = new HashMap<>();
 
     FunctionRegistry() {

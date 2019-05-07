@@ -29,15 +29,12 @@ import java.util.List;
 public class BlockNode extends Node {
 
     private BlockNode parent;
-
     private List<Node> statements;
-
-    private BlockVariableRegistry variableRegistry;
+    private final BlockVariableRegistry variableRegistry = new BlockVariableRegistry("Block");
 
     public BlockNode(BlockNode parent, List<Node> statements) {
         this.parent = parent;
         this.statements = statements;
-        this.variableRegistry = new BlockVariableRegistry("Block");
     }
 
     public BlockNode(BlockNode parent) {

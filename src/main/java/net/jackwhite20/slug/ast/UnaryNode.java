@@ -24,7 +24,6 @@ import net.jackwhite20.slug.lexer.Token;
 public class UnaryNode extends Node {
 
     private Token operator;
-
     private Node expression;
 
     public UnaryNode(Token operator, Node expression) {

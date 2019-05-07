@@ -24,9 +24,7 @@ import java.util.List;
 public class FunctionCallNode extends Node {
 
     private String name;
-
     private FunctionNode functionNode;
-
     private List<Node> parameter;
 
     public FunctionCallNode(String name, FunctionNode functionNode, List<Node> parameter) {

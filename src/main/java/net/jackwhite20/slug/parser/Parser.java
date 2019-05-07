@@ -33,9 +33,7 @@ import java.util.List;
 public class Parser {
 
     private Lexer lexer;
-
     private Token currentToken;
-
     private BlockNode currentBlock = new MainBlockNode();
 
     public Parser(Lexer lexer) {

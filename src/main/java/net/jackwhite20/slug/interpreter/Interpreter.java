@@ -29,7 +29,6 @@ import java.util.concurrent.TimeUnit;
 public class Interpreter extends NodeVisitor {
 
     private static Logger logger = LoggerFactory.getLogger(Interpreter.class);
-
     private Parser parser;
 
     public Interpreter(Parser parser) {

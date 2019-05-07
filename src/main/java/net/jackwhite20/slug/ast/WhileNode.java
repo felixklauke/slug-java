@@ -8,7 +8,6 @@ import java.util.List;
 public class WhileNode extends Node {
 
     private Node expression;
-
     private List<Node> children;
 
     public WhileNode(Node expression, List<Node> children) {

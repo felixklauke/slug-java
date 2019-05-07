@@ -6,11 +6,8 @@ package net.jackwhite20.slug.ast;
 public class ForNode extends Node {
 
     private Node declaration;
-
     private Node condition;
-
     private Node expression;
-
     private BlockNode block;
 
     public ForNode(Node declaration, Node condition, Node expression, BlockNode block) {

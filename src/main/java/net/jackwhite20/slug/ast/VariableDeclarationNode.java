@@ -24,7 +24,6 @@ import net.jackwhite20.slug.lexer.TokenType;
 public class VariableDeclarationNode extends Node {
 
     private String variableName;
-
     private TokenType variableType;
 
     public VariableDeclarationNode(String variableName, TokenType variableType) {

@@ -22,7 +22,6 @@ package net.jackwhite20.slug.ast;
 public class VariableAssignNode extends Node {
 
     private String variableName;
-
     private Node right;
 
     public VariableAssignNode(String variableName, Node right) {

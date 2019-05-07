@@ -24,9 +24,7 @@ import java.util.List;
 public class FunctionNode extends Node {
 
     private String name;
-
     private BlockNode children;
-
     private List<Node> parameter;
 
     public FunctionNode(String name, BlockNode block, List<Node> parameter) {

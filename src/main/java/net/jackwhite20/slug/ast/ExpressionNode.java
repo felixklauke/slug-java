@@ -8,9 +8,7 @@ import net.jackwhite20.slug.lexer.TokenType;
 public abstract class ExpressionNode extends Node {
 
     private Node left;
-
     private TokenType operator;
-
     private Node right;
 
     ExpressionNode(Node left, TokenType operator, Node right) {

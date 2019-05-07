@@ -29,7 +29,6 @@ import java.util.Map;
 public abstract class VariableRegistry {
 
     private static Logger logger = LoggerFactory.getLogger(VariableRegistry.class);
-
     private static Map<TokenType, Object> DEFAULT_VALUES = new HashMap<>();
 
     static {

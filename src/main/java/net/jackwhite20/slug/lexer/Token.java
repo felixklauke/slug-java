@@ -22,7 +22,6 @@ package net.jackwhite20.slug.lexer;
 public class Token {
 
     private TokenType tokenType;
-
     private String value;
 
     public Token(TokenType tokenType, String value) {
