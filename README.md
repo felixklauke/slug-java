@@ -1,12 +1,15 @@
-[![Build Status](https://travis-ci.org/JackWhite20/slug-java.svg?branch=master)](https://travis-ci.org/JackWhite20/slug-java)
-[![codecov](https://codecov.io/gh/JackWhite20/slug-java/branch/master/graph/badge.svg)](https://codecov.io/gh/JackWhite20/slug-java)
-
 # slug-java
 Java implementation of my interpreted programming language SLUG (Simple Language).
 
 The language is currently under heavy development and syntax and other language related things may change. 
 
 Feature and bug-fix requests are welcome.
+
+# Build Status
+|             	| Build Status                                                                                                                                              	| Test Code Coverage                                                                                                                                               	|
+|-------------	|-----------------------------------------------------------------------------------------------------------------------------------------------------------	|------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
+| Master      	| [![Build Status](https://travis-ci.org/FelixKlauke/slug-java.svg?branch=master)](https://travis-ci.org/FelixKlauke/slug-java) 	| [![codecov](https://codecov.io/gh/FelixKlauke/slug-java/branch/master/graph/badge.svg)](https://codecov.io/gh/FelixKlauke/slug-java) 	|
+| Development 	| [![Build Status](https://travis-ci.org/FelixKlauke/slug-java.svg?branch=dev)](https://travis-ci.org/FelixKlauke/slug-java)    	| [![codecov](https://codecov.io/gh/FelixKlauke/slug-java/branch/dev/graph/badge.svg)](https://codecov.io/gh/FelixKlauke/slug-java)    	|
 
 # Features
 
