@@ -8,6 +8,7 @@
     <artifactId>slug-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
+
     <modules>
         <module>commons</module>
         <module>core</module>
