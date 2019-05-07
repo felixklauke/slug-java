@@ -16,26 +16,18 @@
 
 package net.jackwhite20.slug.ast;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import net.jackwhite20.slug.lexer.Token;
 
 /**
  * @author Philip 'JackWhite20' <silencephil@gmail.com>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class UnaryNode extends Node {
 
-    private Token operator;
-    private Node expression;
-
-    public UnaryNode(Token operator, Node expression) {
-        this.operator = operator;
-        this.expression = expression;
-    }
-
-    public Token getOperator() {
-        return operator;
-    }
-
-    public Node getExpression() {
-        return expression;
-    }
+    private final Token operator;
+    private final Node expression;
 }

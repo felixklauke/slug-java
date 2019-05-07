@@ -16,32 +16,20 @@
 
 package net.jackwhite20.slug.ast;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import java.util.List;
 
 /**
  * @author Philip 'JackWhite20' <silencephil@gmail.com>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class FunctionCallNode extends Node {
 
-    private String name;
-    private FunctionNode functionNode;
-    private List<Node> parameter;
-
-    public FunctionCallNode(String name, FunctionNode functionNode, List<Node> parameter) {
-        this.name = name;
-        this.functionNode = functionNode;
-        this.parameter = parameter;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public FunctionNode getFunctionNode() {
-        return functionNode;
-    }
-
-    public List<Node> getParameter() {
-        return parameter;
-    }
+    private final String name;
+    private final FunctionNode functionNode;
+    private final List<Node> parameter;
 }

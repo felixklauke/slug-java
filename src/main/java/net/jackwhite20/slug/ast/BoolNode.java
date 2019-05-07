@@ -16,18 +16,18 @@
 
 package net.jackwhite20.slug.ast;
 
+import lombok.Getter;
+
 /**
  * @author Philip 'JackWhite20' <silencephil@gmail.com>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
+@Getter
 public class BoolNode extends Node {
 
-    private boolean value;
+    private final boolean value;
 
     public BoolNode(String value) {
         this.value = Boolean.valueOf(value);
-    }
-
-    public boolean getValue() {
-        return value;
     }
 }

@@ -16,6 +16,7 @@
 
 package net.jackwhite20.slug.interpreter;
 
+import lombok.RequiredArgsConstructor;
 import net.jackwhite20.slug.ast.Node;
 import net.jackwhite20.slug.parser.Parser;
 import org.slf4j.Logger;
@@ -26,14 +27,11 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Philip 'JackWhite20' <silencephil@gmail.com>
  */
+@RequiredArgsConstructor
 public class Interpreter extends NodeVisitor {
 
     private static Logger logger = LoggerFactory.getLogger(Interpreter.class);
-    private Parser parser;
-
-    public Interpreter(Parser parser) {
-        this.parser = parser;
-    }
+    private final Parser parser;
 
     public void interpret() {
         long now = System.currentTimeMillis();

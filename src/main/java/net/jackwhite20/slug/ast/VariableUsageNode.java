@@ -16,20 +16,19 @@
 
 package net.jackwhite20.slug.ast;
 
+import lombok.Getter;
 import net.jackwhite20.slug.lexer.Token;
 
 /**
  * @author Philip 'JackWhite20' <silencephil@gmail.com>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
+@Getter
 public class VariableUsageNode extends Node {
 
-    private String variableName;
+    private final String variableName;
 
     public VariableUsageNode(Token token) {
         this.variableName = token.getValue();
-    }
-
-    public String getVariableName() {
-        return variableName;
     }
 }

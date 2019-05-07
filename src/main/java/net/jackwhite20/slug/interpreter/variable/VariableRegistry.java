@@ -16,6 +16,7 @@
 
 package net.jackwhite20.slug.interpreter.variable;
 
+import lombok.Getter;
 import net.jackwhite20.slug.lexer.TokenType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,7 @@ public abstract class VariableRegistry {
         DEFAULT_VALUES.put(TokenType.BOOL, false);
     }
 
+    @Getter
     private String name;
 
     private Map<String, Object> variables = new HashMap<>();
@@ -74,9 +76,5 @@ public abstract class VariableRegistry {
         TokenType tokenType = variableTypes.get(variableName);
 
         return tokenType != null && tokenType == expectedVarType;
-    }
-
-    public String getName() {
-        return name;
     }
 }

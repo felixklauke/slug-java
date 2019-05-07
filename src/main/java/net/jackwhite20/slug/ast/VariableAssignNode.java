@@ -16,24 +16,17 @@
 
 package net.jackwhite20.slug.ast;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 /**
  * @author Philip 'JackWhite20' <silencephil@gmail.com>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class VariableAssignNode extends Node {
 
-    private String variableName;
-    private Node right;
-
-    public VariableAssignNode(String variableName, Node right) {
-        this.variableName = variableName;
-        this.right = right;
-    }
-
-    public String getVariableName() {
-        return variableName;
-    }
-
-    public Node getRight() {
-        return right;
-    }
+    private final String variableName;
+    private final Node right;
 }

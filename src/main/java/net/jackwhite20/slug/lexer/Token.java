@@ -16,26 +16,16 @@
 
 package net.jackwhite20.slug.lexer;
 
+import lombok.Data;
+
 /**
  * @author Philip 'JackWhite20' <silencephil@gmail.com>
  */
+@Data
 public class Token {
 
-    private TokenType tokenType;
-    private String value;
-
-    public Token(TokenType tokenType, String value) {
-        this.tokenType = tokenType;
-        this.value = value;
-    }
-
-    public TokenType getTokenType() {
-        return tokenType;
-    }
-
-    public String getValue() {
-        return value;
-    }
+    private final TokenType tokenType;
+    private final String value;
 
     public static boolean isVariable(TokenType tokenType) {
         return tokenType == TokenType.INTEGER || tokenType == TokenType.BOOL || tokenType == TokenType.STRING;
