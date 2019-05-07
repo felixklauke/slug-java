@@ -1,8 +1,28 @@
+################
+### Language ###
+################
 language: java
-script: "mvn clean compile test cobertura:cobertura"
 
+###########
+### JDK ###
+###########
 jdk:
   - oraclejdk11
 
+#####################
+### Notifications ###
+#####################
+notifications:
+  email: false
+
+####################
+### Build script ###
+####################
+script:
+  - mvn clean compile package cobertura:cobertura
+
+##################
+### POST Build ###
+##################
 after_success:
 - bash <(curl -s https://codecov.io/bash)
