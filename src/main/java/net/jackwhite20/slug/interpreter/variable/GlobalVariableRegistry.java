@@ -16,6 +16,9 @@
 
 package net.jackwhite20.slug.interpreter.variable;
 
+/**
+ * @author Philip 'JackWhite20' <silencephil@gmail.com>
+ */
 public final class GlobalVariableRegistry extends VariableRegistry {
 
     public GlobalVariableRegistry() {

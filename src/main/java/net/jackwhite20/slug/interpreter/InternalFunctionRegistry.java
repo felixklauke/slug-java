@@ -9,6 +9,9 @@ import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
 
+/**
+ * @author Philip 'JackWhite20' <silencephil@gmail.com>
+ */
 public class InternalFunctionRegistry {
 
     private static Map<String, Function<List<Object>, Object>> functions = new HashMap<>();

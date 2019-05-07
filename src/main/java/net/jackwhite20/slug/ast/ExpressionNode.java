@@ -2,6 +2,9 @@ package net.jackwhite20.slug.ast;
 
 import net.jackwhite20.slug.lexer.TokenType;
 
+/**
+ * @author Philip 'JackWhite20' <silencephil@gmail.com>
+ */
 public abstract class ExpressionNode extends Node {
 
     private Node left;

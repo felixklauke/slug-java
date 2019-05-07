@@ -1,5 +1,8 @@
 package net.jackwhite20.slug.ast;
 
+/**
+ * @author Philip 'JackWhite20' <silencephil@gmail.com>
+ */
 public class IfNode extends Node {
 
     private Node expression;

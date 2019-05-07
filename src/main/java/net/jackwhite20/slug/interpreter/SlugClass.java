@@ -21,6 +21,9 @@ import net.jackwhite20.slug.ast.Node;
 
 import java.util.List;
 
+/**
+ * @author Philip 'JackWhite20' <silencephil@gmail.com>
+ */
 public class SlugClass {
 
     private String name;

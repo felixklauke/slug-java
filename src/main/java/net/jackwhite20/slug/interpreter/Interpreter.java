@@ -23,6 +23,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author Philip 'JackWhite20' <silencephil@gmail.com>
+ */
 public class Interpreter extends NodeVisitor {
 
     private static Logger logger = LoggerFactory.getLogger(Interpreter.class);

@@ -23,6 +23,9 @@ import net.jackwhite20.slug.lexer.TokenType;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Philip 'JackWhite20' <silencephil@gmail.com>
+ */
 class NodeVisitor {
 
     private BlockNode currentBlock = MainBlockNode.getInstance();

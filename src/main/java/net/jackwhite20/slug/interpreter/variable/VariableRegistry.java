@@ -23,6 +23,9 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Philip 'JackWhite20' <silencephil@gmail.com>
+ */
 public abstract class VariableRegistry {
 
     private static Logger logger = LoggerFactory.getLogger(VariableRegistry.class);
