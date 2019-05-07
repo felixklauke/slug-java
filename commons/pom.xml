@@ -8,7 +8,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>slug-ast</artifactId>
+    <artifactId>slug-commons</artifactId>
 
     <build>
         <plugins>

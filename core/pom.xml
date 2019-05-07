@@ -70,7 +70,7 @@
         <!-- Slug AST -->
         <dependency>
             <groupId>net.jackwhite20.slug</groupId>
-            <artifactId>slug-ast</artifactId>
+            <artifactId>slug-commons</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
