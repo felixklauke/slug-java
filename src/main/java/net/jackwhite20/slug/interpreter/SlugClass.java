@@ -16,21 +16,20 @@
 
 package net.jackwhite20.slug.interpreter;
 
+import lombok.RequiredArgsConstructor;
 import net.jackwhite20.slug.ast.FunctionNode;
 import net.jackwhite20.slug.ast.Node;
 
 import java.util.List;
 
+/**
+ * @author Philip 'JackWhite20' <silencephil@gmail.com>
+ */
+@RequiredArgsConstructor
 public class SlugClass {
 
-    private String name;
-
-    private List<FunctionNode> functions;
-
-    public SlugClass(String name, List<FunctionNode> functions) {
-        this.name = name;
-        this.functions = functions;
-    }
+    private final String name;
+    private final List<FunctionNode> functions;
 
     public void call(NodeVisitor nodeVisitor, String functionName, Node... parameters) {
         for (FunctionNode function : functions) {

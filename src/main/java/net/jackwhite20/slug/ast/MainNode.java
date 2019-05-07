@@ -16,27 +16,19 @@
 
 package net.jackwhite20.slug.ast;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import java.util.List;
 
 /**
  * @author Philip 'JackWhite20' <silencephil@gmail.com>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class MainNode extends Node {
 
-    private List<Node> globalVariables;
-
-    private List<Node> functions;
-
-    public MainNode(List<Node> globalVariables, List<Node> functions) {
-        this.globalVariables = globalVariables;
-        this.functions = functions;
-    }
-
-    public List<Node> getGlobalVariables() {
-        return globalVariables;
-    }
-
-    public List<Node> getFunctions() {
-        return functions;
-    }
+    private final List<Node> globalVariables;
+    private final List<Node> functions;
 }

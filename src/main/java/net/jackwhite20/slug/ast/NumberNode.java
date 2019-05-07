@@ -16,18 +16,21 @@
 
 package net.jackwhite20.slug.ast;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+
 /**
  * @author Philip 'JackWhite20' <silencephil@gmail.com>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
+@EqualsAndHashCode(callSuper = true)
+@Getter
 public class NumberNode extends Node {
 
-    private int value;
+    private final int value;
 
     public NumberNode(String value) {
         this.value = Integer.parseInt(value);
-    }
-
-    public int getValue() {
-        return value;
     }
 }

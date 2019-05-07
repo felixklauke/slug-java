@@ -16,6 +16,9 @@
 
 package net.jackwhite20.slug.exception;
 
+/**
+ * @author Philip 'JackWhite20' <silencephil@gmail.com>
+ */
 public class SlugRuntimeException extends RuntimeException {
 
     public SlugRuntimeException(String message) {

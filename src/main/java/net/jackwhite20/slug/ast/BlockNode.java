@@ -16,6 +16,8 @@
 
 package net.jackwhite20.slug.ast;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.jackwhite20.slug.exception.SlugRuntimeException;
 import net.jackwhite20.slug.interpreter.variable.BlockVariableRegistry;
 import net.jackwhite20.slug.lexer.TokenType;
@@ -24,20 +26,19 @@ import java.util.List;
 
 /**
  * @author Philip 'JackWhite20' <silencephil@gmail.com>
- * @author Felix Klauke <fklauke@itemis.de>
+ * @author Felix Klauke <info@felix-klauke.de>
  */
+@Getter
+@Setter
 public class BlockNode extends Node {
 
     private BlockNode parent;
-
     private List<Node> statements;
-
-    private BlockVariableRegistry variableRegistry;
+    private final BlockVariableRegistry variableRegistry = new BlockVariableRegistry("Block");
 
     public BlockNode(BlockNode parent, List<Node> statements) {
         this.parent = parent;
         this.statements = statements;
-        this.variableRegistry = new BlockVariableRegistry("Block");
     }
 
     public BlockNode(BlockNode parent) {
@@ -80,21 +81,5 @@ public class BlockNode extends Node {
         }
 
         throw new IllegalStateException("no main block node");
-    }
-
-    public BlockNode getParent() {
-        return parent;
-    }
-
-    public void setParent(BlockNode parent) {
-        this.parent = parent;
-    }
-
-    public List<Node> getStatements() {
-        return statements;
-    }
-
-    public void setStatements(List<Node> statements) {
-        this.statements = statements;
     }
 }

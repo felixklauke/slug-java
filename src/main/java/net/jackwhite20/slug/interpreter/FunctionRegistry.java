@@ -23,10 +23,12 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Philip 'JackWhite20' <silencephil@gmail.com>
+ */
 public final class FunctionRegistry {
 
     private static Logger logger = LoggerFactory.getLogger(FunctionRegistry.class);
-
     private static Map<String, FunctionNode> functions = new HashMap<>();
 
     FunctionRegistry() {

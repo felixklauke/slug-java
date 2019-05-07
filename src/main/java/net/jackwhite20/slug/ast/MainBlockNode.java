@@ -1,14 +1,19 @@
 package net.jackwhite20.slug.ast;
 
+import lombok.Getter;
 import net.jackwhite20.slug.exception.SlugRuntimeException;
 import net.jackwhite20.slug.exception.VariableNotFoundException;
 import net.jackwhite20.slug.interpreter.variable.GlobalVariableRegistry;
 import net.jackwhite20.slug.lexer.TokenType;
 
+/**
+ * @author Philip 'JackWhite20' <silencephil@gmail.com>
+ * @author Felix Klauke <info@felix-klauke.de>
+ */
 public class MainBlockNode extends BlockNode {
 
+    @Getter
     private static MainBlockNode instance;
-
     private GlobalVariableRegistry globalVariableRegistry;
 
     public MainBlockNode() {
@@ -17,10 +22,6 @@ public class MainBlockNode extends BlockNode {
         instance = this;
 
         this.globalVariableRegistry = new GlobalVariableRegistry();
-    }
-
-    public static MainBlockNode getInstance() {
-        return instance;
     }
 
     @Override

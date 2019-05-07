@@ -25,13 +25,9 @@ import java.util.Map;
 public class Lexer {
 
     private static final char EOF = '|';
-
     private static Map<String, Token> reservedKeywords = new HashMap<>();
-
     public String input;
-
     private int pos = 0;
-
     private char currentChar;
 
     static {
@@ -184,7 +180,7 @@ public class Lexer {
                 advance();
                 return new Token(TokenType.SEMICOLON, ";");
             }
-          
+
             if (currentChar == ',') {
                 advance();
                 return new Token(TokenType.COMMA, ",");

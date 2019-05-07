@@ -16,31 +16,19 @@
 
 package net.jackwhite20.slug.ast;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import net.jackwhite20.slug.lexer.TokenType;
 
+/**
+ * @author Philip 'JackWhite20' <silencephil@gmail.com>
+ * @author Felix Klauke <info@felix-klauke.de>
+ */
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class VariableDeclarationAssignNode extends Node {
 
-    private String variableName;
-
-    private TokenType variableType;
-
-    private Node right;
-
-    public VariableDeclarationAssignNode(String variableName, TokenType variableType, Node right) {
-        this.variableName = variableName;
-        this.variableType = variableType;
-        this.right = right;
-    }
-
-    public String getVariableName() {
-        return variableName;
-    }
-
-    public TokenType getVariableType() {
-        return variableType;
-    }
-
-    public Node getRight() {
-        return right;
-    }
+    private final String variableName;
+    private final TokenType variableType;
+    private final Node right;
 }
