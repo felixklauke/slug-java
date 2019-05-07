@@ -18,8 +18,6 @@ package net.jackwhite20.slug.variable;
 
 import lombok.Getter;
 import net.jackwhite20.slug.lexer.TokenType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +27,6 @@ import java.util.Map;
  */
 public abstract class VariableRegistry {
 
-    private static Logger logger = LoggerFactory.getLogger(VariableRegistry.class);
     private static Map<TokenType, Object> DEFAULT_VALUES = new HashMap<>();
 
     static {
@@ -57,14 +54,10 @@ public abstract class VariableRegistry {
 
         variables.put(variableName, value);
         variableTypes.put(variableName, variableType);
-
-        logger.debug("Registered variable {} ({}) with value {}", variableName, variableType, value);
     }
 
     public void update(String variableName, Object newValue) {
         variables.put(variableName, newValue);
-
-        logger.debug("Updated variable {} with the new value {}", variableName, newValue);
     }
 
     public <T> T lookup(String name) {
