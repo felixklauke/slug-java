@@ -19,7 +19,7 @@ notifications:
 ### Build script ###
 ####################
 script:
-  - mvn clean compile package
+  - mvn clean compile package install
 
 ##################
 ### Deployment ###
