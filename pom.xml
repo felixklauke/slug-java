@@ -26,28 +26,4 @@
             <url>https://repository.klauke-enterprises.com/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
-
-    <build>
-        <plugins>
-
-            <!-- Test reports -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.7</version>
-                <configuration>
-                    <formats>
-                        <format>html</format>
-                        <format>xml</format>
-                    </formats>
-                    <check/>
-                    <instrumentation>
-                        <excludes>
-                            <exclude>net/jackwhite20/slug/SlugBootstrap.class</exclude>
-                        </excludes>
-                    </instrumentation>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>

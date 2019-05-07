@@ -19,13 +19,7 @@ notifications:
 ### Build script ###
 ####################
 script:
-  - mvn clean compile package cobertura:cobertura
-
-##################
-### POST Build ###
-##################
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  - mvn clean compile package
 
 ##################
 ### Deployment ###
