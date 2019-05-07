@@ -25,4 +25,22 @@ script:
 ### POST Build ###
 ##################
 after_success:
-- bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -s https://codecov.io/bash)
+
+##################
+### Deployment ###
+##################
+deploy:
+  provider: script
+  script: mvn deploy --settings deploy/maven-settings.xml
+  on:
+    branch: master
+    tags: true
+
+###################
+### Environment ###
+###################
+env:
+  global:
+  - secure: ZV2toU5O8BKX7dUTq+heS0CnkShdYWvHGm6pcWkP1cfxoKfatASoPQDooUFE6Nm1b6Ensku+og/xkEgekzdjD2olQpUdSTkqxAkYtmsaks8JpnwdWQqySPIUDoom0r/uudaib8e9N+ABCnYdYcl1RVDppornmajCfq0/7YFzPd/UEuBynjE28dyWF8jVkGGzgpBjeQZ/1B91pTFmJfhqfMEEpnSLnuXpUyl64fv3C7t4LD+FAA5WyPDO5r/NHzRdjBrNm/JqJL0upwK7ydjdcRPukb14pu5GdhlpRQaLf1TUaU3jzXsMLUpbi063+TJu7L//rjdGByZh5rwMMTCGq27uWyTUd3O0w21QjyEQeaVEv6wE+wkYTXKFdVG8Eap8rpVIl4/FaSX9sgCc8EhGzBzgKE0m3Sae9nQM0EHcJ4X61c2HdA+0g7f6cCX7QZsDb50sYGVUvZyvUb+rrmqGj84Ab/R3rcqCN0kyZ7fCG1LEHy0RkHsjXgeD5Wj0Cw2bs9hpTDQjmymish/BKrAeMv8sRLcpqaNeTGUK1yFxPPQS0MEtwVgaDeUlh5K8rNED5526pp55o9QAY0y4VxYLd192BB56/x7YrzlXm+Zu67pw9PWSTbwxxPzN7EvmLNo5+F8OWnfz4Hgw+kgyTlku2TrqdbfwsXUmIFED6G24yNY=
+  - secure: TVgGyAMtCG5sxP4iLT6Ihl+KBr3GtzUZqqnRTd4tMIwQ/W8y+bIQMYfNSlVfvBJU0CHE1kgtI9pHBhAkbDkxJUQZ6PG2dMGtiyacmhGrZQw9TROKzozrnXkDWjVmQTcqz7351qj0ZqzSmIvzOWGGfLCoyRm21AZfRCTVVbb9LRl5D/s2MygB7ofEqxXYqPohZm4MOXB6Prq5CCAL+aXGGzCFyfI+fDGgR8sj+IhcnWC4Rt3eFyfU9s/Lu3KbxtXReo904zRo+aiviJ20QhJaUmGOUhuLHqIz1NxC9z9aEOCNiT/H/4KZN4n2KfGlaJvKJUWle4wpwvOc3bYI0AbN0Y9tiaTezEOaWMXwtVokaOr6sIbIyP2QLeXU46hQzvlWZFvgQ9Mgmzpxe2yRORRxox9fUIHFjiFaaxlF5r+I3Uk2HboL2WiL9uJeuxGXgk8d83DXkurPZcwG+F7Z5tl7kUsjjrLq13PHAnpOJ2+BIHbwI0d2nTl7ddPJpwLL1QVhzb6Zh9a38ep2xVL95vDCUnxcZIMeE8uVH9u31jG4jm9DV0HHbYjpyjRj9+9X6m4FJK3StVqqOlz1Yno36QqomOaHgGNVBxM91zO2DJY1aw+a0hEQO35as+Px3CX+kvwHrc/qtlqvdTlKAjyADRnLtB+lzvqs51YTsxJ36ooCVQQ=
